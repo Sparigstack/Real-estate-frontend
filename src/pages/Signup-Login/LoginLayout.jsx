@@ -4,7 +4,7 @@ import Images from '../../utils/Images'
 export default function LoginLayout({ children, loginview, setLoginView, previousView, backgroundImage }) {
     return (
         <>
-            <div className={`loginLayout position-relative ${loginview != 'signuplogin' ? 'p-4' :''}`} style={{background:'#03053D', minHeight:'100vh'}}>
+            <div className={`loginLayout position-relative ${loginview != 'signuplogin' ? 'p-4' :''}`} >
                 <div className='text-center text-white pt-5' key={backgroundImage} style={{ background: `url(${backgroundImage})`, minHeight: loginview == 'signuplogin'? '100vh': '93vh', backgroundRepeat:'no-repeat', backgroundSize:'cover', backgroundPosition:'center' }}>
                     <div className="d-flex align-items-center justify-content-center position-relative">
                         {loginview !== 'signuplogin' && (

@@ -10,7 +10,7 @@ export default function SignUpLoginPage({ setLoginView }) {
         setTimeout(() => {
             setLoading(false);
             setLoginView('phonenumber');
-        }, 1500);
+        }, 1000);
     }
     return (
         <>
@@ -23,7 +23,7 @@ export default function SignUpLoginPage({ setLoginView }) {
             <div className='pt-5 mt-5'>
                 <button className='loginBtn' onClick={handleLoginClick}>
                     <img src={Images.phone} alt="phone" className='me-3' />
-                    Sign up/ Login with Phone number
+                    Sign up/ Login with Email
                 </button>
             </div>
         </>
