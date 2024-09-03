@@ -3,6 +3,7 @@ import ShowLoader from '../../components/loader/ShowLoader';
 import HideLoader from '../../components/loader/HideLoader';
 
 
+
 export default function EnterDetails({ setLoginView }) {
     const inputRef = useRef(null);
     const [loading, setLoading] = useState(false);
