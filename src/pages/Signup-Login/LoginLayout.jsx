@@ -15,7 +15,7 @@ export default function LoginLayout({ children, loginview, setLoginView, previou
                     <div className='login-content'>
                         {children}
                     </div>
-                    <div className='pt-5 mt-5' style={{ bottom: '9%', left: '27%'}}>
+                    <div className='position-absolute pt-5 mt-5' style={{ bottom: '9%', left: '27%'}}>
                         <span className='fw-lighter' style={{fontSize:'14px' }}>By signing in, you agree to our Terms of Service and acknowledge that our Privacy Policy applies to you.</span>
                     </div>
                 </div>
