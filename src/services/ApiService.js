@@ -1,6 +1,9 @@
 import { useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 const useApiService = () => {
+    const navigate = useNavigate();
     const createHeaders = () => {
         const token = accessToken
         const headers = new Headers();
@@ -9,8 +12,6 @@ const useApiService = () => {
         // headers.append("Authorization", token);
         return headers;
     };
-
-    const base_URL = 1;   //static currently
 
     const handleResponse = async (response) => {
         const responseBody = await response.text();
@@ -39,12 +40,12 @@ const useApiService = () => {
         };
 
         try {
-            const response = await fetch(`${base_URL}${endpoint}`, requestOptions);
+            const response = await fetch(`${BASE_URL}${endpoint}`, requestOptions);
             return await handleResponse(response);
         } catch (error) {
             return handleError(error);
         }
-    }, [base_URL]);
+    }, [BASE_URL]);
 
     const postAPI = useCallback((endpoint, data = null) => apiRequest('POST', endpoint, data), [apiRequest]);
     const getAPI = useCallback((endpoint) => apiRequest('GET', endpoint), [apiRequest]);

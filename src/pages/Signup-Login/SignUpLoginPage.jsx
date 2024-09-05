@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import Images from '../../utils/Images'
 import ShowLoader from '../../components/loader/ShowLoader';
 import HideLoader from '../../components/loader/HideLoader';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 
 export default function SignUpLoginPage({ setLoginView }) {
     const [loading, setLoading] = useState(false);
@@ -9,7 +11,7 @@ export default function SignUpLoginPage({ setLoginView }) {
         setLoading(true);
         setTimeout(() => {
             setLoading(false);
-            setLoginView('phonenumber');
+            setLoginView('enteremail');
         }, 1000);
     }
     return (
@@ -18,11 +20,11 @@ export default function SignUpLoginPage({ setLoginView }) {
             <div className='pt-5 mt-5'>
                 <h1 className='fw-bold font-42'>Blueprint to Completion,</h1>
                 <h1 className='fw-light font-42 p-2'>Seamless Builders Management..!</h1>
-                <p className='fw-lighter p-2' style={{ fontSize: '18px' }}>Ready to explore</p>
+                <p className='fw-light p-2' style={{ fontSize: '18px' }}>Ready to explore</p>
             </div>
-            <div className='pt-5 mt-5'>
+            <div className='pt-5 mt-3'>
                 <button className='loginBtn' onClick={handleLoginClick}>
-                    <img src={Images.phone} alt="phone" className='me-3' />
+                    <FontAwesomeIcon icon={faEnvelope} className='me-3'/>
                     Sign up/ Login with Email
                 </button>
             </div>
