@@ -4,37 +4,36 @@ import HideLoader from '../../components/loader/HideLoader';
 import useApiService from '../../services/ApiService.js'
 import { Field, Formik, Form, ErrorMessage } from 'formik';
 import EmailValidationSchema from '../../utils/validations/EmailValidationSchema.js';
-const { postAPI } = useApiService;
 
 export default function EnterDetails({ setLoginView, setEmail }) {
+    const { postAPI } = useApiService();
     const inputRef = useRef(null);
     const [loading, setLoading] = useState(false);
+
     const handleGetOtp = async (values) => {
         const email = values?.email;
         setLoading(true);
-        // var raw = JSON.stringify({
-
-        // })
-        // try {
-        //     const result = await postAPI('', raw);
-        //     if (!result || result == "") {
-        //         alert('Something went wrong');
-        //     } else {
-        //         const responseRs = JSON.parse(result);
-        //         setTimeout(() => {
-        //             setLoading(false);
-        //             setLoginView('enterotp');
-        //         }, 1000);
-        //     }
-        // }
-        // catch (error) {
-        //     console.error(error);
-        // }
-        setTimeout(() => {
-            setLoading(false);
-            setEmail(email);
-            setLoginView('enterotp');
-        }, 1000);
+        var raw = JSON.stringify({
+            email: email
+        })
+        try {
+            const result = await postAPI('/processUser', raw);
+            if (!result || result == "") {
+                alert('Something went wrong');
+            } else {
+                setLoading(false);
+                setEmail(email);
+                setLoginView('enterotp');
+            }
+        }
+        catch (error) {
+            console.error(error);
+        }
+        // setTimeout(() => {
+        //     setLoading(false);
+        //     setEmail(email);
+        //     setLoginView('enterotp');
+        // }, 1000);
     }
     useEffect(() => {
         if (inputRef.current) {
@@ -47,7 +46,7 @@ export default function EnterDetails({ setLoginView, setEmail }) {
             <div className='text-center pt-5 mt-5'>
                 <h2 className='fw-normal'>Please Enter Email</h2>
                 <div className='mt-2'>
-                    <span className='fw-light font-16'>We'll sent an email with an activation code to your given email for verification. So please enter valid email.</span>
+                    <span className='fw-light font-16'>We'll sent an email with otp to your given email for verification. So please enter valid email.</span>
                 </div>
             </div>
             <div className='p-3 mt-2'>

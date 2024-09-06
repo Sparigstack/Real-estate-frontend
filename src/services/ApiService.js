@@ -5,7 +5,7 @@ const BASE_URL = import.meta.env.VITE_BASE_URL;
 const useApiService = () => {
     const navigate = useNavigate();
     const createHeaders = () => {
-        const token = accessToken
+        // const token = accessToken
         const headers = new Headers();
         headers.append("Content-Type", "application/json");
         headers.append("Access-Control-Allow-Origin", "*");
@@ -40,7 +40,7 @@ const useApiService = () => {
         };
 
         try {
-            const response = await fetch(`${BASE_URL}${endpoint}`, requestOptions);
+            const response = await fetch(`${BASE_URL}${endpoint}`, requestOptions);   
             return await handleResponse(response);
         } catch (error) {
             return handleError(error);

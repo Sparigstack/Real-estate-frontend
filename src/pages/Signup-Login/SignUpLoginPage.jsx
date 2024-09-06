@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
-import Images from '../../utils/Images'
 import ShowLoader from '../../components/loader/ShowLoader';
 import HideLoader from '../../components/loader/HideLoader';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
+import useApiService from '../../services/ApiService';
 
 export default function SignUpLoginPage({ setLoginView }) {
+    const { getAPI } = useApiService();
     const [loading, setLoading] = useState(false);
     const handleLoginClick = () => {
         setLoading(true);

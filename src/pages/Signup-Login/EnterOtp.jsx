@@ -1,28 +1,47 @@
 import React, { useEffect, useRef, useState } from 'react'
 import ShowLoader from '../../components/loader/ShowLoader';
 import HideLoader from '../../components/loader/HideLoader';
+import useApiService from '../../services/ApiService';
 
 export default function EnterOtp({ email, setLoginView }) {
+    const { postAPI } = useApiService();
     const inputRefs = useRef([]);
     const [otp, setOtp] = useState(Array(5).fill(''));
     const [otpError, setOtpError] = useState('');
     const [loading, setLoading] = useState(false);
-    const validateOtp = (otpValue) => {
-        if (otpValue == '12345') {
-            setOtpError('');
-            setLoading(true);
-            setTimeout(() => {
-                setLoading(false);
-                setLoginView('userdetailsform');
-            }, 1000);
+    const [timeLeft, setTimeLeft] = useState(300);
+    const [timeExpired, setTimeExpired] = useState(false);
+    
+    const validateOtp = async (otpValue) => {
+        setLoading(true);
+        var raw = JSON.stringify({
+            email: email,
+            verification_code: otpValue
+        })
+        try {
+            const result = await postAPI('/verifyUser', raw);
+            if (!result || result == "") {
+                alert('Something went wrong');
+            }
+            else {
+                const responseRs = JSON.parse(result);
+                if (responseRs.status == 'success') {
+                    setOtpError('');
+                    setLoading(false);
+                    setLoginView('userdetailsform');
+                }
+                else {
+                    setOtpError(responseRs.msg);
+                }
+            }
         }
-        else {
-            setOtpError('Wrong code, please try again');
+        catch {
+            console.error(error);
         }
     }
-    const handleChange = (e, index) => {
+    const handleChangeOtp = (e, index) => {
         const { value } = e.target;
-        const newOtp = [...otp]
+        const newOtp = [...otp];
         newOtp[index] = value;
         setOtp(newOtp);
         if (value.length == 1 && index < inputRefs.current.length - 1) {
@@ -32,6 +51,18 @@ export default function EnterOtp({ email, setLoginView }) {
             inputRefs.current[index - 1].focus();
         }
         if (index == inputRefs.current.length - 1) {
+            const otpValue = newOtp.join('');
+            validateOtp(otpValue);
+        }
+    }
+
+    const handlePasteOtp = (e) => {
+        e.preventDefault();
+        const pastedOtp = e.clipboardData.getData('text');
+        if (pastedOtp.length == inputRefs.current.length) {
+            const newOtp = pastedOtp.split('');
+            setOtp(newOtp);
+            inputRefs.current[inputRefs.current.length - 1].focus();
             const otpValue = newOtp.join('');
             validateOtp(otpValue);
         }
@@ -47,12 +78,12 @@ export default function EnterOtp({ email, setLoginView }) {
             <div className='text-center pt-5 mt-5'>
                 <h2 className='fw-normal'>Please Enter a Code</h2>
                 <div className='mt-2'>
-                    <span className='fw-light font-16'>We've sent an email with an activation code to your email <br /><b>{email}</b></span>
+                    <span className='fw-light font-16'>We've sent an email with otp to your email <br /><b>{email}</b></span>
                 </div>
             </div>
             <div className="d-flex justify-content-center mt-5">
-                {Array(5).fill().map((_, index) => (
-                    <input key={index} type="text" maxLength="1" className={`otpInput mx-2 text-center`} style={{ border: otpError ? '0.5px solid red' : '0.5px solid white' }} ref={(el) => inputRefs.current[index] = el} onChange={(e) => handleChange(e, index)} value={otp[index]} />
+                {Array(6).fill().map((_, index) => (
+                    <input key={index} type="text" maxLength="1" className={`otpInput mx-2 text-center`} style={{ border: otpError ? '0.5px solid red' : '0.5px solid white' }} ref={(el) => inputRefs.current[index] = el} onChange={(e) => handleChangeOtp(e, index)} onPaste={handlePasteOtp} value={otp[index]} />
                 ))}
             </div>
             <div className='text-danger mt-2'>{otpError}</div>
