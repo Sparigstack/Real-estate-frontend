@@ -1,9 +1,15 @@
 import { Field, Formik, Form, ErrorMessage } from 'formik'
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import UserDetailsValidationSchema from '../../utils/validations/UserDetailsValidationSchema'
+import HideLoader from '../../components/loader/HideLoader';
+import ShowLoader from '../../components/loader/ShowLoader';
+import useApiService from '../../services/ApiService';
 
 export default function UserDetailsForm() {
     const logoUploadRef = useRef(null);
+    const [loading, setLoading] = useState(false);
+    const [showAlerts, setShowAlerts] = useState(false);
+    const { postAPI } = useApiService();
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];
@@ -13,12 +19,42 @@ export default function UserDetailsForm() {
     const handleLogoUpload = () => {
         logoUploadRef.current.click();
     };
-    const submitUserDetails = () => {
-
+    const submitUserDetails = async (values) => {
+        setLoading(true);
+        var raw = JSON.stringify({
+            username: values.username,
+            contactNum: values.contactNum,
+            companyName: values.companyName,
+            companyEmail: values.companyEmail,
+            companyContactNum: values.companyContactNum,
+            companyAddress: values.companyAddress,
+            companyLogo: values.companyLogo
+        })
+        try {
+            const result = await postAPI('/formsubmit',raw);
+            if (!result || result == "") {
+                alert('Something went wrong');
+            } else {
+                const responseRs = JSON.parse(result);
+                if (responseRs.status == 'success') {
+                    setLoading(false);
+                }
+                else {
+                    setShowAlerts(<AlertComp show={true} variant="danger" message={responseRs.msg} />);
+                    setTimeout(() => {
+                        setShowAlerts(<AlertComp show={false} />);
+                    }, 1500);
+                }
+            }
+        }
+        catch (error) {
+            console.error(error);
+        }
     }
     return (
         <>
-            <h3 className='mt-3'>Contact Details</h3>
+        {showAlerts}
+        {loading ? <ShowLoader /> : <HideLoader />}
             <div className="row">
                 <div className='col-md-4 offset-md-4'>
                     <div className='border border-2 rounded-3 p-4 mt-3'>

@@ -9,6 +9,7 @@ const useApiService = () => {
         const token = Cookies.get('authToken');
         const headers = new Headers();
         headers.append("Content-Type", "application/json");
+        headers.append("Accept", "application/json");
         headers.append("Access-Control-Allow-Origin", "*");
         if(token) {
             headers.append("Authorization", `Bearer ${token}`);
@@ -21,6 +22,7 @@ const useApiService = () => {
         if (response?.status == 401) {
             alert('Token expired. Redirecting to the login page.');
             setTimeout(() => {
+                Cookies.remove('authToken');
                 navigate('/login');
             }, 2000);
         } else if (!responseBody) {

@@ -5,6 +5,5 @@ import Login from '../pages/Signup-Login/Login';
 
 export default function PrivateRoutes() {
     const token = Cookies.get('authToken'); 
-    return token ?  <Outlet /> : <Login/>
-  
+    return token ?  <Outlet /> : <Login/>  
 }

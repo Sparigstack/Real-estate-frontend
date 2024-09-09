@@ -24,7 +24,7 @@ export default function Login() {
         }
     }
     const previousView = getPreviousView(loginview);
-    const backgroundImage = loginview == 'signuplogin' ? Images.LoginBackground : Images.PhoneAndOtpBackground;
+    const backgroundImage = loginview == 'signuplogin' ? Images.loginBackground : Images.phoneAndOtpBackground;
     useEffect(()=>{
         if(token){
             navigate('/dashboard');

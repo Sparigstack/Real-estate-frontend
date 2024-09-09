@@ -6,14 +6,14 @@ import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 import AlertComp from '../../components/AlertComp';
 
-export default function EnterOtp({ email, setLoginView}) {
+export default function EnterOtp({ email }) {
     const { postAPI } = useApiService();
     const inputRefs = useRef([]);
     const navigate = useNavigate();
     const [otp, setOtp] = useState(Array(5).fill(''));
     const [otpError, setOtpError] = useState('');
     const [loading, setLoading] = useState(false);
-    const [timeLeft, setTimeLeft] = useState(120);
+    const [timeLeft, setTimeLeft] = useState(300);
     const [timeExpired, setTimeExpired] = useState(false);
     const [showAlerts, setShowAlerts] = useState(false);
 
@@ -38,6 +38,7 @@ export default function EnterOtp({ email, setLoginView}) {
                 }
                 else {
                     setOtpError(responseRs.msg);
+                    setLoading(false);
                 }
             }
         }
@@ -77,16 +78,17 @@ export default function EnterOtp({ email, setLoginView}) {
     const formatTime = (timeInSeconds) => {
         const minutes = Math.floor(timeInSeconds / 60);
         const seconds = timeInSeconds % 60;
-        return `${minutes.toString().padStart(2, '0')} minutes : ${seconds.toString().padStart(2, '0')} seconds`;
+        return `${minutes.toString().padStart(2, '0')}  : ${seconds.toString().padStart(2, '0')} `;
     };
 
-    const handleResendOtp = async () => {
+    const handleResendOtp = async (e) => {
+        e.preventDefault();
         setLoading(true);
         var raw = JSON.stringify({
             email: email
         })
         try {
-            const result = await postAPI('/', raw);
+            const result = await postAPI('/RegisterUser', raw);
             if (!result || result == '') {
                 alert('Something went wrong');
             }
@@ -94,11 +96,12 @@ export default function EnterOtp({ email, setLoginView}) {
                 const responseRs = JSON.parse(result);
                 if (responseRs.status == 'success') {
                     setLoading(false);
-                    setEmail(email);
-                    setLoginView('enterotp');
+                    // setEmail(email);
+                    setTimeLeft(300);
+                    setTimeExpired(false);
                 }
                 else {
-                    setShowAlerts(<AlertComp show={true} variant="success" message="Otp sent successfully" />)
+                    setShowAlerts(<AlertComp show={true} variant="danger" message={responseRs.msg}/>);
                     setTimeout(() => {
                         setShowAlerts(<AlertComp show={false} />);
                     }, 1500);
@@ -123,10 +126,6 @@ export default function EnterOtp({ email, setLoginView}) {
         }
         else {
             setTimeExpired(true);
-            // setTimeout(() => {
-            //     setTimeExpired(false);
-            //     setLoginView('enteremail');
-            // }, 1500);
         }
     }, [timeLeft]);
 
@@ -142,18 +141,18 @@ export default function EnterOtp({ email, setLoginView}) {
             </div>
             <div className="d-flex justify-content-center mt-5">
                 {Array(6).fill().map((_, index) => (
-                    <input key={index} type="text" maxLength="1" className={`otpInput mx-2 text-center`} style={{ border: otpError || timeExpired ? '0.5px solid red' : '0.5px solid white' }} ref={(el) => inputRefs.current[index] = el} onChange={(e) => handleChangeOtp(e, index)} onPaste={handlePasteOtp} value={otp[index]} disabled={timeExpired} />
+                    <input key={index} type="text" maxLength="1" className={`otpInput mx-2 text-center`} style={{ border: otpError || timeExpired ? '0.5px solid red' : '0.5px solid white' }} ref={(el) => inputRefs.current[index] = el} onChange={(e) => handleChangeOtp(e, index)} onPaste={handlePasteOtp} value={otp[index]} />
                 ))}
             </div>
             <div className='text-danger mt-2'>{otpError}</div>
             {!timeExpired && (
                 <div className='text-center mt-3'>
-                    <span className="font-16 text-danger fw-normal">Time remaining: {formatTime(timeLeft)}</span>
+                    <span className="font-16 text-danger fw-normal">{formatTime(timeLeft)}</span>
                 </div>
             )}
             {timeExpired && (
                 <div className='text-center mt-3'>
-                    <span className='fw-lighter font-16'>Otp is expired.<a className='fw-bold text-decoration-none' href="" onClick={handleResendOtp}>Send Again</a></span>
+                    <span className='fw-light text-danger font-16'>Otp is expired. <a className='fw-bold text-decoration-none cursor-pointer' onClick={handleResendOtp}>Resend Code</a></span>
                 </div>
             )}
         </>

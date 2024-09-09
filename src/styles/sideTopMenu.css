@@ -1,0 +1,12 @@
+.side-menu .nav-pills .nav-link.active, .nav-pills .show>.nav-link{
+    background-color: transparent;
+}
+.topmenu-wrapper{
+    background-color: #303260;
+}
+.search-icon{
+    position: absolute;
+    top: 5px;
+    height: 30px;
+    left: 25px;
+}
