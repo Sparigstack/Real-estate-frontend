@@ -1,5 +1,6 @@
 import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
+import Cookies from 'js-cookie';
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 const useApiService = () => {
@@ -20,7 +21,7 @@ const useApiService = () => {
         if (response?.status == 401) {
             alert('Token expired. Redirecting to the login page.');
             setTimeout(() => {
-                navigate('/');
+                navigate('/login');
             }, 2000);
         } else if (!responseBody) {
             alert('Something went wrong');

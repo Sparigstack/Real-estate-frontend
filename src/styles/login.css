@@ -12,12 +12,12 @@
   background-color: #03053D;
   min-height: 100vh;
 }
-.loginFooter{
+/* .loginFooter{
   position: fixed;
   left:0;
   bottom: 6%;
   width: 100%;
-}
+} */
 .font-42 {
   font-size: 42px;
 }

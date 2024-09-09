@@ -15,40 +15,40 @@ export default function EnterDetails({ setLoginView, setEmail }) {
     const handleGetOtp = async (values) => {
         const email = values?.email;
         setLoading(true);
-        // var raw = JSON.stringify({
-        //     email: email
-        // })
-        // try {
-        //     const result = await postAPI('/processUser', raw);
-        //     if (!result || result == "") {
-        //         alert('Something went wrong');
-        //     } else {
-        //         const responseRs = JSON.parse(result);
-        //         if(responseRs.status == 'success') {
-        //             setLoading(false);
-        //             setEmail(email);
-        //             setLoginView('enterotp');
-        //         }
-        //         else{
-        //             setShowAlerts(<AlertComp show={true} variant="danger" message={responseRs.msg}/>);
-        //             setTimeout(() => {
-        //                 setShowAlerts(<AlertComp show={false} />);
-        //             }, 1500);                   
-        //         }                
-        //     }
-        // }
-        // catch (error) {
-        //     console.error(error);
-        // }
-        setTimeout(() => {
-            setLoading(false);
-            setShowAlerts(<AlertComp show={true} variant="success" message="Otp sent successfully"/>);
-            setTimeout(() => {
-                setShowAlerts(<AlertComp show={false} />)
-                setEmail(email);
-                setLoginView('enterotp');
-            }, 1500);           
-        }, 1500);
+        var raw = JSON.stringify({
+            email: email
+        })
+        try {
+            const result = await postAPI('/RegisterUser', raw);
+            if (!result || result == "") {
+                alert('Something went wrong');
+            } else {
+                const responseRs = JSON.parse(result);
+                if(responseRs.status == 'success') {
+                    setLoading(false);
+                    setEmail(email);
+                    setLoginView('enterotp');
+                }
+                else{
+                    setShowAlerts(<AlertComp show={true} variant="danger" message={responseRs.msg}/>);
+                    setTimeout(() => {
+                        setShowAlerts(<AlertComp show={false} />);
+                    }, 1500);                                                
+                }                
+            }
+        }
+        catch (error) {
+            console.error(error);
+        }
+        // setTimeout(() => {
+        //     setLoading(false);
+        //     setShowAlerts(<AlertComp show={true} variant="success" message="Otp sent successfully" />);
+        //     setTimeout(() => {
+        //         setShowAlerts(<AlertComp show={false} />)
+        //         setEmail(email);
+        //         setLoginView('enterotp');
+        //     }, 1500);
+        // }, 1500);
     }
     useEffect(() => {
         if (inputRef.current) {
@@ -57,7 +57,7 @@ export default function EnterDetails({ setLoginView, setEmail }) {
     }, [])
     return (
         <>
-        {showAlerts}
+            {showAlerts}
             {loading ? <ShowLoader /> : <HideLoader />}
             <div className='text-center pt-5 mt-5'>
                 <h2 className='fw-normal'>Please Enter Email</h2>

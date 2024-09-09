@@ -8,11 +8,4 @@ export default function PrivateRoutes() {
     const token = Cookies.get('authToken'); 
     return token ?  <Outlet /> : <Login/>
   
-    // useEffect(() => {
-    //   if (!token) {       
-    //     navigate('/login');
-    //   }
-    // }, [token, navigate]);
-  
-    // return token ? children : null;
 }
