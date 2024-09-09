@@ -5,11 +5,13 @@ const BASE_URL = import.meta.env.VITE_BASE_URL;
 const useApiService = () => {
     const navigate = useNavigate();
     const createHeaders = () => {
-        // const token = accessToken
+        const token = Cookies.get('authToken');
         const headers = new Headers();
         headers.append("Content-Type", "application/json");
         headers.append("Access-Control-Allow-Origin", "*");
-        // headers.append("Authorization", token);
+        if(token) {
+            headers.append("Authorization", `Bearer ${token}`);
+        }        
         return headers;
     };
 

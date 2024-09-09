@@ -28,7 +28,7 @@ export default function Login() {
             <LoginLayout loginview={loginview} setLoginView={setLoginView} previousView={previousView} backgroundImage={backgroundImage}>
                 {loginview == 'signuplogin' && (<SignUpLoginPage setLoginView={setLoginView} />)}
                 {loginview == 'enteremail' && <EnterDetails setLoginView={setLoginView} setEmail={setEmail}/>}
-                {loginview == 'enterotp' && <EnterOtp email={email} setLoginView={setLoginView}/>}
+                {loginview == 'enterotp' && <EnterOtp email={email} setLoginView={setLoginView} loginview={loginview} />}
                 {loginview == 'userdetailsform' && <UserDetailsForm />}
             </LoginLayout>
         </div>
