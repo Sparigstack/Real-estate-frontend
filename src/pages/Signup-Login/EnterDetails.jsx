@@ -40,15 +40,6 @@ export default function EnterDetails({ setLoginView, setEmail }) {
         catch (error) {
             console.error(error);
         }
-        // setTimeout(() => {
-        //     setLoading(false);
-        //     setShowAlerts(<AlertComp show={true} variant="success" message="Otp sent successfully" />);
-        //     setTimeout(() => {
-        //         setShowAlerts(<AlertComp show={false} />)
-        //         setEmail(email);
-        //         setLoginView('enterotp');
-        //     }, 1500);
-        // }, 1500);
     }
     useEffect(() => {
         if (inputRef.current) {

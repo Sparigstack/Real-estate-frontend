@@ -6,7 +6,7 @@ import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 import AlertComp from '../../components/AlertComp';
 
-export default function EnterOtp({ email, setLoginView, loginview }) {
+export default function EnterOtp({ email, setLoginView}) {
     const { postAPI } = useApiService();
     const inputRefs = useRef([]);
     const navigate = useNavigate();
@@ -44,15 +44,6 @@ export default function EnterOtp({ email, setLoginView, loginview }) {
         catch {
             console.error(error);
         }
-        // if (otpValue == '123456') {
-        //     setOtpError('');
-        //     Cookies.set('authToken', '123456', { expires: 7 });
-        //     // setLoginView('userdetailsform');
-        //     navigate('/dashboard');
-        // }
-        // else {
-        //     setOtpError('invalid otp');
-        // }
     }
     const handleChangeOtp = (e, index) => {
         const { value } = e.target;
