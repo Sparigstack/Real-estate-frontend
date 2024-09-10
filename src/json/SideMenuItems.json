@@ -1,0 +1,62 @@
+[
+    {
+        "path": "/dashboard",
+        "imageKey": "dashboardIcon",
+        "altText":"dashboard",
+        "label":"Dashboard"     
+    },
+    {
+        "path": "/property",
+        "imageKey": "propertyIcon",
+        "altText":"property",
+        "label":"Property"     
+    },
+    {
+        "path": "/living-style",
+        "imageKey": "livingStyle",
+        "altText":"living-style",
+        "label":"Living Style"     
+    },
+    {
+        "path": "/educational-guideline",
+        "imageKey": "educationalGuideline",
+        "altText":"educational-guideline",
+        "label":"Educational Guideline"     
+    },
+    {
+        "path": "/architectural-sketches",
+        "imageKey": "architecturalSketches",
+        "altText":"architectural-sketches",
+        "label":"Architectural Sketches"     
+    },
+    {
+        "path": "/task",
+        "imageKey": "task",
+        "altText":"task",
+        "label":"Task"     
+    },
+    {
+        "path": "/files",
+        "imageKey": "files",
+        "altText":"files",
+        "label":"Files"     
+    },
+    {
+        "path": "/financial-insights",
+        "imageKey": "financialInsights",
+        "altText":"financial-insights",
+        "label":"Financial Insights"     
+    },
+    {
+        "path": "/settings",
+        "imageKey": "settings",
+        "altText":"settings",
+        "label":"Settings"     
+    },
+    {
+        "path": "/account",
+        "imageKey": "account",
+        "altText":"account",
+        "label":"Account"     
+    }
+]

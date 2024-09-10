@@ -28,15 +28,17 @@ export default function TopMenu() {
             } else {
                 const responseRs = JSON.parse(result);
                 if (responseRs.status == 'success') {
-                    setLoading(false);
-                    Cookies.remove('authToken');
-                    navigate('/login');
+                    setShowAlerts(<AlertComp show={true} variant="success" message="User logged out successfully" />);
+                    setTimeout(() => {
+                        setLoading(false);
+                        setShowAlerts(<AlertComp show={false} />);
+                        Cookies.remove('authToken');
+                        navigate('/login');
+                    }, 1500);
                 }
                 else {
-                    // setShowAlerts(<AlertComp show={true} variant="danger" message={responseRs.message} />);
-                    // setTimeout(() => {
-                    //     setShowAlerts(<AlertComp show={false} />);
-                    // }, 1500);
+                    Cookies.remove('authToken');
+                    navigate('/login');
                 }
             }
         }
@@ -44,33 +46,33 @@ export default function TopMenu() {
             console.error(error);
         }
     }
-   
+
     return (
         <>
-         {showAlerts}
-         {loading ? <ShowLoader /> : <HideLoader />}
-        <div className='pt-0 p-3 pe-0'>
-            <div className='topmenu-wrapper px-4 py-3'>
-                <div className="row">
-                    <div className="col-4 position-relative">
-                        <img src={Images.searchIcon} alt="search-icon" className='search-icon' />
-                        <input type="text" className='form-control' placeholder="Search" style={{ paddingLeft: '45px', background: '#E4E6F6' }} />
+            {showAlerts}
+            {loading ? <ShowLoader /> : <HideLoader />}
+            <div className='pt-0 pe-0'>
+                <div className='topmenu-wrapper px-4 py-2'>
+                    <div className="row">
+                        <div className="col-4 position-relative">
+                            <img src={Images.searchIcon} alt="search-icon" className='search-icon' />
+                            <input type="text" className='form-control' placeholder="Search" style={{ paddingLeft: '45px', background: '#E4E6F6' }} />
+                        </div>
+                        <div className="col-8 position-relative text-end">
+                            <img src={Images.profile} alt="profile" className='cursor-pointer' style={{ height: "45px" }} onClick={toggleProfile} />
+                            {openProfile &&
+                                <div className="px-3 py-2 text-start mt-1 position-absolute end-0">
+                                    <ul className="list-group custom-list-group">
+                                        <li className="list-group-item cursor-pointer d-flex align-items-center" onClick={() => navigate('/profile')}><FontAwesomeIcon icon={faUser} className="me-2" />Profile</li>
+                                        <li className="list-group-item cursor-pointer d-flex align-items-center" onClick={handleLogout} ><FontAwesomeIcon icon={faSignOutAlt} className="me-2" />Logout</li>
+                                    </ul>
+                                </div>
+                            }
+                        </div>
                     </div>
-                    <div className="col-8 position-relative text-end">
-                        <img src={Images.profile} alt="profile" className='cursor-pointer' style={{ height: "45px" }} onClick={toggleProfile} />
-                        {openProfile &&
-                            <div className="px-3 py-2 text-start mt-1 position-absolute end-0">
-                                <ul className="list-group custom-list-group">
-                                    <li className="list-group-item cursor-pointer d-flex align-items-center" onClick={() => navigate('/profile')}><FontAwesomeIcon icon={faUser} className="me-2" />Profile</li>
-                                    <li className="list-group-item cursor-pointer d-flex align-items-center" onClick={handleLogout} ><FontAwesomeIcon icon={faSignOutAlt} className="me-2"/>Logout</li>
-                                </ul>
-                            </div>
-                        }
-                    </div>
-                </div>
 
+                </div>
             </div>
-        </div>
         </>
     )
 }

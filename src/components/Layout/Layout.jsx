@@ -10,7 +10,7 @@ export default function Layout() {
                 <div className="col-md-2 min-vh-100 pe-0" style={{ background: '#303260' }}>
                     <SideMenu />
                 </div>
-                <div className="col-md-10">
+                <div className="col-md-10 p-0">
                     <TopMenu />
                     <div className="main-content">
                         <Outlet />

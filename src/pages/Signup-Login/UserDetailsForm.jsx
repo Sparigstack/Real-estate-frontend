@@ -22,7 +22,7 @@ export default function UserDetailsForm() {
     const submitUserDetails = async (values) => {
         setLoading(true);
         var raw = JSON.stringify({
-            username: values.username,
+            userName: values.username,
             contactNum: values.contactNum,
             companyName: values.companyName,
             companyEmail: values.companyEmail,

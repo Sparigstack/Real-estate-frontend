@@ -1,5 +1,6 @@
 .side-menu .nav-pills .nav-link.active, .nav-pills .show>.nav-link{
-    background-color: transparent;
+    background-color: #8b98b1;
+    width: 100%;
 }
 .topmenu-wrapper{
     background-color: #303260;
@@ -9,4 +10,7 @@
     top: 5px;
     height: 30px;
     left: 25px;
+}
+.custom-dropdown .dropdown-toggle::after {
+    margin-left: .7em;
 }

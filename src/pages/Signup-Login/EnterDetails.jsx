@@ -19,7 +19,7 @@ export default function EnterDetails({ setLoginView, setEmail }) {
             email: email
         })
         try {
-            const result = await postAPI('/RegisterUser', raw);
+            const result = await postAPI('/register-user', raw);
             if (!result || result == "") {
                 alert('Something went wrong');
             } else {

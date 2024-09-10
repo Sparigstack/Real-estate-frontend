@@ -10,10 +10,10 @@ export default function EnterOtp({ email }) {
     const { postAPI } = useApiService();
     const inputRefs = useRef([]);
     const navigate = useNavigate();
-    const [otp, setOtp] = useState(Array(5).fill(''));
+    const [otp, setOtp] = useState(Array(6).fill(''));
     const [otpError, setOtpError] = useState('');
     const [loading, setLoading] = useState(false);
-    const [timeLeft, setTimeLeft] = useState(300);
+    const [timeLeft, setTimeLeft] = useState(180);
     const [timeExpired, setTimeExpired] = useState(false);
     const [showAlerts, setShowAlerts] = useState(false);
 
@@ -24,7 +24,7 @@ export default function EnterOtp({ email }) {
             otp: otpValue
         })
         try {
-            const result = await postAPI('/CheckUserOtp', raw);
+            const result = await postAPI('/check-user-otp', raw);
             if (!result || result == "") {
                 alert('Something went wrong');
             }
@@ -32,9 +32,14 @@ export default function EnterOtp({ email }) {
                 const responseRs = JSON.parse(result);
                 if (responseRs.status == 'success') {
                     Cookies.set('authToken', responseRs.token, {expires : 1});
+                    localStorage.setItem('userId', responseRs.userId);
                     setOtpError('');
-                    setLoading(false);
-                    navigate('/dashboard');
+                    setShowAlerts(<AlertComp show={true} variant="success" message="User logged in successfully"/>);
+                    setTimeout(() => {
+                        setLoading(false);
+                        setShowAlerts(<AlertComp show={false}/>);
+                        navigate('/dashboard');
+                    }, 1500);                   
                 }
                 else {
                     setOtpError(responseRs.msg);
@@ -88,7 +93,7 @@ export default function EnterOtp({ email }) {
             email: email
         })
         try {
-            const result = await postAPI('/RegisterUser', raw);
+            const result = await postAPI('/register-user', raw);
             if (!result || result == '') {
                 alert('Something went wrong');
             }
@@ -96,8 +101,7 @@ export default function EnterOtp({ email }) {
                 const responseRs = JSON.parse(result);
                 if (responseRs.status == 'success') {
                     setLoading(false);
-                    // setEmail(email);
-                    setTimeLeft(300);
+                    setTimeLeft(180);
                     setTimeExpired(false);
                 }
                 else {
@@ -128,6 +132,15 @@ export default function EnterOtp({ email }) {
             setTimeExpired(true);
         }
     }, [timeLeft]);
+    useEffect(()=>{
+        if(timeExpired){
+            setOtp(Array(6).fill(''));
+            setOtpError('');
+            if (inputRefs.current[0]) {
+                inputRefs.current[0].focus();
+            }
+        }
+    },[timeExpired])
 
     return (
         <>
@@ -154,6 +167,11 @@ export default function EnterOtp({ email }) {
                 <div className='text-center mt-3'>
                     <span className='fw-light text-danger font-16'>Otp is expired. <a className='fw-bold text-decoration-none cursor-pointer' onClick={handleResendOtp}>Resend Code</a></span>
                 </div>
+            )}
+            {!timeExpired && (
+            <div className='text-center mt-3'>
+                    <span className='fw-light font-16'>Don't received code yet? <a className='fw-bold text-decoration-none cursor-pointer' onClick={handleResendOtp}>Resend Code</a></span>
+            </div>
             )}
         </>
     )
