@@ -94,10 +94,9 @@ export default function UserDetailsForm() {
         <>
             {showAlerts}
             {loading ? <ShowLoader /> : <HideLoader />}
-            <div style={{ background: `url(${Images.phoneAndOtpBackground})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundPosition: 'center' }}>
                 <div className="row p-4">
                     <div className='col-md-6 offset-md-3'>
-                        <h4 className='text-white py-4 pt-5' style={{ fontSize: '32px' }}>Contact Details</h4>
+                        <h4 className='heading py-4 pt-5'>Contact Details</h4>
                         <Formik initialValues={{ username: userDetails?.userName, contactNum: userDetails?.contactNum, companyName: userDetails?.companyName, companyEmail: userDetails?.companyEmail, companyContactNum: userDetails?.companyContactNum, companyAddress: userDetails?.companyAddress, companyLogo: userDetails?.companyLogo }} validationSchema={UserDetailsValidationSchema} onSubmit={submitUserDetails} enableReinitialize={true} >
                             {() => (
                                 <Form className='contact-form'>
@@ -114,7 +113,7 @@ export default function UserDetailsForm() {
                                             <ErrorMessage name='contactNum' component="div" className="text-start mt-1 errorText" />
                                         </div>
                                     </div>
-                                    <h4 className='text-white py-4 pt-2' style={{ fontSize: '32px' }}>Company Details</h4>
+                                    <h4 className='heading py-4 pt-2'>Company Details</h4>
                                     <div className="row">
                                         <div className='col-md-6 position-relative mb-5'>
                                             <label className='custom-label'>Company Name</label>
@@ -157,7 +156,6 @@ export default function UserDetailsForm() {
                         </Formik>
                     </div>
                 </div>
-            </div>
         </>
     )
 }

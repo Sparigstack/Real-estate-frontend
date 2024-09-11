@@ -17,6 +17,9 @@ const Images = {
     searchIcon: new URL('../assets/images/search-icon.svg', import.meta.url).href,   
     profile: new URL('../assets/images/profile.svg', import.meta.url).href,
     dummyProfile: new URL('../assets/images/dummy-profile.png', import.meta.url).href,
+    commercial: new URL('../assets/images/commercial.svg', import.meta.url).href,
+    residential: new URL('../assets/images/residential.svg', import.meta.url).href,
+    dummyRealEstateLogo: new URL('../assets/images/dummy-logo.png', import.meta.url).href,
 }
 
 export default Images

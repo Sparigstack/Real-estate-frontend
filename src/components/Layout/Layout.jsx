@@ -2,6 +2,7 @@ import React from 'react'
 import SideMenu from './Sidemenu'
 import { Outlet } from 'react-router-dom'
 import TopMenu from './TopMenu'
+import Images from '../../utils/Images'
 
 export default function Layout() {
     return (
@@ -12,7 +13,7 @@ export default function Layout() {
                 </div>
                 <div className="col-md-10 p-0">
                     <TopMenu />
-                    <div className="main-content">
+                    <div className="main-content" style={{ background: `url(${Images.phoneAndOtpBackground})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundPosition: 'center', minHeight:'100vh' }}>
                         <Outlet />
                     </div>
                 </div>

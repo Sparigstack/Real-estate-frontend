@@ -29,3 +29,14 @@
 .custom-list-group .list-group-item{
     border: none;
 }
+.rotate-icon{
+    transform: rotate(90deg);
+}
+.sidemenuDropList li {
+    list-style-type: none;
+}
+/* .sidemenuDropList li a{
+    color: white;
+    text-decoration: none;
+    padding: 5px;
+} */
