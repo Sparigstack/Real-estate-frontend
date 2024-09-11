@@ -74,12 +74,6 @@
   left: 50%;
   transform: translate(-50%, -50%);
 }
-.countrycode {
-  position: absolute;
-  top: 34%;
-  padding-left: 12px;
-  pointer-events: none;
-}
 .otpInput {
   background-color: transparent;
   width: 3rem;

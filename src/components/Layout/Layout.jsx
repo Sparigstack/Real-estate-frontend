@@ -1,7 +1,7 @@
 import React from 'react'
 import SideMenu from './Sidemenu'
-import TopMenu from './Topmenu'
 import { Outlet } from 'react-router-dom'
+import TopMenu from './TopMenu'
 
 export default function Layout() {
     return (

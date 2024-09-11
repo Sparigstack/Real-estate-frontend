@@ -1,15 +1,17 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import Images from '../../utils/Images'
 import { NavLink } from 'react-router-dom'
 import '../../styles/sideTopMenu.css'
 import SideMenuItems from '../../json/SideMenuItems.json'
 import { Dropdown } from 'react-bootstrap'
+import { UserContext } from '../../context/UserContext'
 
 export default function SideMenu() {
+    const {userDetails} = useContext(UserContext);
     return (
         <div className='side-menu'>
             <div className='px-4 pt-3 pb-4'>
-                <img src={Images.realEstateLogo} alt="logo" />
+                <img src={userDetails?.companyLogo || Images.realEstateLogo} alt="logo" className='w-100' style={{maxHeight:'60px'}}/>
             </div>
             <ul className="nav nav-pills flex-column p-2 pt-4">
                 {SideMenuItems.map((item, index) => (

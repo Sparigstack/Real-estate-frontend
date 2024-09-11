@@ -32,6 +32,7 @@ export default function EnterDetails({ setLoginView, setEmail }) {
                 else{
                     setShowAlerts(<AlertComp show={true} variant="danger" message={responseRs.msg}/>);
                     setTimeout(() => {
+                        setLoading(false);
                         setShowAlerts(<AlertComp show={false} />);
                     }, 1500);                                                
                 }                
@@ -60,9 +61,9 @@ export default function EnterDetails({ setLoginView, setEmail }) {
                 <Formik initialValues={{ email: '' }} validationSchema={EmailValidationSchema} onSubmit={handleGetOtp}>
                     {() => (
                         <Form>
-                            <div className='mb-5 position-relative'>
+                            <div className='mb-5'>
                                 <Field type="text" className="custom-form-control" name='email' autoComplete='off' innerRef={inputRef} />
-                                <ErrorMessage name='email' component="div" className="text-danger mt-1 errorText" />
+                                <ErrorMessage name='email' component="div" className="text-danger mt-1 errorText position-relative" />
                             </div>
                             <div className='mt-3 p-2'>
                                 <button type="submit" className='otpBtn'>GET OTP</button>
