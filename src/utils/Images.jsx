@@ -1,7 +1,7 @@
 const Images = {
-    realEstateLogo : new URL('../assets/images/real-estate-logo.svg', import.meta.url).href,
-    phone : new URL('../assets/images/phone.svg', import.meta.url).href,
-    backArrow: new URL('../assets/images/white-back-arrow.svg', import.meta.url).href,   
+    realEstateLogo: new URL('../assets/images/real-estate-logo.svg', import.meta.url).href,
+    phone: new URL('../assets/images/phone.svg', import.meta.url).href,
+    backArrow: new URL('../assets/images/white-back-arrow.svg', import.meta.url).href,
     loginBackground: new URL('../assets/images/login-background-1.svg', import.meta.url).href,
     phoneAndOtpBackground: new URL('../assets/images/login-background-2.png', import.meta.url).href,
     dashboardIcon: new URL('../assets/images/sidemenu/dashboard-icon.svg', import.meta.url).href,
@@ -14,12 +14,14 @@ const Images = {
     financialInsights: new URL('../assets/images/sidemenu/financial-insights.svg', import.meta.url).href,
     settings: new URL('../assets/images/sidemenu/settings.svg', import.meta.url).href,
     account: new URL('../assets/images/sidemenu/account.svg', import.meta.url).href,
-    searchIcon: new URL('../assets/images/search-icon.svg', import.meta.url).href,   
+    searchIcon: new URL('../assets/images/search-icon.svg', import.meta.url).href,
     profile: new URL('../assets/images/profile.svg', import.meta.url).href,
     dummyProfile: new URL('../assets/images/dummy-profile.png', import.meta.url).href,
     commercial: new URL('../assets/images/commercial.svg', import.meta.url).href,
     residential: new URL('../assets/images/residential.svg', import.meta.url).href,
     dummyRealEstateLogo: new URL('../assets/images/dummy-logo.png', import.meta.url).href,
+    help: new URL('../assets/images/help.svg', import.meta.url).href,
+    chatbot: new URL('../assets/images/chatbot.svg', import.meta.url).href,
 }
 
 export default Images

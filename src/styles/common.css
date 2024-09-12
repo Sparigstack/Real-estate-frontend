@@ -20,7 +20,7 @@
   left: 17px;
   padding: 0 3px;
   position: absolute;
-  top: -10px;
+  top: -6px;
 }
 .customInput {
   background: transparent;
@@ -72,15 +72,68 @@
   border-top-left-radius: 8px !important;
   border-top-right-radius: 8px !important;
 }
+.commercial-form-input .input-group {
+  border-radius: 8px;
+}
+.commercial-form-input
+  .input-group
+  > :not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(
+    .valid-feedback
+  ):not(.invalid-tooltip):not(.invalid-feedback) {
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+.commercial-form-input .input-group-text {
+  border-bottom-left-radius: 8px !important;
+  border-bottom-right-radius: 8px !important;
+  border-top-left-radius: 8px !important;
+  border-top-right-radius: 8px !important;
+}
 .heading {
   font-size: 32px;
   font-weight: 700;
   color: white;
 }
-.propertiesOptions{
-    background: #46486F;
-    border-radius: 8px;
-    text-align: center;
-    color: white;
-    padding: 30px 0px;
+.propertiesOptions {
+  background: #46486f;
+  border-radius: 8px;
+  text-align: center;
+  color: white;
+  padding: 30px 0px;
+  opacity: 50%;
+}
+.propertiesOptions:hover {
+  border: 2px solid white;
+  opacity: 100%;
+}
+.helpAndChatbot {
+  position: fixed;
+  bottom: 0;
+  left: 76%;
+}
+.contact-form .custom-form-control::placeholder {
+  color: white;
+  opacity: 50%;
+}
+.customInput::placeholder {
+  color: white;
+  opacity: 50%;
+}
+.subPropertyTypesBtn {
+  border: 1px solid #ffffff33;
+  background: transparent;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 12px 15px;
+}
+.subPropertyTypeActive{
+  background: #AAB8FF;
+  color: black;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 12px 15px;
+  border: none;
 }

@@ -6,7 +6,8 @@ import PrivateRoutes from './PrivateRoutes';
 import PageNotFound from '../pages/404-ErrorPage/PageNotFound';
 import Layout from '../components/layout/Layout';
 import UserDetailsForm from '../pages/Signup-Login/UserDetailsForm';
-import AddProperty from '../pages/Properties/AddProperty';
+import Property from '../pages/Properties/Property';
+
 
 export default function Approutes() {
   return (
@@ -19,7 +20,7 @@ export default function Approutes() {
           <Route element={<Layout />}>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/profile" element={<UserDetailsForm />} />
-            <Route path="/add-property" element={<AddProperty/>} />
+            <Route path="/add-property" element={<Property/>} />
           </Route>
         </Route>
       </Routes>

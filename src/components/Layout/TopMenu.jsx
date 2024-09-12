@@ -50,10 +50,6 @@ export default function TopMenu() {
         }
     }
 
-    const handleProfile = () =>{
-        navigate('/profile');
-        setOpenProfile(false);
-    }
     return (
         <>
             {showAlerts}
@@ -74,11 +70,12 @@ export default function TopMenu() {
                                 <div className="chartWrapper px-3 py-2 text-start mt-1 position-absolute" style={{right:'20px'}}>
                                     <div className="d-flex align-items-center">
                                         <div className="profileOpen">
-                                            {userDetails?.userName.charAt(0).toUpperCase()}
+                                        {(userDetails?.userName ? userDetails.userName.charAt(0).toUpperCase() : userDetails?.companyEmail.charAt(0).toUpperCase())}
                                         </div>
                                         <div>
-                                            <p className="mb-0 ms-1 fs-5">{userDetails?.userName}</p>
-                                            <p className="mb-0 ms-1 text-secondary" style={{ fontSize: '15px' }}>{userDetails?.companyEmail}</p>
+                                            <p className="mb-0 ms-1 fs-5">{userDetails?.userName || userDetails?.companyEmail}</p>
+                                            {/* <p className="mb-0 ms-1 text-secondary" style={{ fontSize: '15px' }}>{userDetails?.companyEmail}</p> */}
+                                            <p className="mb-0 ms-1 text-secondary" style={{ fontSize: '15px' }}>{userDetails?.userName ? userDetails?.companyEmail : ''}</p>
                                         </div>
                                     </div>
                                     <hr className="mb-2 mt-2"/>

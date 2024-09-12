@@ -83,7 +83,3 @@
 .otpInput:focus{
   outline: none;
 }
-.contact-form .custom-form-control::placeholder{
-  color: white;
-  font-weight: 300;
-}

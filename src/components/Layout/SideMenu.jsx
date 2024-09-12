@@ -16,8 +16,8 @@ export default function SideMenu() {
     };
     return (
         <div className='side-menu'>
-            <div className='px-4 pt-3 pb-4'>
-                <img src={userDetails?.companyLogo || Images.dummyRealEstateLogo} alt="logo" className='w-100' style={{maxHeight:'60px'}}/>
+            <div className='px-4 pt-3 pb-4 text-center'>
+                <img src={userDetails?.companyLogo || Images.dummyRealEstateLogo} alt="logo" style={{maxHeight:'60px'}}/>
             </div>
             <ul className="nav nav-pills flex-column p-2 pt-4 sidemenuDropList">
                 {SideMenuItems.map((item, index) => (
@@ -25,7 +25,7 @@ export default function SideMenu() {
                         {item.label == 'Property' ? (
                             <div>
                                 <div className="text-white fw-light cursor-pointer text-decoration-none d-flex align-items-center" onClick={handleToggleSubMenu}>
-                                    <img src={Images[item.imageKey]} className="me-3" alt={item.altText} />
+                                    <img src={Images[item.imageKey]} className="ms-3 me-3" alt={item.altText} />
                                     {item.label}
                                     <FontAwesomeIcon icon={faAngleRight} className={` dropdown-icon ms-3 ${isSubMenuOpen ? 'rotate-icon' : ''}`} />
                                 </div>
