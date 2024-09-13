@@ -9,9 +9,10 @@ import ShowLoader from '../../components/loader/ShowLoader';
 import HideLoader from '../../components/loader/HideLoader';
 import useApiService from '../../services/ApiService';
 import AlertComp from '../../components/AlertComp';
+import AddWing from './AddWing';
 
 export default function Commercial() {
-    const { commercialDetails, propertyTypeDetails, setPropertyTypeDetails, propertyFlag, setPropertyFlag } = useContext(CommercialContext);
+    const { commercialDetails, propertyTypeDetails, setPropertyTypeDetails, propertyFlag, setPropertyFlag, setPropertyId, commercialStepView, setCommercialStepView } = useContext(CommercialContext);
     const [uploadedPropertyPlanBase64, setUploadedPropertyPlanBase64] = useState('');
     const [uploadedFileName, setUploadedFileName] = useState('');
     const [selectedPropertySubType, setSelectedPropertySubType] = useState(null);
@@ -53,7 +54,6 @@ export default function Commercial() {
                 const responseRs = JSON.parse(result);
                 setLoading(false);
                 setPropertyTypeDetails(responseRs);
-                console.log(responseRs);
             }
         }
         catch (error) {
@@ -77,15 +77,26 @@ export default function Commercial() {
             propertyPlan: uploadedPropertyPlanBase64 || values?.propertyPlan
         })
         try {
-            const result = await postAPI('/add-property-details-first-step', raw);
+            const result = await postAPI('/property-details-first-step', raw);
             if (!result || result == "") {
                 alert('Something went wrong');
             } else {
-                if (result == 'success') {
-                    setShowAlerts(<AlertComp show={true} variant="success" message="First Step Completed" />);
+                const responseRs = JSON.parse(result);
+                if (responseRs.status == 'success') {
+                    setPropertyId(responseRs?.propertyId);
+                    setShowAlerts(<AlertComp show={true} variant="success" message="Basic property details added successfully. Now you can add property specific details" />);
                     setTimeout(() => {
                         setLoading(false);
                         setShowAlerts(<AlertComp show={false} />);
+                        setCommercialStepView(1);
+                    }, 1500);
+                }
+                else {
+                    setShowAlerts(<AlertComp show={true} variant="danger" message={responseRs?.msg} />);
+                    setTimeout(() => {
+                        setLoading(false);
+                        setShowAlerts(<AlertComp show={false} />);
+                        setPropertyFlag(0);
                     }, 1500);
                 }
             }
@@ -98,66 +109,71 @@ export default function Commercial() {
         <>
             {showAlerts}
             {loading ? <ShowLoader /> : <HideLoader />}
+            {commercialStepView == 0 && (
             <div className="row p-4">
-                <div className='col-md-5 offset-md-3'>
+                <div className='col-md-8 offset-md-2'>
                     <h4 className='heading pt-5'>Commercial!</h4>
                     <p className='font-16 text-white fw-normal'>Heyy, please fill all the informations to proceed further.</p>
                     <Formik initialValues={{ propertyName: commercialDetails?.propertyName, reraRegisteredNumber: commercialDetails?.reraRegisteredNumber, propertySubTypeFlag: selectedPropertySubType, address: commercialDetails?.address, pincode: commercialDetails?.pincode, numberofWings: commercialDetails?.numberofWings, description: commercialDetails?.description, minPrice: commercialDetails?.minPrice, maxPrice: commercialDetails?.maxPrice, propertyPlan: commercialDetails?.propertyPlan }} validationSchema={CommercialValidationSchema} onSubmit={submitCommercialDetails}>
-                        {() => (
+                        {({ setFieldValue }) => (
                             <Form className='pt-4 mt-2'>
-                                <div className='position-relative mb-4'>
-                                    <label className='custom-label'>Name on Property</label>
-                                    <Field type="text" className="customInput" name='propertyName' autoComplete='off' />
-                                    <ErrorMessage name='propertyName' component="div" className="text-start errorText" />
+                                <div className="row">
+                                    <div className='col-md-6 position-relative mb-4'>
+                                        <label className='custom-label'>Name on Property <span className='text-danger'>*</span></label>
+                                        <Field type="text" className="customInput" name='propertyName' autoComplete='off' />
+                                        <ErrorMessage name='propertyName' component="div" className="text-start errorText" />
+                                    </div>
+                                    <div className='col-md-6 position-relative mb-4'>
+                                        <label className='custom-label'>Rera registered number <span className='text-danger'>*</span></label>
+                                        <Field type="text" className="customInput" name='reraRegisteredNumber' autoComplete='off' />
+                                        <ErrorMessage name='reraRegisteredNumber' component="div" className="text-start errorText" />
+                                    </div>
                                 </div>
                                 <div className='position-relative mb-4'>
-                                    <label className='fw-semibold text-white' style={{ fontSize: '14px' }}>Property Type</label>
+                                    <label className='fw-semibold text-white' style={{ fontSize: '14px' }}>Property Type <span className='text-danger'>*</span></label>
                                     <div className="d-flex flex-wrap mt-2" style={{ gap: '10px' }}>
                                         {propertyTypeDetails?.sub_properties?.map((subProperty) => (
-                                            <button key={subProperty.id} type="button" className={selectedPropertySubType == subProperty.id ? 'subPropertyTypeActive' : 'subPropertyTypesBtn'} onClick={() => setSelectedPropertySubType(subProperty.id)}>
+                                            <button key={subProperty.id} type="button" className={selectedPropertySubType == subProperty.id ? 'subPropertyTypeActive' : 'subPropertyTypesBtn'} onClick={() => { setSelectedPropertySubType(subProperty.id); setFieldValue('propertySubTypeFlag', subProperty?.id) }}>
                                                 {subProperty.name}
                                             </button>
                                         ))}
                                     </div>
                                     <Field type="hidden" name="propertySubTypeFlag" value={selectedPropertySubType} />
-                                </div>
-                                <div className='position-relative mb-4'>
-                                    <label className='custom-label'>Rera registered number</label>
-                                    <Field type="text" className="customInput" name='reraRegisteredNumber' autoComplete='off' />
-                                    <ErrorMessage name='reraRegisteredNumber' component="div" className="text-start errorText" />
-                                </div>
-                                <div className='position-relative mb-4'>
-                                    <label className='custom-label'>Address</label>
-                                    <Field as="textarea" className="customInput" name='address' autoComplete='off' rows="4" />
-                                    <ErrorMessage name='address' component="div" className="text-start errorText" />
+                                    <ErrorMessage name="propertySubTypeFlag" component="div" className="text-start errorText" />
                                 </div>
                                 <div className="row">
                                     <div className='col-md-6 position-relative mb-4'>
-                                        <label className='custom-label' style={{ left: '24px' }}>Pincode</label>
+                                        <label className='custom-label'>Address <span className='text-danger'>*</span></label>
+                                        <Field as="textarea" className="customInput" name='address' autoComplete='off' rows="4" />
+                                        <ErrorMessage name='address' component="div" className="text-start errorText" />
+                                    </div>
+                                    <div className='col-md-6 position-relative mb-3'>
+                                        <label className='custom-label'>Property Description</label>
+                                        <Field as="textarea" className="customInput" name='description' autoComplete='off' rows="4" />
+                                    </div>
+
+                                    <div className='col-md-6 position-relative mb-4'>
+                                        <label className='custom-label'>Pincode <span className='text-danger'>*</span></label>
                                         <Field type="text" className="customInput" name='pincode' autoComplete='off' />
                                         <ErrorMessage name='pincode' component="div" className="text-start errorText" />
                                     </div>
                                     <div className='col-md-6 position-relative mb-4'>
-                                        <label className='custom-label' style={{ left: '24px' }}>Number of Wings / Blocks</label>
+                                        <label className='custom-label'>Number of Wings / Blocks <span className='text-danger'>*</span></label>
                                         <Field type="text" className="customInput" name='numberofWings' autoComplete='off' />
                                         <ErrorMessage name='numberofWings' component="div" className="text-start errorText" />
                                     </div>
                                 </div>
-                                <div className='position-relative mb-3'>
-                                    <label className='custom-label'>Property Description</label>
-                                    <Field as="textarea" className="customInput" name='description' autoComplete='off' rows="4" placeholder='Description' />
-                                </div>
                                 <div className='position-relative mb-5'>
-                                    <label className='fw-semibold text-white' style={{ fontSize: '14px' }}>Price Range</label>
+                                    <label className='fw-semibold text-white' style={{ fontSize: '14px' }}>Price Range <span className='text-danger'>*</span></label>
                                     <div className="d-flex mt-2">
-                                        <div className="input-group flex-nowrap me-2 position-relative">
+                                        <div className="input-group flex-nowrap">
                                             <span className="input-group-text"><FontAwesomeIcon icon={faIndianRupeeSign} /></span>
                                             <Field type="number" className="customInput" name='minPrice' autoComplete='off' placeholder='Minimum Price' />
                                             <ErrorMessage name='minPrice' component="div" className="text-start errorText" style={{ top: "50px" }} />
                                         </div>
                                         <div className="input-group flex-nowrap ms-2 position-relative">
+                                            <Field type="number" className="customInput" name='maxPrice' autoComplete='off' />
                                             <span className="input-group-text"><FontAwesomeIcon icon={faIndianRupeeSign} /></span>
-                                            <Field type="number" className="customInput" name='maxPrice' autoComplete='off' placeholder='Maximum Price' />
                                             <ErrorMessage name='maxPrice' component="div" className="text-start errorText" style={{ top: "50px" }} />
                                         </div>
                                     </div>
@@ -166,7 +182,7 @@ export default function Commercial() {
                                 <div className='commercial-form-input mt-2'>
                                     <div className='input-group mb-4 cursor-pointer' onClick={handlePropertyPlanUpload}>
                                         <label className='custom-label'>Upload Property Plan</label>
-                                        <Field className="customInput" name='propertyPlan' autoComplete='off' readOnly aria-describedby="logo-upload" style={{ width: '84%', borderRight: 'none' }} value={uploadedFileName} />
+                                        <Field className="customInput" name='propertyPlan' autoComplete='off' readOnly aria-describedby="logo-upload" style={{ width: '90%', borderRight: 'none' }} value={uploadedFileName} />
                                         <span className="input-group-text" id="logo-upload">Upload</span>
                                         <input type="file" ref={PropertyPlanRef} className='d-none' accept="image/*" onChange={handlePropertyPlanChange} />
                                     </div>
@@ -186,6 +202,10 @@ export default function Commercial() {
                     </Formik>
                 </div>
             </div>
+            )}
+            {commercialStepView == 1 && 
+                <AddWing/>
+            }
         </>
     )
 }

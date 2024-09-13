@@ -102,12 +102,12 @@ export default function UserDetailsForm() {
                                 <Form className='contact-form'>
                                     <div className="row">
                                         <div className='col-md-6 position-relative mb-5'>
-                                            <label className='custom-label'>Username</label>
+                                            <label className='custom-label'>Username <span className='text-danger'>*</span></label>
                                             <Field type="text" className="customInput" name='username' autoComplete='off' />
                                             <ErrorMessage name='username' component="div" className="text-start mt-1 errorText" />
                                         </div>
                                         <div className='col-md-6 position-relative mb-5'>
-                                            <label className='custom-label'>Contact Number</label>
+                                            <label className='custom-label'>Contact Number <span className='text-danger'>*</span></label>
                                             <span className='countrycode'>+91</span>
                                             <Field type="text" className="customInput" name='contactNum' autoComplete='off' style={{ padding: '1rem 3.1rem' }} />
                                             <ErrorMessage name='contactNum' component="div" className="text-start mt-1 errorText" />
@@ -116,12 +116,12 @@ export default function UserDetailsForm() {
                                     <h4 className='heading py-4 pt-2'>Company Details</h4>
                                     <div className="row">
                                         <div className='col-md-6 position-relative mb-5'>
-                                            <label className='custom-label'>Company Name</label>
+                                            <label className='custom-label'>Company Name <span className='text-danger'>*</span></label>
                                             <Field type="text" className="customInput" name='companyName' autoComplete='off' />
                                             <ErrorMessage name='companyName' component="div" className="text-start mt-1 errorText" />
                                         </div>
                                         <div className='col-md-6 position-relative mb-5'>
-                                            <label className='custom-label'>Company Email</label>
+                                            <label className='custom-label'>Company Email <span className='text-danger'>*</span></label>
                                             <Field type="text" className="customInput" name='companyEmail' autoComplete='off' />
                                             <ErrorMessage name='companyEmail' component="div" className="text-start mt-1 errorText" />
                                         </div>
@@ -137,7 +137,7 @@ export default function UserDetailsForm() {
                                     </div>
                                     <div className='input-group mb-4 cursor-pointer' onClick={handleLogoUpload}>
                                         <label className='custom-label'>Company Logo</label>
-                                        <Field className="customInput" name='companyLogo' autoComplete='off' readOnly aria-describedby="logo-upload" style={{ width: '87%', borderRight:'none' }} value={uploadedFileName} />
+                                        <Field className="customInput" name='companyLogo' autoComplete='off' readOnly aria-describedby="logo-upload" style={{ width: '86%', borderRight:'none' }} value={uploadedFileName} />
                                         <span className="input-group-text" id="logo-upload">Upload</span>
                                         <input type="file" ref={logoUploadRef} className='d-none' onChange={handleFileChange} accept="image/*"
                                         />

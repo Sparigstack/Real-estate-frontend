@@ -1,11 +1,22 @@
 .sidemenu-container {
-    height: 100%;
-    position: fixed; 
-    z-index: 1; 
+    background-color: #303260 !important; 
+    position: fixed !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    width: 260px !important;
+    overflow-y: scroll !important;
+    scrollbar-width: none !important;
+}
+.side-menu-logo {
+    position: sticky;
     top: 0;
-    left: 0;
-    overflow-x: hidden; 
-  }
+    z-index: 10;
+    background-color: #303260;
+}
+.side-menu-items::-webkit-scrollbar {
+    display: none;
+}
 .side-menu .nav-pills .nav-link.active, .nav-pills .show>.nav-link{
     background-color: #8b98b1;
     width: 100%;

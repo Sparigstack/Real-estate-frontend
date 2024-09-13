@@ -38,7 +38,6 @@ export default function EnterOtp({ email }) {
                     setTimeout(() => {
                         setLoading(false);
                         setShowAlerts(<AlertComp show={false}/>);
-                        // navigate('/dashboard');
                         window.location.href='/dashboard';
                     }, 1500);                   
                 }

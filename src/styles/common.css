@@ -17,7 +17,7 @@
   color: white;
   font-size: 14px;
   font-weight: 600;
-  left: 17px;
+  left: 25px;
   padding: 0 3px;
   position: absolute;
   top: -6px;
@@ -108,8 +108,18 @@
 }
 .helpAndChatbot {
   position: fixed;
-  bottom: 0;
-  left: 76%;
+  bottom: 10px;
+  left: 94%;
+}
+.help-image {
+  position: absolute;
+  right: 35px;
+  top: 0;
+  opacity: 0;
+  height: 55px;
+}
+.chatbot-container:hover .help-image {
+  opacity: 1;
 }
 .contact-form .custom-form-control::placeholder {
   color: white;
@@ -128,8 +138,12 @@
   border-radius: 8px;
   padding: 12px 15px;
 }
-.subPropertyTypeActive{
-  background: #AAB8FF;
+.subPropertyTypesBtn:hover {
+  background: #aab8ff;
+  color: black;
+}
+.subPropertyTypeActive {
+  background: #aab8ff;
   color: black;
   font-size: 14px;
   font-weight: 600;

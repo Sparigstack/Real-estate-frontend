@@ -16,9 +16,9 @@ export default function SideMenu() {
     };
     return (
         <div className='side-menu'>
-            <div className='px-4 pt-3 pb-4 text-center'>
+            <div className='px-4 pt-3 pb-4 text-center side-menu-logo'>
                 <img src={userDetails?.companyLogo || Images.dummyRealEstateLogo} alt="logo" style={{maxHeight:'60px'}}/>
-            </div>
+            </div>          
             <ul className="nav nav-pills flex-column p-2 pt-4 sidemenuDropList">
                 {SideMenuItems.map((item, index) => (
                     <li className="nav-item d-flex align-items-center pb-2" key={index}>
