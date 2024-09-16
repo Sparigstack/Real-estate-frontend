@@ -39,7 +39,7 @@ export default function EnterOtp({ email }) {
                         setLoading(false);
                         setShowAlerts(<AlertComp show={false}/>);
                         window.location.href='/dashboard';
-                    }, 1500);                   
+                    }, 2000);                   
                 }
                 else {
                     setOtpError(responseRs.msg);
@@ -108,7 +108,7 @@ export default function EnterOtp({ email }) {
                     setShowAlerts(<AlertComp show={true} variant="danger" message={responseRs.msg}/>);
                     setTimeout(() => {
                         setShowAlerts(<AlertComp show={false} />);
-                    }, 1500);
+                    }, 2000);
                 }
             }
         }

@@ -17,16 +17,12 @@ export default function CommercialProvider({children}) {
         pincode: '',
         numberofWings: '',
         description: '',
-        minPrice:'',
-        maxPrice:'',
-        propertyPlan:''
     });
     const [propertyTypeDetails , setPropertyTypeDetails] = useState([]);
-    const [commercialStepView, setCommercialStepView] = useState(0); //0 -> Commercial details form, 1 -> Add wings
+    const [commercialStepView, setCommercialStepView] = useState(0); //0 -> Commercial details form, 1 -> Add wings,
     const [wingDetails, setWingDetails] = useState({
         wingName:'',
-        wingSize:'',
-        numberofFloors:'',
+        numberofFloors:''
     })
     return (
         <>

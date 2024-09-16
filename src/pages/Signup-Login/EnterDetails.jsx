@@ -34,7 +34,7 @@ export default function EnterDetails({ setLoginView, setEmail }) {
                     setTimeout(() => {
                         setLoading(false);
                         setShowAlerts(<AlertComp show={false} />);
-                    }, 1500);                                                
+                    }, 2000);                                                
                 }                
             }
         }

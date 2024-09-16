@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import '../../styles/sideTopMenu.css'
 import Images from '../../utils/Images'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -20,7 +20,23 @@ export default function TopMenu() {
     const { postAPI } = useApiService();
     const navigate = useNavigate();
     const { userDetails } = useContext(UserContext);
-
+    const profileRef = useRef(null);
+    useEffect(() => {
+        if (openProfile) {
+            document.addEventListener('mousedown', handleClickOutside)
+        }
+        else {
+            document.removeEventListener('mouseup', handleClickOutside);
+        }
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        }
+    }, [openProfile])
+    const handleClickOutside = (event) => {
+        if (profileRef.current && !profileRef.current.contains(event.target)) {
+            setOpenProfile(false);
+        }
+    }
     const toggleProfile = () => {
         setOpenProfile(!openProfile);
     }
@@ -37,8 +53,8 @@ export default function TopMenu() {
                     setTimeout(() => {
                         setLoading(false);
                         setShowAlerts(<AlertComp show={false} />);
-                      Logout();
-                    }, 1500);
+                        Logout();
+                    }, 2000);
                 }
                 else {
                     Logout();
@@ -67,10 +83,10 @@ export default function TopMenu() {
                                 {userDetails?.userName.charAt(0).toUpperCase()}
                             </button>
                             {openProfile &&
-                                <div className="chartWrapper px-3 py-2 text-start mt-1 position-absolute" style={{right:'20px'}}>
+                                <div className="chartWrapper px-3 py-2 text-start mt-1 position-absolute" ref={profileRef} style={{ right: '20px' }}>
                                     <div className="d-flex align-items-center">
                                         <div className="profileOpen">
-                                        {(userDetails?.userName ? userDetails.userName.charAt(0).toUpperCase() : userDetails?.companyEmail.charAt(0).toUpperCase())}
+                                            {(userDetails?.userName ? userDetails.userName.charAt(0).toUpperCase() : userDetails?.companyEmail.charAt(0).toUpperCase())}
                                         </div>
                                         <div>
                                             <p className="mb-0 ms-1 fs-5">{userDetails?.userName || userDetails?.companyEmail}</p>
@@ -78,10 +94,10 @@ export default function TopMenu() {
                                             <p className="mb-0 ms-1 text-secondary" style={{ fontSize: '15px' }}>{userDetails?.userName ? userDetails?.companyEmail : ''}</p>
                                         </div>
                                     </div>
-                                    <hr className="mb-2 mt-2"/>
+                                    <hr className="mb-2 mt-2" />
                                     <ul className="list-group custom-list-group">
-                                        <li className="list-group-item cursor-pointer d-flex align-items-center" onClick={()=> { setOpenProfile(false); navigate('/profile')}}><FontAwesomeIcon icon={faUser} className="me-2" />Profile</li>
-                                        <li className="list-group-item cursor-pointer d-flex align-items-center" onClick={()=> { setOpenProfile(false); navigate('/dashboard')}}><FontAwesomeIcon icon={faGauge} className="me-2" />Dashboard</li>
+                                        <li className="list-group-item cursor-pointer d-flex align-items-center" onClick={() => { setOpenProfile(false); navigate('/profile') }}><FontAwesomeIcon icon={faUser} className="me-2" />Profile</li>
+                                        <li className="list-group-item cursor-pointer d-flex align-items-center" onClick={() => { setOpenProfile(false); navigate('/dashboard') }}><FontAwesomeIcon icon={faGauge} className="me-2" />Dashboard</li>
                                         <li className="list-group-item cursor-pointer d-flex align-items-center" onClick={handleLogout} ><FontAwesomeIcon icon={faSignOutAlt} className="me-2" />Logout</li>
                                     </ul>
                                 </div>

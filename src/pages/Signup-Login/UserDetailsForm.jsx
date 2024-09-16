@@ -74,14 +74,14 @@ export default function UserDetailsForm() {
                         setLoading(false);
                         setShowAlerts(<AlertComp show={false} />);
                         navigate('/dashboard');
-                    }, 1500);
+                    }, 2000);
                 }
                 else {
                     setShowAlerts(<AlertComp show={true} variant="danger" message={responseRs.message} />);
                     setTimeout(() => {
                         setLoading(false);
                         setShowAlerts(<AlertComp show={false} />);
-                    }, 1500);
+                    }, 2000);
                 }
             }
         }
