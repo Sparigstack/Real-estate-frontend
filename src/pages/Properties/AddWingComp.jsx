@@ -5,22 +5,24 @@ import useApiService from '../../services/ApiService';
 import ShowLoader from '../../components/loader/ShowLoader';
 import HideLoader from '../../components/loader/HideLoader';
 import { CommercialContext } from '../../context/CommercialContext';
+import UnitDetails from './UnitDetails';
 import AlertComp from '../../components/AlertComp';
 export default function AddWingComp() {
     const { postAPI } = useApiService();
-    const { wingDetails, propertyId, setWingId} = useContext(CommercialContext);
+    const { wingDetails, propertyId, setWingId, setFloorUnitDetails } = useContext(CommercialContext);
     const [loading, setLoading] = useState(false);
     const [showAlerts, setShowAlerts] = useState(false);
     const [sameNumOfUnitFlag, setSameNumOfUnitFlag] = useState(null);
-    const [wingFlag, setWingFlag] = useState(0);
+    const [wingStep, setWingStep] = useState(1);
     const submitWingDetails = async (values) => {
         setLoading(true);
         var raw = JSON.stringify({
             wingName: values?.wingName,
             numberOfFloors: values?.numberofFloors,
             propertyId: propertyId,
-            sameUnitFlag: sameNumOfUnitFlag
-        })
+            sameUnitFlag: sameNumOfUnitFlag,
+            numberOfUnits: values?.numberofUnits
+        }) 
         try {
             const result = await postAPI('/add-wing-details', raw);
             if (!result || result == "") {
@@ -29,10 +31,14 @@ export default function AddWingComp() {
                 const responseRs = JSON.parse(result);
                 if (responseRs.status == 'success') {
                     setWingId(responseRs?.wingId);
+                    setFloorUnitDetails(responseRs?.floorUnitDetails);
                     setShowAlerts(<AlertComp show={true} variant="success" message="Wing details added successfully." />);
                     setTimeout(() => {
                         setLoading(false);
                         setShowAlerts(<AlertComp show={false} />);
+                        if (sameNumOfUnitFlag == 1) {
+                            setWingStep(2);
+                        }
                     }, 2000);
                 }
                 else {
@@ -52,44 +58,56 @@ export default function AddWingComp() {
         <>
             {showAlerts}
             {loading ? <ShowLoader /> : <HideLoader />}
-            <div className="row p-4">
-                <div className='col-md-6 offset-md-3'>
-                    <div className='text-center'>
-                    <h4 className='heading pt-5'>Add Wing</h4>
-                    <p className='font-16 text-white fw-normal'>Please fill wing details to proceed further.</p>
+            {wingStep == 1 && (
+                <div className="row p-4">
+                    <div className='col-md-6 offset-md-3'>
+                        <div className='text-center'>
+                            <h4 className='heading pt-5'>Add Wing</h4>
+                            <p className='font-16 text-white fw-normal'>Please fill wing details to proceed further.</p>
+                        </div>
+                        <Formik initialValues={{ wingName: wingDetails?.wingName, numberofFloors: wingDetails?.numberofFloors, unitFlag: sameNumOfUnitFlag, numberofUnits: wingDetails?.numberofUnits }} validationSchema={(e) => WingsValidationSchema(sameNumOfUnitFlag)} onSubmit={submitWingDetails} >
+                            {({ setFieldValue }) => (
+                                <Form>
+                                    <div className="row">
+                                        <div className='col-md-12 position-relative mb-4'>
+                                            <label className='custom-label'>Wing Name <span className='text-danger'>*</span></label>
+                                            <Field type="text" className="customInput" name='wingName' autoComplete='off' />
+                                            <ErrorMessage name='wingName' component="div" className="text-start errorText" />
+                                        </div>
+                                        <div className='col-md-12 position-relative mb-5'>
+                                            <label className='custom-label'>Number of Floors <span className='text-danger'>*</span></label>
+                                            <Field type="number" className="customInput" name='numberofFloors' autoComplete='off' />
+                                            <ErrorMessage name='numberofFloors' component="div" className="text-start errorText" />
+                                        </div>
+                                    </div>
+                                    <div className='position-relative mb-5'>
+                                        <label className='fw-semibold text-white' style={{ fontSize: '14px' }}>Is there same numbers of units on each Floor <span className='text-danger'>*</span></label>
+                                        <div className="d-flex flex-wrap mt-2" style={{ gap: '20px' }}>
+                                            <div className={`${sameNumOfUnitFlag == 1 ? 'subPropertyTypeActive' : 'subPropertyTypesBtn'} cursor-pointer`} onClick={() => { setSameNumOfUnitFlag(1); setFieldValue('unitFlag', 1) }}>Yes</div>
+                                            <div className={`${sameNumOfUnitFlag == 0 ? 'subPropertyTypeActive' : 'subPropertyTypesBtn'} cursor-pointer`} onClick={() => { setSameNumOfUnitFlag(0); setFieldValue('unitFlag', 0);  setFieldValue('numberofUnits', null) }}>No</div>
+                                        </div>
+                                        <Field type="hidden" name="unitFlag" value={sameNumOfUnitFlag} />
+                                        <ErrorMessage name="unitFlag" component="div" className="text-start errorText" />
+                                    </div>
+                                    {sameNumOfUnitFlag == 1 &&
+                                        <div className='col-md-12 position-relative mb-4'>
+                                            <label className='custom-label'>Number of Units <span className='text-danger'>*</span></label>
+                                            <Field type="number" className="customInput" name='numberofUnits' autoComplete='off' />
+                                            <ErrorMessage name='numberofUnits' component="div" className="text-start errorText" />
+                                        </div>
+                                    }
+                                    <div className='mt-2 text-end'>
+                                        <button type="submit" className='otpBtn'>Continue</button>
+                                    </div>
+                                </Form>
+                            )}
+                        </Formik>
                     </div>
-                    <Formik initialValues={{ wingName: wingDetails?.wingName, numberofFloors: wingDetails?.numberofFloors, unitFlag: sameNumOfUnitFlag }} validationSchema={WingsValidationSchema} onSubmit={submitWingDetails} >
-                        {({ setFieldValue }) => (
-                            <Form>
-                                <div className="row">
-                                    <div className='col-md-12 position-relative mb-4'>
-                                        <label className='custom-label'>Wing Name <span className='text-danger'>*</span></label>
-                                        <Field type="text" className="customInput" name='wingName' autoComplete='off' />
-                                        <ErrorMessage name='wingName' component="div" className="text-start errorText" />
-                                    </div>
-                                    <div className='col-md-12 position-relative mb-5'>
-                                        <label className='custom-label'>Number of Floors <span className='text-danger'>*</span></label>
-                                        <Field type="number" className="customInput" name='numberofFloors' autoComplete='off' />
-                                        <ErrorMessage name='numberofFloors' component="div" className="text-start errorText" />
-                                    </div>
-                                </div>
-                                <div className='position-relative mb-5'>
-                                    <label className='fw-semibold text-white' style={{ fontSize: '14px' }}>Is there same numbers of unit on each Floor <span className='text-danger'>*</span></label>
-                                    <div className="d-flex flex-wrap mt-2" style={{ gap: '20px' }}>
-                                        <div className={`${sameNumOfUnitFlag == 1 ? 'subPropertyTypeActive' : 'subPropertyTypesBtn'} cursor-pointer`} onClick={() => { setSameNumOfUnitFlag(1); setFieldValue('unitFlag', 1) }}>Yes</div>
-                                        <div className={`${sameNumOfUnitFlag == 0 ? 'subPropertyTypeActive' : 'subPropertyTypesBtn'} cursor-pointer`} onClick={() => { setSameNumOfUnitFlag(0); setFieldValue('unitFlag', 0) }}>No</div>
-                                    </div>
-                                    <Field type="hidden" name="unitFlag" value={sameNumOfUnitFlag} />
-                                    <ErrorMessage name="unitFlag" component="div" className="text-start errorText" />
-                                </div>
-                                <div className='mt-2 text-end'>
-                                    <button type="submit" className='otpBtn'>Continue</button>
-                                </div>
-                            </Form>
-                        )}
-                    </Formik>
                 </div>
-            </div>
+            )}
+            {wingStep == 2 &&
+                <UnitDetails />
+            }
         </>
     )
 }

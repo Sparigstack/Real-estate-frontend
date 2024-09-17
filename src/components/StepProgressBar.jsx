@@ -12,7 +12,7 @@ export default function StepProgressBar({ currentStep, totalSteps }) {
                 <div className="stepper-steps">
                     {steps.map((step) => (
                         <>
-                        <div key={step} className={`stepper-step ${step < currentStep ? 'completed' : ''} ${step == currentStep ? 'active' : ''}`}>{step}</div>
+                        <div key={step} className={`stepper-step  ${step < currentStep ? 'completed' : ''} ${step == currentStep ? 'active' : ''}`}>{step}</div>
                         </>
                     ))}
                 </div>

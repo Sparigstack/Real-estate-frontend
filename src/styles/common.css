@@ -151,3 +151,17 @@
   padding: 12px 15px;
   border: none;
 }
+.custom-accordian .accordion{
+  --bs-accordion-bg: none;
+}
+.custom-accordian .accordion-button:not(.collapsed){
+  color: black;
+  background-color: white;
+}
+.custom-accordian .accordion-button.collapsed{
+  color: white;
+  background-color: none;
+}
+.custom-accordian .accordion-button.collapsed::after {
+  filter: brightness(0) invert(1);
+}

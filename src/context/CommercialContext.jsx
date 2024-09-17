@@ -9,6 +9,7 @@ export default function CommercialProvider({children}) {
     const [propertyFlag, setPropertyFlag] = useState(0); //0->Add Property 1-> Commercial 2->Residential
     const [propertyId, setPropertyId] = useState(null);
     const [wingId, setWingId] = useState(null);
+    const[floorUnitDetails, setFloorUnitDetails] = useState([]);
     const [commercialDetails, setCommercialDetails] = useState({
         propertyName: '',
         reraRegisteredNumber: '',
@@ -22,12 +23,17 @@ export default function CommercialProvider({children}) {
     const [commercialStepView, setCommercialStepView] = useState(0); //0 -> Commercial details form, 1 -> Add wings,
     const [wingDetails, setWingDetails] = useState({
         wingName:'',
-        numberofFloors:''
+        numberofFloors:'',
+        numberofUnits:'',
+    })
+    const [unitDetails, setUnitDetails] = useState({
+        unitSize:'',
+        startingNumber:''
     })
     return (
         <>
             {loading ? <ShowLoader /> : <HideLoader />}
-            <CommercialContext.Provider value={{commercialDetails, setCommercialDetails, propertyFlag, setPropertyFlag, propertyTypeDetails, setPropertyTypeDetails, propertyId, setPropertyId, commercialStepView, setCommercialStepView, wingDetails, setWingDetails, wingId, setWingId }}>
+            <CommercialContext.Provider value={{commercialDetails, setCommercialDetails, propertyFlag, setPropertyFlag, propertyTypeDetails, setPropertyTypeDetails, propertyId, setPropertyId, commercialStepView, setCommercialStepView, wingDetails, setWingDetails, wingId, setWingId, floorUnitDetails, setFloorUnitDetails, unitDetails,setUnitDetails }}>
                 {children}
             </CommercialContext.Provider>
         </>

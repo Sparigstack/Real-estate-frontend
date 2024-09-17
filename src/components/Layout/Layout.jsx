@@ -13,7 +13,7 @@ export default function Layout() {
                 </div>
                 <div className="p-0" style={{marginLeft:'260px'}}>
                     <TopMenu />
-                    <div className="main-content" style={{ background: `url(${Images.phoneAndOtpBackground})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundPosition: 'center', minHeight:'100vh' }}>
+                    <div className="main-content" style={{ background: `url(${Images.phoneAndOtpBackground})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundPosition: 'center', minHeight:'100vh' , backgroundAttachment:'fixed'}}>
                         <Outlet />
                     </div>
                     <div className='helpAndChatbot d-flex align-items-center'>
