@@ -19,8 +19,8 @@ export default function Approutes() {
         <Route element={<PrivateRoutes />}>
           <Route element={<Layout />}>
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/profile" element={<UserDetailsForm />} />
-            <Route path="/add-property" element={<Property/>} />
+            {/* <Route path="/profile" element={<UserDetailsForm />} /> */}
+            <Route path="/add-property" element={<Property />} />
           </Route>
         </Route>
       </Routes>

@@ -13,7 +13,7 @@ const WingsValidationSchema = (sameNumOfUnitFlag) => {
     
     unitFlag: Yup.number()
       .required('Please select Yes or No')
-      .oneOf([0, 1], 'Invalid option'),
+      .oneOf([1, 2], 'Invalid option'),
     
     ...(sameNumOfUnitFlag == 1 && {
       numberofUnits: Yup.number()

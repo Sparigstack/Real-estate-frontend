@@ -1,12 +1,19 @@
-import React, { useEffect } from 'react'
-import { Spinner } from 'react-bootstrap'
+import React from 'react'
 import '../../styles/loader.css'
 
 export default function ShowLoader() {
-  
     return (
-        <div className='loader-container'>
-            <Spinner animation="border" style={{ height: '50px', width: '50px'}} />
-        </div>
+        <>
+            <div className="loader">
+                <div className="loader-square"></div>
+                <div className="loader-square"></div>
+                <div className="loader-square"></div>
+                <div className="loader-square"></div>
+                <div className="loader-square"></div>
+                <div className="loader-square"></div>
+                <div className="loader-square"></div>
+            </div>
+            <div className="Overlay" style={{ display: "block" }}></div>
+        </>
     )
 }

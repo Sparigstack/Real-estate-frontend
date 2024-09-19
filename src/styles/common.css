@@ -6,8 +6,8 @@
   color: red;
   position: absolute;
 }
-.font-42 {
-  font-size: 42px;
+.font-30 {
+  font-size: 30px;
 }
 .font-16 {
   font-size: 16px;
@@ -21,6 +21,7 @@
   padding: 0 3px;
   position: absolute;
   top: -6px;
+  z-index: 1;
 }
 .customInput {
   background: transparent;
@@ -164,4 +165,8 @@
 }
 .custom-accordian .accordion-button.collapsed::after {
   filter: brightness(0) invert(1);
+}
+.unit-container {
+  flex: 0 0 115px; 
+  display: flex;
 }

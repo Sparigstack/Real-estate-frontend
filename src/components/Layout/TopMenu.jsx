@@ -3,13 +3,10 @@ import '../../styles/sideTopMenu.css'
 import Images from '../../utils/Images'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGauge, faSignOutAlt, faUser } from '@fortawesome/free-solid-svg-icons';
-import { useNavigate } from 'react-router-dom';
 import useApiService from '../../services/ApiService';
 import ShowLoader from '../loader/ShowLoader';
 import HideLoader from '../loader/HideLoader';
 import AlertComp from '../AlertComp';
-import Cookies from 'js-cookie';
-import { useCol } from 'react-bootstrap/esm/Col';
 import { UserContext } from '../../context/UserContext';
 import { Logout } from '../../utils/js/Common';
 
@@ -18,7 +15,6 @@ export default function TopMenu() {
     const [loading, setLoading] = useState(false);
     const [showAlerts, setShowAlerts] = useState(false);
     const { postAPI } = useApiService();
-    const navigate = useNavigate();
     const { userDetails } = useContext(UserContext);
     const profileRef = useRef(null);
     useEffect(() => {
@@ -70,43 +66,45 @@ export default function TopMenu() {
         <>
             {showAlerts}
             {loading ? <ShowLoader /> : <HideLoader />}
-            <div className='pt-0 pe-0 sticky-top'>
-                <div className='topmenu-wrapper px-4 py-2'>
-                    <div className="row">
-                        <div className="col-4 position-relative">
-                            <img src={Images.searchIcon} alt="search-icon" className='search-icon' />
-                            <input type="text" className='form-control' placeholder="Search" style={{ paddingLeft: '45px', background: '#E4E6F6' }} />
-                        </div>
-                        <div className="col-8 position-relative text-end">
-                            {/* <img src={Images.dummyProfile} alt="profile" className='cursor-pointer' style={{ height: "45px",borderRadius:'50px' }} onClick={toggleProfile} /> */}
-                            <button className="profileOpen" onClick={toggleProfile}>
-                                {userDetails?.userName.charAt(0).toUpperCase()}
-                            </button>
-                            {openProfile &&
-                                <div className="chartWrapper px-3 py-2 text-start mt-1 position-absolute" ref={profileRef} style={{ right: '20px' }}>
-                                    <div className="d-flex align-items-center">
-                                        <div className="profileOpen">
-                                            {(userDetails?.userName ? userDetails.userName.charAt(0).toUpperCase() : userDetails?.companyEmail.charAt(0).toUpperCase())}
+            <div className="topmenu-wrapper">
+                <div className="position-relative">
+                    <img src={Images.searchIcon} alt="search-icon" className="search-icon" />
+                    <input
+                        type="text"
+                        className="form-control searchInput"
+                        placeholder="Search"
+                    />
+                </div>
+                <div>
+                    <button className="profileOpen" onClick={toggleProfile}>
+                        {userDetails?.userName?.charAt(0).toUpperCase()}
+                    </button>
+                    {openProfile && (
+                        <div className="profile-menu" ref={profileRef}>
+                            <ul>
+                                <li>
+                                    <a className="dropdown-item" href="#">
+                                        <div className="d-flex align-items-center">
+                                            <div className="profileOpen">
+                                                <span>{userDetails?.userName?.charAt(0).toUpperCase()}</span>
+                                            </div>
+                                            <div className="ms-3">
+                                                <h5 className="mb-0 dropdown-user-name" style={{ color: "black" }}>{userDetails?.userName}</h5>
+                                                <small className="mb-0 dropdown-user-designation text-secondary" style={{ fontSize: '12px' }}>{userDetails?.email}</small>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <p className="mb-0 ms-1 fs-5">{userDetails?.userName || userDetails?.companyEmail}</p>
-                                            {/* <p className="mb-0 ms-1 text-secondary" style={{ fontSize: '15px' }}>{userDetails?.companyEmail}</p> */}
-                                            <p className="mb-0 ms-1 text-secondary" style={{ fontSize: '15px' }}>{userDetails?.userName ? userDetails?.companyEmail : ''}</p>
-                                        </div>
-                                    </div>
-                                    <hr className="mb-2 mt-2" />
-                                    <ul className="list-group custom-list-group">
-                                        <li className="list-group-item cursor-pointer d-flex align-items-center" onClick={() => { setOpenProfile(false); navigate('/profile') }}><FontAwesomeIcon icon={faUser} className="me-2" />Profile</li>
-                                        <li className="list-group-item cursor-pointer d-flex align-items-center" onClick={() => { setOpenProfile(false); navigate('/dashboard') }}><FontAwesomeIcon icon={faGauge} className="me-2" />Dashboard</li>
-                                        <li className="list-group-item cursor-pointer d-flex align-items-center" onClick={handleLogout} ><FontAwesomeIcon icon={faSignOutAlt} className="me-2" />Logout</li>
-                                    </ul>
-                                </div>
-                            }
+                                    </a>
+                                </li>
+                                <hr className='m-0 p-0' />
+                                <li><FontAwesomeIcon icon={faUser} className='pe-2' />Profile</li>
+                                <li><FontAwesomeIcon icon={faGauge} className='pe-2' />Dashboard</li>
+                                <li onClick={handleLogout}><FontAwesomeIcon icon={faSignOutAlt} className='pe-2' />Logout</li>
+                            </ul>
                         </div>
-                    </div>
-
+                    )}
                 </div>
             </div>
+
         </>
     )
 }

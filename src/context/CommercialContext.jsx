@@ -10,6 +10,7 @@ export default function CommercialProvider({children}) {
     const [propertyId, setPropertyId] = useState(null);
     const [wingId, setWingId] = useState(null);
     const[floorUnitDetails, setFloorUnitDetails] = useState([]);
+    const[floorUnitCounts, setFloorUnitCounts] = useState([]);
     const [commercialDetails, setCommercialDetails] = useState({
         propertyName: '',
         reraRegisteredNumber: '',
@@ -33,7 +34,7 @@ export default function CommercialProvider({children}) {
     return (
         <>
             {loading ? <ShowLoader /> : <HideLoader />}
-            <CommercialContext.Provider value={{commercialDetails, setCommercialDetails, propertyFlag, setPropertyFlag, propertyTypeDetails, setPropertyTypeDetails, propertyId, setPropertyId, commercialStepView, setCommercialStepView, wingDetails, setWingDetails, wingId, setWingId, floorUnitDetails, setFloorUnitDetails, unitDetails,setUnitDetails }}>
+            <CommercialContext.Provider value={{commercialDetails, setCommercialDetails, propertyFlag, setPropertyFlag, propertyTypeDetails, setPropertyTypeDetails, propertyId, setPropertyId, commercialStepView, setCommercialStepView, wingDetails, setWingDetails, wingId, setWingId, floorUnitDetails, setFloorUnitDetails, unitDetails , setUnitDetails, floorUnitCounts, setFloorUnitCounts }}>
                 {children}
             </CommercialContext.Provider>
         </>

@@ -7,22 +7,31 @@ import '../../styles/sideTopMenu.css'
 
 export default function Layout() {
     return (
-        <div className='layout-container' style={{ background: '#03053D' }}>
-                <div className="min-vh-100 sidemenu-container" style={{ background: '#303260' }}>
-                    <SideMenu />
-                </div>
-                <div className="p-0" style={{marginLeft:'260px'}}>
+        <div className='layout-container'>
+            {/* Sidebar */}
+            <aside className='sidemenu-container'>
+                <SideMenu />
+            </aside>
+
+            <div className="main-layout-content">
+                {/* Top Menu */}
+                <header className="topmenu-container">
                     <TopMenu />
-                    <div className="main-content" style={{ background: `url(${Images.phoneAndOtpBackground})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundPosition: 'center', minHeight:'100vh' , backgroundAttachment:'fixed'}}>
-                        <Outlet />
-                    </div>
-                    <div className='helpAndChatbot d-flex align-items-center'>
-                        <div className='position-relative chatbot-container'>
-                        <img src={Images.help} alt="help" className='help-image'/>
-                        <img src={Images.chatbot} alt="chatbot" style={{height:'50px'}} className='cursor-pointer'/>
-                        </div>
-                    </div>
+                </header>
+
+                {/* Main content area */}
+                <main className="content-area">
+                    <Outlet />
+                </main>
+            </div>
+
+            {/* Help and Chatbot section */}
+            {/* <div className='help-chatbot-container'>
+                <div className='chatbot-inner'>
+                    <img src={Images.help} alt="help" className='help-image' />
+                    <img src={Images.chatbot} alt="chatbot" className='cursor-pointer chatbot-image' />
                 </div>
+            </div> */}
         </div>
     )
 }

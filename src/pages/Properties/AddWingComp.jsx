@@ -7,9 +7,11 @@ import HideLoader from '../../components/loader/HideLoader';
 import { CommercialContext } from '../../context/CommercialContext';
 import UnitDetails from './UnitDetails';
 import AlertComp from '../../components/AlertComp';
+import FloorBasedUnits from './FloorBasedUnits';
+import AddMoreWings from './AddMoreWings';
 export default function AddWingComp() {
     const { postAPI } = useApiService();
-    const { wingDetails, propertyId, setWingId, setFloorUnitDetails } = useContext(CommercialContext);
+    const { wingDetails, propertyId, setWingId, setFloorUnitDetails, setFloorUnitCounts, setWingDetails } = useContext(CommercialContext);
     const [loading, setLoading] = useState(false);
     const [showAlerts, setShowAlerts] = useState(false);
     const [sameNumOfUnitFlag, setSameNumOfUnitFlag] = useState(null);
@@ -21,8 +23,10 @@ export default function AddWingComp() {
             numberOfFloors: values?.numberofFloors,
             propertyId: propertyId,
             sameUnitFlag: sameNumOfUnitFlag,
-            numberOfUnits: values?.numberofUnits
-        }) 
+            numberOfUnits: values?.numberofUnits,
+            floorUnitCounts: null,
+            wingId: 0
+        })
         try {
             const result = await postAPI('/add-wing-details', raw);
             if (!result || result == "") {
@@ -30,13 +34,22 @@ export default function AddWingComp() {
             } else {
                 const responseRs = JSON.parse(result);
                 if (responseRs.status == 'success') {
+                    setWingDetails({
+                        wingName: values?.wingName,
+                        numberofFloors: values?.numberofFloors,
+                        numberofUnits: values?.numberofUnits
+                    })
                     setWingId(responseRs?.wingId);
                     setFloorUnitDetails(responseRs?.floorUnitDetails);
+                    setFloorUnitCounts(responseRs?.floorUnitCounts);
                     setShowAlerts(<AlertComp show={true} variant="success" message="Wing details added successfully." />);
                     setTimeout(() => {
                         setLoading(false);
                         setShowAlerts(<AlertComp show={false} />);
                         if (sameNumOfUnitFlag == 1) {
+                            setWingStep(3);
+                        }
+                        else {
                             setWingStep(2);
                         }
                     }, 2000);
@@ -84,7 +97,7 @@ export default function AddWingComp() {
                                         <label className='fw-semibold text-white' style={{ fontSize: '14px' }}>Is there same numbers of units on each Floor <span className='text-danger'>*</span></label>
                                         <div className="d-flex flex-wrap mt-2" style={{ gap: '20px' }}>
                                             <div className={`${sameNumOfUnitFlag == 1 ? 'subPropertyTypeActive' : 'subPropertyTypesBtn'} cursor-pointer`} onClick={() => { setSameNumOfUnitFlag(1); setFieldValue('unitFlag', 1) }}>Yes</div>
-                                            <div className={`${sameNumOfUnitFlag == 0 ? 'subPropertyTypeActive' : 'subPropertyTypesBtn'} cursor-pointer`} onClick={() => { setSameNumOfUnitFlag(0); setFieldValue('unitFlag', 0);  setFieldValue('numberofUnits', null) }}>No</div>
+                                            <div className={`${sameNumOfUnitFlag == 2 ? 'subPropertyTypeActive' : 'subPropertyTypesBtn'} cursor-pointer`} onClick={() => { setSameNumOfUnitFlag(2); setFieldValue('unitFlag', 2); setFieldValue('numberofUnits', null) }}>No</div>
                                         </div>
                                         <Field type="hidden" name="unitFlag" value={sameNumOfUnitFlag} />
                                         <ErrorMessage name="unitFlag" component="div" className="text-start errorText" />
@@ -106,7 +119,13 @@ export default function AddWingComp() {
                 </div>
             )}
             {wingStep == 2 &&
-                <UnitDetails />
+                <FloorBasedUnits setWingStep={setWingStep} />
+            }
+            {wingStep == 3 &&
+                <UnitDetails setWingStep={setWingStep}/>
+            }
+            {wingStep == 4 && 
+                <AddMoreWings setWingStep={setWingStep}/>
             }
         </>
     )

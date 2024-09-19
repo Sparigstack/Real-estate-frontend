@@ -7,22 +7,14 @@ import Cookies from "js-cookie";
 export const UserContext = createContext();
 
 export default function UserProvider({ children }) {
-    const userId = localStorage.getItem('userId');
-    const [userDetails, setUserDetails] = useState({
-        userName: '',
-        contactNum: '',
-        companyName: '',
-        companyEmail: '',
-        companyContactNum: '',
-        companyAddress: '',
-        companyLogo: ''
-    });
-    const [loading, setLoading] = useState(false);
+    const userId = Cookies.get('userId');
     const token = Cookies.get('authToken');
     const { getAPI } = useApiService();
-    const [uploadedFileBase64, setUploadedFileBase64] = useState('');
-    const [uploadedFileName, setUploadedFileName] = useState('');
-
+    const [userDetails, setUserDetails] = useState({
+        userName: '',
+        email: ''
+    });
+    const [loading, setLoading] = useState(false);
     useEffect(() => {
         if (token) {
             getUserDetails();
@@ -31,7 +23,7 @@ export default function UserProvider({ children }) {
     const getUserDetails = async () => {
         setLoading(true);
         try {
-            const result = await getAPI(`/user-profile/${userId}`);
+            const result = await getAPI(`/get-user-details/${userId}`);
             if (!result || result == "") {
                 alert('Something went wrong');
             }
@@ -40,18 +32,9 @@ export default function UserProvider({ children }) {
                 setLoading(false);
                 setUserDetails({
                     ...userDetails,
-                    userName: responseRs?.msg?.user?.name || '',
-                    contactNum: responseRs?.msg?.user?.contact_no || '',
-                    companyName: responseRs?.msg?.name || '',
-                    companyEmail: responseRs?.msg?.email || '',
-                    companyContactNum: responseRs?.msg?.contact_no || '',
-                    companyAddress: responseRs?.msg?.address || '',
-                    companyLogo: responseRs?.msg?.logo || '',
+                    userName: responseRs?.msg?.name || '',
+                    email: responseRs?.msg?.email
                 })
-                if (responseRs?.msg?.logo) {
-                    setUploadedFileBase64(responseRs?.msg?.logo);
-                    setUploadedFileName('');
-                }
             }
         }
         catch (error) {
@@ -62,7 +45,7 @@ export default function UserProvider({ children }) {
     return (
         <>
             {loading ? <ShowLoader /> : <HideLoader />}
-            <UserContext.Provider value={{ userDetails, setUserDetails, uploadedFileBase64, setUploadedFileBase64, uploadedFileName, setUploadedFileName }}>
+            <UserContext.Provider value={{ userDetails, setUserDetails }}>
                 {children}
             </UserContext.Provider>
         </>
