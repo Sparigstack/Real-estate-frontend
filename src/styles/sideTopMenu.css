@@ -17,6 +17,7 @@
     border-right: 1px solid #03053d;
     overflow-y: scroll !important;
     scrollbar-width: none !important;
+    font-size: 14px;
 }
 
 .main-layout-content {

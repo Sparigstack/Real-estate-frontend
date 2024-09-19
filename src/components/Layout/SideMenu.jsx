@@ -29,7 +29,7 @@ export default function SideMenu() {
                             <NavLink
                                 to={item.submenu.length > 0 ? '' : item.path}
                                 className={({ isActive }) =>
-                                    isActive ? 'nav-link active text-white fw-bold' : 'nav-link text-white fw-light'
+                                    isActive ? 'nav-link active text-white fw-bold px-2' : 'nav-link text-white fw-light px-2'
                                 }
                             >
                                 <img src={Images[item.imageKey]} className="me-3 leftmenuicon" alt={item.altText} />
@@ -62,7 +62,7 @@ export default function SideMenu() {
                                             <NavLink
                                                 to={submenuitem.path}
                                                 className={({ isActive }) =>
-                                                    isActive ? 'nav-link active text-white fw-bold' : 'nav-link text-white fw-light'
+                                                    isActive ? 'nav-link active text-white fw-bold px-2' : 'nav-link text-white fw-light px-2'
                                                 }
                                             >
                                                 <img src={Images[submenuitem.imageKey]} className="me-3 leftmenuicon" alt={submenuitem.altText} />
