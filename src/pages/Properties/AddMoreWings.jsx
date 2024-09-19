@@ -40,7 +40,10 @@ export default function AddMoreWings({setWingStep}) {
         if(sameWingFlag == 1){
             setLoading(true);
             var raw = JSON.stringify({
-               
+                propertyId:propertyId,
+                sameWingId: selectedWing,
+                wingName: values?.wingName,
+                
             })
             try {
                 const result = await postAPI('/add-wing-details', raw);

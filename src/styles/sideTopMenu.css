@@ -4,7 +4,9 @@
     width: 100%;
     /* background-color: #03053d; */
 }
-
+.sub-menu li{
+    list-style: none;
+}
 .sidemenu-container {
     width: 250px;
     background-color: #303260;
@@ -28,7 +30,7 @@
 }
 
 .topmenu-container {
-    height: 60px;
+    height: 70px;
     background-color: #303260;
     display: flex;
     align-items: center;

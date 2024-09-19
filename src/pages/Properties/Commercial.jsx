@@ -7,10 +7,11 @@ import HideLoader from '../../components/loader/HideLoader';
 import useApiService from '../../services/ApiService';
 import AlertComp from '../../components/AlertComp';
 import AddWing from './AddWing';
+import Cookies from "js-cookie";
 export default function Commercial() {
     const { commercialDetails, propertyTypeDetails, setPropertyTypeDetails, propertyFlag, setPropertyId, commercialStepView, setCommercialStepView } = useContext(CommercialContext);
     const [selectedPropertySubType, setSelectedPropertySubType] = useState(null);
-    const userId = localStorage.getItem('userId');
+    const userId = Cookies.get('userId');
     const [loading, setLoading] = useState(false);
     const { postAPI, getAPI } = useApiService();
     const [showAlerts, setShowAlerts] = useState(false);
@@ -64,7 +65,7 @@ export default function Commercial() {
                         setLoading(false);
                         setShowAlerts(<AlertComp show={false} />);
                         setCommercialStepView(1);
-                    }, 2000);
+                    }, 2500);
                 }
                 else {
                     setShowAlerts(<AlertComp show={true} variant="danger" message={responseRs?.msg} />);
@@ -86,11 +87,15 @@ export default function Commercial() {
             {commercialStepView == 0 && (
                 <div className="row p-4">
                     <div className='col-md-8 offset-md-2'>
-                        <h4 className='heading pt-5'>Commercial!</h4>
+                        <h4 className='heading'>Commercial!</h4>
                         <p className='font-16 text-white fw-normal'>Heyy, please fill all the informations to proceed further.</p>
                         <Formik initialValues={{ propertyName: commercialDetails?.propertyName, reraRegisteredNumber: commercialDetails?.reraRegisteredNumber, propertySubTypeFlag: selectedPropertySubType, address: commercialDetails?.address, pincode: commercialDetails?.pincode, numberofWings: commercialDetails?.numberofWings, description: commercialDetails?.description }} validationSchema={CommercialValidationSchema} onSubmit={submitCommercialDetails}>
                             {({ setFieldValue }) => (
-                                <Form className='pt-4 mt-2'>
+                                <Form className='pt-4 mt-2' onKeyDown={(e) => {
+                                    if (e.key == 'Enter') {
+                                      e.preventDefault();
+                                    }
+                                  }}>
                                     <div className="row">
                                         <div className='col-md-6 position-relative mb-4'>
                                             <label className='custom-label'>Name on Property <span className='text-danger'>*</span></label>
@@ -102,7 +107,7 @@ export default function Commercial() {
                                             <Field type="text" className="customInput" name='reraRegisteredNumber' autoComplete='off' />
                                         </div>
                                     </div>
-                                    <div className='position-relative mb-4'>
+                                    <div className='position-relative mb-5'>
                                         <label className='fw-semibold text-white' style={{ fontSize: '14px' }}>Property Type <span className='text-danger'>*</span></label>
                                         <div className="d-flex flex-wrap mt-2" style={{ gap: '10px' }}>
                                             {propertyTypeDetails?.sub_properties?.map((subProperty) => (
@@ -115,7 +120,7 @@ export default function Commercial() {
                                         <ErrorMessage name="propertySubTypeFlag" component="div" className="text-start errorText" />
                                     </div>
                                     <div className="row">
-                                        <div className='col-md-6 position-relative mb-4'>
+                                        <div className='col-md-6 position-relative mb-5'>
                                             <label className='custom-label'>Address <span className='text-danger'>*</span></label>
                                             <Field as="textarea" className="customInput" name='address' autoComplete='off' rows="4" />
                                             <ErrorMessage name='address' component="div" className="text-start errorText" />

@@ -80,7 +80,11 @@ export default function AddWingComp() {
                         </div>
                         <Formik initialValues={{ wingName: wingDetails?.wingName, numberofFloors: wingDetails?.numberofFloors, unitFlag: sameNumOfUnitFlag, numberofUnits: wingDetails?.numberofUnits }} validationSchema={(e) => WingsValidationSchema(sameNumOfUnitFlag)} onSubmit={submitWingDetails} >
                             {({ setFieldValue }) => (
-                                <Form>
+                                <Form onKeyDown={(e) => {
+                                    if (e.key == 'Enter') {
+                                      e.preventDefault();
+                                    }
+                                  }}>
                                     <div className="row">
                                         <div className='col-md-12 position-relative mb-4'>
                                             <label className='custom-label'>Wing Name <span className='text-danger'>*</span></label>

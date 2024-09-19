@@ -21,7 +21,6 @@ export default function UserProvider({ children }) {
         }
     }, [token])
     const getUserDetails = async () => {
-        setLoading(true);
         try {
             const result = await getAPI(`/get-user-details/${userId}`);
             if (!result || result == "") {
@@ -29,7 +28,6 @@ export default function UserProvider({ children }) {
             }
             else {
                 const responseRs = JSON.parse(result);
-                setLoading(false);
                 setUserDetails({
                     ...userDetails,
                     userName: responseRs?.msg?.name || '',

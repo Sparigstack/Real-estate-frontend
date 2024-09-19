@@ -1,9 +1,9 @@
 import React from 'react'
-import SideMenu from './Sidemenu'
 import { Outlet } from 'react-router-dom'
 import TopMenu from './TopMenu'
 import Images from '../../utils/Images'
 import '../../styles/sideTopMenu.css'
+import SideMenu from './SideMenu'
 
 export default function Layout() {
     return (
