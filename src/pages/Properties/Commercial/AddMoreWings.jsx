@@ -1,18 +1,18 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Field, Formik, Form, ErrorMessage } from 'formik'
 import * as Yup from 'yup';
-import useApiService from '../../services/ApiService';
-import { CommercialContext } from '../../context/CommercialContext';
-import ShowLoader from '../../components/loader/ShowLoader';
-import HideLoader from '../../components/loader/HideLoader';
-import AlertComp from '../../components/AlertComp';
+import useApiService from '../../../services/ApiService';
+import { CommercialContext } from '../../../context/CommercialContext';
+import ShowLoader from '../../../components/loader/ShowLoader';
+import HideLoader from '../../../components/loader/HideLoader';
+import AlertComp from '../../../components/AlertComp';
 
-export default function AddMoreWings({setWingStep}) {
+export default function AddMoreWings({ setWingStep }) {
     const [sameWingFlag, setSameWingFlag] = useState(null);
     const [selectedWing, setSelectedWing] = useState(null);
     const [wingDetailsArray, setWingDetailsArray] = useState([]);
     const [loading, setLoading] = useState(false);
-    const { propertyId } = useContext(CommercialContext);
+    const { utils } = useContext(CommercialContext);
     const { getAPI, postAPI } = useApiService();
 
     useEffect(() => {
@@ -21,7 +21,7 @@ export default function AddMoreWings({setWingStep}) {
     const getWingDetails = async () => {
         setLoading(true);
         try {
-            const result = await getAPI(`/get-wing-details/${propertyId}`);
+            const result = await getAPI(`/get-wing-details/${utils.propertyId}`);
             if (!result || result == "") {
                 alert('Something went wrong');
             }
@@ -37,13 +37,13 @@ export default function AddMoreWings({setWingStep}) {
     }
 
     const submitMoreWingDetails = async (values) => {
-        if(sameWingFlag == 1){
+        if (sameWingFlag == 1) {
             setLoading(true);
             var raw = JSON.stringify({
-                propertyId:propertyId,
+                propertyId: utils.propertyId,
                 sameWingId: selectedWing,
                 wingName: values?.wingName,
-                
+
             })
             try {
                 const result = await postAPI('/add-wing-details', raw);
@@ -51,7 +51,7 @@ export default function AddMoreWings({setWingStep}) {
                     alert('Something went wrong');
                 } else {
                     const responseRs = JSON.parse(result);
-                    if (responseRs.status == 'success') {                        
+                    if (responseRs.status == 'success') {
                         setShowAlerts(<AlertComp show={true} variant="success" message="Wing details added successfully." />);
                         setTimeout(() => {
                             setLoading(false);
@@ -71,7 +71,7 @@ export default function AddMoreWings({setWingStep}) {
                 console.error(error);
             }
         }
-        else{
+        else {
             setWingStep(1);
         }
     }

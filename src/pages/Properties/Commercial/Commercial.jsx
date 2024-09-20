@@ -1,37 +1,35 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { CommercialContext } from '../../context/CommercialContext'
+import { CommercialContext } from '../../../context/CommercialContext'
 import { Field, Formik, Form, ErrorMessage } from 'formik'
-import CommercialValidationSchema from '../../utils/validations/CommercialValidationSchema';
-import ShowLoader from '../../components/loader/ShowLoader';
-import HideLoader from '../../components/loader/HideLoader';
-import useApiService from '../../services/ApiService';
-import AlertComp from '../../components/AlertComp';
-import AddWing from './AddWing';
+import CommercialValidationSchema from '../../../utils/validations/CommercialValidationSchema';
+import useApiService from '../../../services/ApiService';
+import AlertComp from '../../../components/AlertComp';
 import Cookies from "js-cookie";
+import WingParent from './WingParent';
 export default function Commercial() {
-    const { commercialDetails, propertyTypeDetails, setPropertyTypeDetails, propertyFlag, setPropertyId, commercialStepView, setCommercialStepView } = useContext(CommercialContext);
+    const { commercialDetails, setLoading, setShowAlerts, utils, setUtils } = useContext(CommercialContext);
     const [selectedPropertySubType, setSelectedPropertySubType] = useState(null);
     const userId = Cookies.get('userId');
-    const [loading, setLoading] = useState(false);
     const { postAPI, getAPI } = useApiService();
-    const [showAlerts, setShowAlerts] = useState(false);
     const [totalSteps, setTotalSteps] = useState(null);
-
     useEffect(() => {
         getPropertyTypes();
-    }, [propertyFlag])
+    }, [utils.propertyFlag])
 
     const getPropertyTypes = async () => {
         setLoading(true);
         try {
-            const result = await getAPI(`/get-property-types/${propertyFlag}`);
+            const result = await getAPI(`/get-property-types/${utils.propertyFlag}`);
             if (!result || result == "") {
                 alert('Something went wrong');
             }
             else {
                 const responseRs = JSON.parse(result);
                 setLoading(false);
-                setPropertyTypeDetails(responseRs);
+                setUtils((prev) => ({
+                    ...prev,
+                    propertyTypeDetails: responseRs
+                }));
             }
         }
         catch (error) {
@@ -42,12 +40,12 @@ export default function Commercial() {
         setLoading(true);
         var raw = JSON.stringify({
             name: values?.propertyName,
-            reraRegisteredNumber: values?.reraRegisteredNumber?values?.reraRegisteredNumber:null,
-            propertyTypeFlag: propertyFlag,
+            reraRegisteredNumber: values?.reraRegisteredNumber ? values?.reraRegisteredNumber : null,
+            propertyTypeFlag: utils.propertyFlag,
             propertySubTypeFlag: selectedPropertySubType,
             address: values?.address,
             numberOfWings: values?.numberofWings,
-            description: values?.description?values?.description:null,
+            description: values?.description ? values?.description : null,
             userId: userId,
             pincode: values?.pincode
         })
@@ -58,13 +56,16 @@ export default function Commercial() {
             } else {
                 const responseRs = JSON.parse(result);
                 if (responseRs.status == 'success') {
-                    setPropertyId(responseRs?.propertyId);
+                    setUtils({ ...utils, propertyId: responseRs?.propertyId })
                     setTotalSteps(values?.numberofWings)
                     setShowAlerts(<AlertComp show={true} variant="success" message="Basic property details added successfully. Now you can add property specific details" />);
                     setTimeout(() => {
                         setLoading(false);
                         setShowAlerts(<AlertComp show={false} />);
-                        setCommercialStepView(1);
+                        setUtils((prev) => ({
+                            ...prev,
+                            commercialStepView: 1
+                        }));
                     }, 2500);
                 }
                 else {
@@ -82,9 +83,7 @@ export default function Commercial() {
     }
     return (
         <>
-            {showAlerts}
-            {loading ? <ShowLoader /> : <HideLoader />}
-            {commercialStepView == 0 && (
+            {utils.commercialStepView == 0 && (
                 <div className="row p-4">
                     <div className='col-md-8 offset-md-2'>
                         <h4 className='heading'>Commercial!</h4>
@@ -93,9 +92,9 @@ export default function Commercial() {
                             {({ setFieldValue }) => (
                                 <Form className='pt-4 mt-2' onKeyDown={(e) => {
                                     if (e.key == 'Enter') {
-                                      e.preventDefault();
+                                        e.preventDefault();
                                     }
-                                  }}>
+                                }}>
                                     <div className="row">
                                         <div className='col-md-6 position-relative mb-4'>
                                             <label className='custom-label'>Name on Property <span className='text-danger'>*</span></label>
@@ -110,8 +109,8 @@ export default function Commercial() {
                                     <div className='position-relative mb-5'>
                                         <label className='fw-semibold text-white' style={{ fontSize: '14px' }}>Property Type <span className='text-danger'>*</span></label>
                                         <div className="d-flex flex-wrap mt-2" style={{ gap: '10px' }}>
-                                            {propertyTypeDetails?.sub_properties?.map((subProperty) => (
-                                                <div key={subProperty.id}  className={`${selectedPropertySubType == subProperty.id ? 'subPropertyTypeActive' : 'subPropertyTypesBtn'} cursor-pointer`} onClick={() => { setSelectedPropertySubType(subProperty.id); setFieldValue('propertySubTypeFlag', subProperty?.id) }}>
+                                            {utils.propertyTypeDetails?.sub_properties?.map((subProperty) => (
+                                                <div key={subProperty.id} className={`${selectedPropertySubType == subProperty.id ? 'subPropertyTypeActive' : 'subPropertyTypesBtn'} cursor-pointer`} onClick={() => { setSelectedPropertySubType(subProperty.id); setFieldValue('propertySubTypeFlag', subProperty?.id) }}>
                                                     {subProperty.name}
                                                 </div>
                                             ))}
@@ -151,8 +150,8 @@ export default function Commercial() {
                     </div>
                 </div>
             )}
-            {commercialStepView == 1 &&
-                <AddWing totalSteps={totalSteps}/>
+            {utils.commercialStepView == 1 &&
+                <WingParent totalSteps={totalSteps} />
             }
         </>
     )

@@ -5,8 +5,7 @@ import Dashboard from '../pages/Dashboard/Dashboard';
 import PrivateRoutes from './PrivateRoutes';
 import PageNotFound from '../pages/404-ErrorPage/PageNotFound';
 import Layout from '../components/layout/Layout';
-import UserDetailsForm from '../pages/Signup-Login/UserDetailsForm';
-import Property from '../pages/Properties/Property';
+import Propertyindex from '../pages/Properties';
 
 
 export default function Approutes() {
@@ -20,7 +19,7 @@ export default function Approutes() {
           <Route element={<Layout />}>
             <Route path="/dashboard" element={<Dashboard />} />
             {/* <Route path="/profile" element={<UserDetailsForm />} /> */}
-            <Route path="/add-property" element={<Property />} />
+            <Route path="/add-property" element={<Propertyindex />} />
           </Route>
         </Route>
       </Routes>

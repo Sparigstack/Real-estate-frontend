@@ -2,8 +2,6 @@ import React, { useContext, useState } from 'react'
 import { Field, Formik, Form, ErrorMessage } from 'formik'
 import WingsValidationSchema from '../../utils/validations/WingsValidationSchema';
 import useApiService from '../../services/ApiService';
-import ShowLoader from '../../components/loader/ShowLoader';
-import HideLoader from '../../components/loader/HideLoader';
 import { CommercialContext } from '../../context/CommercialContext';
 import UnitDetails from './UnitDetails';
 import AlertComp from '../../components/AlertComp';
@@ -11,9 +9,7 @@ import FloorBasedUnits from './FloorBasedUnits';
 import AddMoreWings from './AddMoreWings';
 export default function AddWingComp() {
     const { postAPI } = useApiService();
-    const { wingDetails, propertyId, setWingId, setFloorUnitDetails, setFloorUnitCounts, setWingDetails } = useContext(CommercialContext);
-    const [loading, setLoading] = useState(false);
-    const [showAlerts, setShowAlerts] = useState(false);
+    const { wingDetails, setUtils, setWingDetails, setLoading, setShowAlerts } = useContext(CommercialContext);
     const [sameNumOfUnitFlag, setSameNumOfUnitFlag] = useState(null);
     const [wingStep, setWingStep] = useState(1);
     const submitWingDetails = async (values) => {
@@ -21,7 +17,7 @@ export default function AddWingComp() {
         var raw = JSON.stringify({
             wingName: values?.wingName,
             numberOfFloors: values?.numberofFloors,
-            propertyId: propertyId,
+            propertyId: utils.propertyId,
             sameUnitFlag: sameNumOfUnitFlag,
             numberOfUnits: values?.numberofUnits,
             floorUnitCounts: null,
@@ -39,9 +35,12 @@ export default function AddWingComp() {
                         numberofFloors: values?.numberofFloors,
                         numberofUnits: values?.numberofUnits
                     })
-                    setWingId(responseRs?.wingId);
-                    setFloorUnitDetails(responseRs?.floorUnitDetails);
-                    setFloorUnitCounts(responseRs?.floorUnitCounts);
+                    setUtils((prev) => ({
+                        ...prev,
+                        wingId: responseRs?.wingId,
+                        floorUnitDetails: responseRs?.floorUnitDetails,
+                        floorUnitCounts: responseRs?.floorUnitCounts
+                    }));
                     setShowAlerts(<AlertComp show={true} variant="success" message="Wing details added successfully." />);
                     setTimeout(() => {
                         setLoading(false);
@@ -69,8 +68,6 @@ export default function AddWingComp() {
     }
     return (
         <>
-            {showAlerts}
-            {loading ? <ShowLoader /> : <HideLoader />}
             {wingStep == 1 && (
                 <div className="row p-4">
                     <div className='col-md-6 offset-md-3'>
@@ -82,9 +79,9 @@ export default function AddWingComp() {
                             {({ setFieldValue }) => (
                                 <Form onKeyDown={(e) => {
                                     if (e.key == 'Enter') {
-                                      e.preventDefault();
+                                        e.preventDefault();
                                     }
-                                  }}>
+                                }}>
                                     <div className="row">
                                         <div className='col-md-12 position-relative mb-4'>
                                             <label className='custom-label'>Wing Name <span className='text-danger'>*</span></label>
@@ -126,10 +123,10 @@ export default function AddWingComp() {
                 <FloorBasedUnits setWingStep={setWingStep} />
             }
             {wingStep == 3 &&
-                <UnitDetails setWingStep={setWingStep}/>
+                <UnitDetails setWingStep={setWingStep} />
             }
-            {wingStep == 4 && 
-                <AddMoreWings setWingStep={setWingStep}/>
+            {wingStep == 4 &&
+                <AddMoreWings setWingStep={setWingStep} />
             }
         </>
     )

@@ -1,36 +1,36 @@
 import React, { useContext, useRef, useState } from 'react'
 import { Field, Formik, Form, ErrorMessage } from 'formik'
-import { CommercialContext } from '../../context/CommercialContext';
-import UnitsValidationSchema from '../../utils/validations/UnitsValidationSchema';
-import ShowLoader from '../../components/loader/ShowLoader';
-import HideLoader from '../../components/loader/HideLoader';
-import AlertComp from '../../components/AlertComp';
-import useApiService from '../../services/ApiService';
+import { CommercialContext } from '../../../context/CommercialContext';
+import UnitsValidationSchema from '../../../utils/validations/UnitsValidationSchema';
+import ShowLoader from '../../../components/loader/ShowLoader';
+import HideLoader from '../../../components/loader/HideLoader';
+import AlertComp from '../../../components/AlertComp';
+import useApiService from '../../../services/ApiService';
 export default function UnitDetails({ setWingStep }) {
-  const { unitDetails, floorUnitDetails } = useContext(CommercialContext);
+  const { unitDetails, utils } = useContext(CommercialContext);
   const [sameUnitSizeFlag, setSameUnitSizeFlag] = useState(null);
   const [loading, setLoading] = useState(false);
   const [showAlerts, setShowAlerts] = useState(false);
-  const[errorMsg, setErrorMsg] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
   const { postAPI } = useApiService();
-  
+
   const submitUnitDetails = async (values) => {
-  // let hasEmptyFields = false;
-  // floorUnitDetails.forEach((floor) => {
-  //   floor.unitDetails.forEach((unit) => {
-  //     if (!values[`unitSizeEachFloor${unit.unitId}`]) {
-  //       hasEmptyFields = true;
-  //     }
-  //   });
-  // });
-  // if (hasEmptyFields) {
-  //   setErrorMsg('Please fill all unit sizes for all floors.');
-  // }
-  // else{
-  //   setErrorMsg('');
-  // }
+    // let hasEmptyFields = false;
+    // floorUnitDetails.forEach((floor) => {
+    //   floor.unitDetails.forEach((unit) => {
+    //     if (!values[`unitSizeEachFloor${unit.unitId}`]) {
+    //       hasEmptyFields = true;
+    //     }
+    //   });
+    // });
+    // if (hasEmptyFields) {
+    //   setErrorMsg('Please fill all unit sizes for all floors.');
+    // }
+    // else{
+    //   setErrorMsg('');
+    // }
     setLoading(true);
-    const floorUnitDetailsArray = floorUnitDetails.map(floor => ({
+    const floorUnitDetailsArray = utils.floorUnitDetails.map(floor => ({
       floorId: floor?.floorId,
       unitDetails: floor?.unitDetails.map(unit => ({
         unitId: unit?.unitId,
@@ -80,19 +80,19 @@ export default function UnitDetails({ setWingStep }) {
             <h4 className='heading pt-3 mb-3'>Add Unit Details</h4>
           </div>
           <Formik initialValues={{
-            unitSizeFlag: sameUnitSizeFlag, unitSize: unitDetails?.unitSize, startingNumber: unitDetails?.startingNumber, ...floorUnitDetails?.reduce((acc, floor) => {
+            unitSizeFlag: sameUnitSizeFlag, unitSize: unitDetails?.unitSize, startingNumber: unitDetails?.startingNumber, ...utils.floorUnitDetails?.reduce((acc, floor) => {
               floor.unitDetails.forEach((unit) => {
                 acc[`unitSizeEachFloor${unit.unitId}`] = '';
               });
               return acc;
             }, {}),
-          }} validationSchema={(e) => UnitsValidationSchema(sameUnitSizeFlag, floorUnitDetails)} onSubmit={submitUnitDetails} >
+          }} validationSchema={(e) => UnitsValidationSchema(sameUnitSizeFlag, utils.floorUnitDetails)} onSubmit={submitUnitDetails} >
             {({ setFieldValue }) => {
               const handleSameUnitSizeChange = (value) => {
                 setSameUnitSizeFlag(value);
                 setFieldValue('unitSizeFlag', value);
                 if (value == 1) {
-                  floorUnitDetails.forEach(floor => {
+                  utils.floorUnitDetails.forEach(floor => {
                     floor.unitDetails.forEach(unit => {
                       setFieldValue(`unitSizeEachFloor${unit.unitId}`, '');
                     });
@@ -102,7 +102,7 @@ export default function UnitDetails({ setWingStep }) {
                 }
               };
               const handleAutofill = (value, floorIndex) => {
-                const currentFloor = floorUnitDetails[floorIndex];
+                const currentFloor = utils.floorUnitDetails[floorIndex];
                 currentFloor?.unitDetails.forEach((unit => {
                   setFieldValue(`unitSizeEachFloor${unit?.unitId}`, value)
                 }));
@@ -137,41 +137,41 @@ export default function UnitDetails({ setWingStep }) {
                   )}
                   {sameUnitSizeFlag == 0 && (
                     <>
-                    <div className='custom-accordian'>
-                      <div className="accordion" id="accordionExample">
-                        {floorUnitDetails?.map((floor, index) => (
-                          <div className="accordion-item" key={floor.floorId}>
-                            <h2 className="accordion-header">
-                              <button className={`accordion-button ${index == 0 ? '' : 'collapsed'}`} type="button" data-bs-toggle="collapse" data-bs-target={`#collapseFloor${index}`} aria-expanded={index == 0 ? 'true' : 'false'} aria-controls={`collapseFloor${index}`}>
-                                Floor {index + 1}
-                              </button>
-                            </h2>
-                            <div id={`collapseFloor${index}`} className={`accordion-collapse collapse ${index == 0 ? 'show' : ''}`} data-bs-parent="#accordionExample">
-                              <div className="accordion-body">
-                                <div className='d-flex flex-wrap gap-4'>
-                                  {floor?.unitDetails.map((unit, unitIndex) => (
-                                    <div key={unit.unitId} className='unit-container position-relative mb-4'>
-                                      <label className='custom-label'>Unit {unitIndex + 1} <span className='text-danger'>*</span></label>
-                                      <Field type="number" className="customInput" name={`unitSizeEachFloor${unit.unitId}`} autoComplete='off' placeholder='sq feet' onChange={(e) => {
-                                        const value = e.target.value;
-                                        setFieldValue(`unitSizeEachFloor${unit.unitId}`, value);
-                                        if (unitIndex == 0) {
-                                          handleAutofill(value, index); //-> index-current floor index
-                                        }
-                                       
-                                      }}
-                                        style={{ transition: 'opacity 0.3s ease' }} />
-                                      <ErrorMessage name={`unitSizeEachFloor${unit.unitId}`} component="div" className="text-start errorText" style={{ top: '48px' }} />
-                                    </div>
-                                  ))}
+                      <div className='custom-accordian'>
+                        <div className="accordion" id="accordionExample">
+                          {utils.floorUnitDetails?.map((floor, index) => (
+                            <div className="accordion-item" key={floor.floorId}>
+                              <h2 className="accordion-header">
+                                <button className={`accordion-button ${index == 0 ? '' : 'collapsed'}`} type="button" data-bs-toggle="collapse" data-bs-target={`#collapseFloor${index}`} aria-expanded={index == 0 ? 'true' : 'false'} aria-controls={`collapseFloor${index}`}>
+                                  Floor {index + 1}
+                                </button>
+                              </h2>
+                              <div id={`collapseFloor${index}`} className={`accordion-collapse collapse ${index == 0 ? 'show' : ''}`} data-bs-parent="#accordionExample">
+                                <div className="accordion-body">
+                                  <div className='d-flex flex-wrap gap-4'>
+                                    {floor?.unitDetails.map((unit, unitIndex) => (
+                                      <div key={unit.unitId} className='unit-container position-relative mb-4'>
+                                        <label className='custom-label'>Unit {unitIndex + 1} <span className='text-danger'>*</span></label>
+                                        <Field type="number" className="customInput" name={`unitSizeEachFloor${unit.unitId}`} autoComplete='off' placeholder='sq feet' onChange={(e) => {
+                                          const value = e.target.value;
+                                          setFieldValue(`unitSizeEachFloor${unit.unitId}`, value);
+                                          if (unitIndex == 0) {
+                                            handleAutofill(value, index); //-> index-current floor index
+                                          }
+
+                                        }}
+                                          style={{ transition: 'opacity 0.3s ease' }} />
+                                        <ErrorMessage name={`unitSizeEachFloor${unit.unitId}`} component="div" className="text-start errorText" style={{ top: '48px' }} />
+                                      </div>
+                                    ))}
+                                  </div>
                                 </div>
                               </div>
                             </div>
-                          </div>
-                        ))}
+                          ))}
+                        </div>
                       </div>
-                    </div>
-                    <div className='text-danger'>{errorMsg}</div>
+                      <div className='text-danger'>{errorMsg}</div>
                     </>
                   )}
                   <div className='mt-4 text-end'>
