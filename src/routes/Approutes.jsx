@@ -6,6 +6,8 @@ import PrivateRoutes from './PrivateRoutes';
 import PageNotFound from '../pages/404-ErrorPage/PageNotFound';
 import Layout from '../components/layout/Layout';
 import Propertyindex from '../pages/Properties';
+import CommercialProvider from '../context/CommercialContext';
+import Commercial from '../pages/Properties/Commercial/Commercial';
 
 
 export default function Approutes() {
@@ -18,8 +20,10 @@ export default function Approutes() {
         <Route element={<PrivateRoutes />}>
           <Route element={<Layout />}>
             <Route path="/dashboard" element={<Dashboard />} />
-            {/* <Route path="/profile" element={<UserDetailsForm />} /> */}
             <Route path="/add-property" element={<Propertyindex />} />
+            <Route element={<CommercialProvider />}>
+              <Route path="/commercial" element={<Commercial />} />
+            </Route>
           </Route>
         </Route>
       </Routes>

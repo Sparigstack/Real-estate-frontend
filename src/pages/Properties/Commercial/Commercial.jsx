@@ -6,36 +6,18 @@ import useApiService from '../../../services/ApiService';
 import AlertComp from '../../../components/AlertComp';
 import Cookies from "js-cookie";
 import WingParent from './WingParent';
+import { getPropertyTypes } from '../../../utils/js/Common';
 export default function Commercial() {
     const { commercialDetails, setLoading, setShowAlerts, utils, setUtils } = useContext(CommercialContext);
     const [selectedPropertySubType, setSelectedPropertySubType] = useState(null);
     const userId = Cookies.get('userId');
     const { postAPI, getAPI } = useApiService();
+    const [propertyTypeArray, setPropertyTypeArray] = useState([]);
     const [totalSteps, setTotalSteps] = useState(null);
     useEffect(() => {
-        getPropertyTypes();
-    }, [utils.propertyFlag])
+        getPropertyTypes(1,setPropertyTypeArray);
+    }, [])
 
-    const getPropertyTypes = async () => {
-        setLoading(true);
-        try {
-            const result = await getAPI(`/get-property-types/${utils.propertyFlag}`);
-            if (!result || result == "") {
-                alert('Something went wrong');
-            }
-            else {
-                const responseRs = JSON.parse(result);
-                setLoading(false);
-                setUtils((prev) => ({
-                    ...prev,
-                    propertyTypeDetails: responseRs
-                }));
-            }
-        }
-        catch (error) {
-            console.error(error);
-        }
-    }
     const submitCommercialDetails = async (values) => {
         setLoading(true);
         var raw = JSON.stringify({
@@ -109,7 +91,7 @@ export default function Commercial() {
                                     <div className='position-relative mb-5'>
                                         <label className='fw-semibold text-white' style={{ fontSize: '14px' }}>Property Type <span className='text-danger'>*</span></label>
                                         <div className="d-flex flex-wrap mt-2" style={{ gap: '10px' }}>
-                                            {utils.propertyTypeDetails?.sub_properties?.map((subProperty) => (
+                                            {propertyTypeArray?.sub_properties?.map((subProperty) => (
                                                 <div key={subProperty.id} className={`${selectedPropertySubType == subProperty.id ? 'subPropertyTypeActive' : 'subPropertyTypesBtn'} cursor-pointer`} onClick={() => { setSelectedPropertySubType(subProperty.id); setFieldValue('propertySubTypeFlag', subProperty?.id) }}>
                                                     {subProperty.name}
                                                 </div>
@@ -136,7 +118,7 @@ export default function Commercial() {
                                         </div>
                                         <div className='col-md-6 position-relative mb-4'>
                                             <label className='custom-label'>Number of Wings / Blocks <span className='text-danger'>*</span></label>
-                                            <Field type="number" className="customInput" name='numberofWings' autoComplete='off' />
+                                            <Field type="number" className="customInput" name='numberofWings' autoComplete='off' min={0}/>
                                             <ErrorMessage name='numberofWings' component="div" className="text-start errorText" />
                                         </div>
                                     </div>

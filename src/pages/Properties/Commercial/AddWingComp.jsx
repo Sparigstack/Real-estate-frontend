@@ -1,15 +1,15 @@
 import React, { useContext, useState } from 'react'
 import { Field, Formik, Form, ErrorMessage } from 'formik'
-import WingsValidationSchema from '../../utils/validations/WingsValidationSchema';
-import useApiService from '../../services/ApiService';
-import { CommercialContext } from '../../context/CommercialContext';
+import useApiService from '../../../services/ApiService';
+import { CommercialContext } from '../../../context/CommercialContext';
 import UnitDetails from './UnitDetails';
-import AlertComp from '../../components/AlertComp';
+import AlertComp from '../../../components/AlertComp';
 import FloorBasedUnits from './FloorBasedUnits';
 import AddMoreWings from './AddMoreWings';
+import WingsValidationSchema from '../../../utils/validations/WingsValidationSchema';
 export default function AddWingComp() {
     const { postAPI } = useApiService();
-    const { wingDetails, setUtils, setWingDetails, setLoading, setShowAlerts } = useContext(CommercialContext);
+    const { wingDetails, utils, setUtils, setWingDetails, setLoading, setShowAlerts } = useContext(CommercialContext);
     const [sameNumOfUnitFlag, setSameNumOfUnitFlag] = useState(null);
     const [wingStep, setWingStep] = useState(1);
     const submitWingDetails = async (values) => {
@@ -90,7 +90,7 @@ export default function AddWingComp() {
                                         </div>
                                         <div className='col-md-12 position-relative mb-5'>
                                             <label className='custom-label'>Number of Floors <span className='text-danger'>*</span></label>
-                                            <Field type="number" className="customInput" name='numberofFloors' autoComplete='off' />
+                                            <Field type="number" className="customInput" name='numberofFloors' autoComplete='off' min={0}/>
                                             <ErrorMessage name='numberofFloors' component="div" className="text-start errorText" />
                                         </div>
                                     </div>

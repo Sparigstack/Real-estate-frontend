@@ -12,7 +12,7 @@ export default function AddMoreWings({ setWingStep }) {
     const [selectedWing, setSelectedWing] = useState(null);
     const [wingDetailsArray, setWingDetailsArray] = useState([]);
     const [loading, setLoading] = useState(false);
-    const { utils } = useContext(CommercialContext);
+    const { utils, setShowAlerts } = useContext(CommercialContext);
     const { getAPI, postAPI } = useApiService();
 
     useEffect(() => {
@@ -43,10 +43,9 @@ export default function AddMoreWings({ setWingStep }) {
                 propertyId: utils.propertyId,
                 sameWingId: selectedWing,
                 wingName: values?.wingName,
-
             })
             try {
-                const result = await postAPI('/add-wing-details', raw);
+                const result = await postAPI('/add-similar-wing', raw);
                 if (!result || result == "") {
                     alert('Something went wrong');
                 } else {

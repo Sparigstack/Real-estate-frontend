@@ -1,12 +1,12 @@
 import React, { createContext, useState } from 'react'
 import ShowLoader from '../components/loader/ShowLoader';
 import HideLoader from '../components/loader/HideLoader';
+import { Outlet } from 'react-router-dom';
 export const CommercialContext = createContext();
-export default function CommercialProvider({ children }) {
+export default function CommercialProvider() {
     const [loading, setLoading] = useState(false);
     const [showAlerts, setShowAlerts] = useState(false);
     const [utils, setUtils] = useState({
-        propertyFlag: 0,
         propertyId: null,
         wingId: null,
         floorUnitDetails: [],
@@ -39,7 +39,7 @@ export default function CommercialProvider({ children }) {
             <CommercialContext.Provider value={{
                 utils, setUtils, commercialDetails, wingDetails, setShowAlerts, setLoading, setWingDetails, unitDetails
             }}>
-                {children}
+                <Outlet/>
             </CommercialContext.Provider>
         </>
     )

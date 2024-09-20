@@ -23,5 +23,4 @@ const Images = {
     help: new URL('../assets/images/help.svg', import.meta.url).href,
     chatbot: new URL('../assets/images/chatbot.svg', import.meta.url).href,
 }
-
 export default Images
