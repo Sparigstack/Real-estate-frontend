@@ -7,12 +7,12 @@ export default function CommercialProvider() {
     const [loading, setLoading] = useState(false);
     const [showAlerts, setShowAlerts] = useState(false);
     const [utils, setUtils] = useState({
+        commercialStepView: 0,
         propertyId: null,
         wingId: null,
         floorUnitDetails: [],
         floorUnitCounts: [],
         propertyTypeDetails: [],
-        commercialStepView: 0
     });
     const [commercialDetails, setCommercialDetails] = useState({
         propertyName: '',
@@ -39,7 +39,7 @@ export default function CommercialProvider() {
             <CommercialContext.Provider value={{
                 utils, setUtils, commercialDetails, wingDetails, setShowAlerts, setLoading, setWingDetails, unitDetails
             }}>
-                <Outlet/>
+                <Outlet />
             </CommercialContext.Provider>
         </>
     )
