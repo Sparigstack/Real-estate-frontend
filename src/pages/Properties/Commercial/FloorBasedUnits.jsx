@@ -20,7 +20,7 @@ const floorWiseUnitsValidationSchema = (floorUnitCounts) => {
 }
 
 export default function FloorBasedUnits({ setWingStep }) {
-    const { wingDetails, utils } = useContext(CommercialContext);
+    const { wingDetails, utils, setUtils } = useContext(CommercialContext);
     const [loading, setLoading] = useState(false);
     const [showAlerts, setShowAlerts] = useState(false);
     const { postAPI } = useApiService();
@@ -56,7 +56,7 @@ export default function FloorBasedUnits({ setWingStep }) {
                         setLoading(false);
                         setShowAlerts(<AlertComp show={false} />);
                         setWingStep(3);
-                    }, 2000);
+                    }, 2500);
                 }
                 else {
                     setShowAlerts(<AlertComp show={true} variant="danger" message={responseRs?.msg} />);
