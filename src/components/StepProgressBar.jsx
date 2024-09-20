@@ -7,13 +7,13 @@ export default function StepProgressBar({ currentStep, totalSteps }) {
         <div className="stepper">
             <div className="stepper-container">
                 <div className="stepper-line">
-                    <div className="stepper-progress"  style={{ width: `${(currentStep / totalSteps) * 100}%` }}/>
+                    <div className="stepper-progress" style={{ width: `${(currentStep / totalSteps) * 100}%` }} />
                 </div>
                 <div className="stepper-steps">
                     {steps.map((step) => (
-                        <>
-                        <div key={step} className={`stepper-step  ${step < currentStep ? 'completed' : ''} ${step == currentStep ? 'active' : ''}`}>{step}</div>
-                        </>
+                        <div key={step} className={`stepper-step  ${step < currentStep ? 'completed' : ''} ${step == currentStep ? 'active' : ''}`}>
+                            {`${step} Wing`}
+                        </div>
                     ))}
                 </div>
             </div>

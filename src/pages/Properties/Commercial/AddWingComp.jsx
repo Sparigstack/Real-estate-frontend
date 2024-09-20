@@ -7,7 +7,7 @@ import AlertComp from '../../../components/AlertComp';
 import FloorBasedUnits from './FloorBasedUnits';
 import AddMoreWings from './AddMoreWings';
 import WingsValidationSchema from '../../../utils/validations/WingsValidationSchema';
-export default function AddWingComp() {
+export default function AddWingComp({ setCurrentStep, currentStep, totalSteps }) {
     const { postAPI } = useApiService();
     const { wingDetails, utils, setUtils, setWingDetails, setLoading, setShowAlerts } = useContext(CommercialContext);
     const [sameNumOfUnitFlag, setSameNumOfUnitFlag] = useState(null);
@@ -90,7 +90,7 @@ export default function AddWingComp() {
                                         </div>
                                         <div className='col-md-12 position-relative mb-5'>
                                             <label className='custom-label'>Number of Floors <span className='text-danger'>*</span></label>
-                                            <Field type="number" className="customInput" name='numberofFloors' autoComplete='off' min={0}/>
+                                            <Field type="number" className="customInput" name='numberofFloors' autoComplete='off' min={0} />
                                             <ErrorMessage name='numberofFloors' component="div" className="text-start errorText" />
                                         </div>
                                     </div>
@@ -123,7 +123,7 @@ export default function AddWingComp() {
                 <FloorBasedUnits setWingStep={setWingStep} />
             }
             {wingStep == 3 &&
-                <UnitDetails setWingStep={setWingStep} />
+                <UnitDetails setWingStep={setWingStep} setCurrentStep={setCurrentStep} currentStep={currentStep} totalSteps={totalSteps} />
             }
             {wingStep == 4 &&
                 <AddMoreWings setWingStep={setWingStep} />

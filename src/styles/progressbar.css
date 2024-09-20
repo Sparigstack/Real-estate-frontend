@@ -1,67 +1,87 @@
 .stepper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stepper-container {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+}
+
+.stepper-steps {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  z-index: 1;
+}
+
+.stepper-step {
+  width: 45px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #ccc;
+  border-radius: 50%;
+  background-color: #fff;
+  position: relative;
+  transition: background-color 0.3s, border-color 0.3s;
+  font-size: 12px;
+  text-align: center;
+}
+
+.stepper-step.completed {
+  background-color: #4caf50;
+  color: #fff;
+  border-color: #4caf50;
+}
+
+.stepper-step.active {
+  background-color: #7b7c7d;
+  color: #fff;
+  border-color: #7b7c7d;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(123, 124, 125, 0.7);
   }
-  
-  .stepper-container {
-    position: relative;
-    width: 100%;
-    max-width: 600px;
+
+  70% {
+    box-shadow: 0 0 0 10px rgba(123, 124, 125, 0);
   }
-  
-  .stepper-steps {
-    display: flex;
-    justify-content: space-between;
-    position: relative;
-    z-index: 1;
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(123, 124, 125, 0);
   }
-  
-  .stepper-step {
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 2px solid #ccc;
-    border-radius: 50%;
-    background-color: #fff;
-    position: relative;
-  }
-  
-  .stepper-step.completed {
-    background-color: #4caf50;
-    color: #fff;
-    border-color: #4caf50;
-  }
-  
-  .stepper-step.active {
-    background-color: #2196f3;
-    color: #fff;
-    border-color: #2196f3;
-  }
-  
-  .stepper-line {
-    position: absolute;
-    top: 50%;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background-color: #ccc;
-    z-index: 0;
-  }
-  
-  .stepper-progress {
-    height: 100%;
-    background-color: #2196f3;
-    position: absolute;
-    top: 0;
-    left: 0;
-  }
-  
-  .stepper-controls {
-    margin-top: 20px;
-    display: flex;
-    gap: 10px;
-  }
-  
+}
+
+.stepper-line {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #ccc;
+  z-index: 0;
+
+}
+
+.stepper-progress {
+  height: 100%;
+  background-color: #7b7c7d;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  transition: width 0.4s ease;
+}
+
+.stepper-controls {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+}

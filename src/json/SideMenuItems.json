@@ -19,7 +19,7 @@
                 "label": "Add Property"
             },
             {
-                "path": "/commercial",
+                "path": "/commercial-view",
                 "imageKey": "commercial",
                 "altText": "Commercial",
                 "label": "Commercial"
