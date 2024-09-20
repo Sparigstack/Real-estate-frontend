@@ -26,30 +26,42 @@ export default function SideMenu() {
                 {SideMenuItems.map((item, index) => (
                     <li className="nav-item pb-2" key={index}>
                         <div className='d-flex align-items-center w-100 justify-content-between'>
-                            <NavLink
-                                to={item.submenu.length > 0 ? '' : item.path}
-                                className={({ isActive }) =>
-                                    isActive ? 'nav-link active text-white fw-bold px-2' : 'nav-link text-white fw-light px-2'
-                                }
-                            >
-                                <img src={Images[item.imageKey]} className="me-3 leftmenuicon" alt={item.altText} />
-                                {item.label}
-                            </NavLink>
+                            {item.submenu.length > 0 ? (
+                                <div
+                                    className='nav-link w-100 text-white fw-light px-2'
+                                    onClick={() => handleToggleSubMenu(index)}
+                                    style={{ cursor: 'pointer' }}
+                                >
+                                    <img src={Images[item.imageKey]} className="me-3 leftmenuicon" alt={item.altText} />
+                                    {item.label}
+                                </div>
+                            ) : (
+                                <NavLink
+                                    to={item.path}
+                                    className={({ isActive }) =>
+                                        isActive ? 'nav-link active text-white fw-bold px-2' : 'nav-link text-white fw-light px-2'
+                                    }
+                                >
+                                    <img src={Images[item.imageKey]} className="me-3 leftmenuicon" alt={item.altText} />
+                                    {item.label}
+                                </NavLink>
+                            )}
                             {item.submenu.length > 0 && (
-                                openMenus[index] ?
+                                openMenus[index] ? (
                                     <FontAwesomeIcon
                                         icon={faChevronUp}
                                         style={{ color: "white" }}
-                                        className={`dropdown-icon}`}
+                                        className={`dropdown-icon`}
                                         onClick={() => handleToggleSubMenu(index)}
                                     />
-                                    :
+                                ) : (
                                     <FontAwesomeIcon
                                         icon={faChevronDown}
                                         style={{ color: "white" }}
-                                        className={`dropdown-icon}`}
+                                        className={`dropdown-icon`}
                                         onClick={() => handleToggleSubMenu(index)}
                                     />
+                                )
                             )}
                         </div>
 

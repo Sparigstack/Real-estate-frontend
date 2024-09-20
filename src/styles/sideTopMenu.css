@@ -4,9 +4,11 @@
     width: 100%;
     /* background-color: #03053d; */
 }
-.sub-menu li{
+
+.sub-menu li {
     list-style: none;
 }
+
 .sidemenu-container {
     width: 250px;
     background-color: #303260;
@@ -71,12 +73,22 @@
     left: 15px;
     top: 50%;
     transform: translateY(-50%);
+    height: 20px;
 }
 
 .searchInput {
     padding-left: 45px !important;
-    background-color: #E4E6F6 !important;
+    background-color: #03053D !important;
+    border-color: #03053D !important;
 }
+
+.searchInput::placeholder {
+    color: #C4F2EA4D !important;
+    /* Change this to your desired color */
+    opacity: 1 !important;
+    /* Ensures the placeholder is fully opaque */
+}
+
 
 .profileOpen {
     display: inline-flex;

@@ -56,14 +56,16 @@ export default function LoginDetails({ setLoginView, formData, setFormData }) {
                         handleGetOtp(values);
                     }}>
                     {() => (
-                        <Form>
-                            <div className='mb-3'>
-                                <Field type="text" className="custom-form-control" name='username' autoComplete='off' placeholder="User Name" />
-                                <ErrorMessage name='username' component="div" className="text-danger mt-1 errorText position-relative" />
+                        <Form className='w-25 d-inline-block justify-content-center'>
+                            <div className='position-relative mb-4'>
+                                <label className='custom-label'>User Name <span className='text-danger'>*</span></label>
+                                <Field type="text" className="customInput" name='username' autoComplete='off' />
+                                <ErrorMessage name='username' component="div" className="text-start errorText" />
                             </div>
-                            <div className=''>
-                                <Field type="email" className="custom-form-control" name='email' autoComplete='off' placeholder="Email" />
-                                <ErrorMessage name='email' component="div" className="text-danger mt-1 errorText position-relative" />
+                            <div className='position-relative mb-4'>
+                                <label className='custom-label'>Email <span className='text-danger'>*</span></label>
+                                <Field type="email" className="customInput" name='email' autoComplete='off' />
+                                <ErrorMessage name='email' component="div" className="text-start errorText" />
                             </div>
                             <div className='mt-4 p-2'>
                                 <button type="submit" className='otpBtn'>GET OTP</button>

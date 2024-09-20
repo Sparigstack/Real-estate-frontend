@@ -22,13 +22,11 @@ export default function Login() {
     }, [])
     return (
         <div>
-            {loginview == 1 && (<SignUpLoginPage setLoginView={setLoginView} />)}
-            {loginview != 1 && (
-                <LoginLayout loginview={loginview} setLoginView={setLoginView}>
-                    {loginview == 2 && <LoginDetails setLoginView={setLoginView} formData={formData} setFormData={setFormData} />}
-                    {loginview == 3 && <EnterOtp formData={formData} />}
-                </LoginLayout>
-            )}
+            <LoginLayout loginview={loginview} setLoginView={setLoginView}>
+                {loginview == 1 && (<SignUpLoginPage setLoginView={setLoginView} />)}
+                {loginview == 2 && <LoginDetails setLoginView={setLoginView} formData={formData} setFormData={setFormData} />}
+                {loginview == 3 && <EnterOtp formData={formData} />}
+            </LoginLayout>
         </div>
     )
 }

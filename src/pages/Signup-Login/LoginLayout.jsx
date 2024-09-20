@@ -7,9 +7,11 @@ export default function LoginLayout({ children, loginview, setLoginView }) {
             <div className="BackgroundImageLogin">
                 <div className='text-center text-white pt-5'>
                     <div className="d-flex align-items-center justify-content-center position-relative">
-                        <img src={Images.backArrow} alt="back-arrow"
-                            className='position-absolute cursor-pointer' style={{ left: "5%", height: '40px' }}
-                            onClick={() => setLoginView(loginview - 1)} />
+                        {loginview != 1 && (
+                            <img src={Images.backArrow} alt="back-arrow"
+                                className='position-absolute cursor-pointer' style={{ left: "5%", height: '40px' }}
+                                onClick={() => setLoginView(loginview - 1)} />
+                        )}
                         <img src={Images.realEstateLogo} alt="realestatelogo" className='' />
                     </div>
                     <div className='loginContent'>

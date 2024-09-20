@@ -67,7 +67,7 @@ export default function TopMenu() {
             {showAlerts}
             {loading ? <ShowLoader /> : <HideLoader />}
             <div className="topmenu-wrapper">
-                <div className="position-relative">
+                <div className="position-relative" style={{ width: "40%" }}>
                     <img src={Images.searchIcon} alt="search-icon" className="search-icon" />
                     <input
                         type="text"
