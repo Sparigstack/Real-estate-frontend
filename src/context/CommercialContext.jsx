@@ -30,7 +30,8 @@ export default function CommercialProvider() {
     })
     const [unitDetails, setUnitDetails] = useState({
         unitSize: '',
-        startingNumber: ''
+        startingNumber: '',
+        unitPrice:''
     })
     return (
         <>

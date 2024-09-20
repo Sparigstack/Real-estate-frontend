@@ -8,6 +8,11 @@ const UnitsValidationSchema = (sameUnitSizeFlag, floorUnitDetails) => {
             .typeError('Unit size must be a number')
             .positive('Unit size must be a positive number')
             .integer('Unit size must be an integer');
+          acc[`eachUnitPrice${unit?.unitId}`] = Yup.number()
+          .required('Unit price is required')
+          .typeError('Unit price must be a number')
+          .positive('Unit price must be a positive number')
+          .integer('Unit price must be an integer');
         });
         return acc;
       }, {});
@@ -17,6 +22,7 @@ const UnitsValidationSchema = (sameUnitSizeFlag, floorUnitDetails) => {
 
     ...(sameUnitSizeFlag == 1 && {
         unitSize: Yup.number().required('Unit size is required').typeError('Unit size must be a number').positive('Unit size must be a positive number').integer('Unit size must be an integer'),
+        unitPrice: Yup.number().required('Unit Price is required').typeError('Unit size must be a number').positive('Unit size must be a positive number').integer('Unit size must be an integer'),
     }),
     ...(sameUnitSizeFlag == 0 && unitSizeEachFloorValidation),
 });

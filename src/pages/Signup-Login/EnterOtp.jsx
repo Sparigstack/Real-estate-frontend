@@ -90,6 +90,7 @@ export default function EnterOtp({ formData }) {
         e.preventDefault();
         setLoading(true);
         var raw = JSON.stringify({
+            username : formData.username, 
             email: formData.email
         })
         try {

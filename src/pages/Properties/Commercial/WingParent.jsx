@@ -7,7 +7,9 @@ export default function WingParent({ totalSteps }) {
     return (
         <>
             <div className='pt-3'>
-                <StepProgressBar currentStep={currentStep} totalSteps={totalSteps} />
+                {totalSteps != 1 &&
+                    <StepProgressBar currentStep={currentStep} totalSteps={totalSteps} />
+                }
             </div>
             <AddWingComp setCurrentStep={setCurrentStep} currentStep={currentStep} totalSteps={totalSteps} />
         </>
