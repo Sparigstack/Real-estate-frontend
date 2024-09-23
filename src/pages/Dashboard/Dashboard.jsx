@@ -1,10 +1,10 @@
 import React from 'react'
-import UserDetailsForm from '../Signup-Login/UserDetailsForm'
+
 
 export default function Dashboard() {
   return (
     <div>
-      
+      <h1 className='text-white'>Dashboard</h1>
     </div>
   )
 }

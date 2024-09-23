@@ -6,7 +6,7 @@ import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 import AlertComp from '../../components/AlertComp';
 
-export default function EnterOtp({ email }) {
+export default function EnterOtp({ formData }) {
     const { postAPI } = useApiService();
     const inputRefs = useRef([]);
     const navigate = useNavigate();
@@ -20,7 +20,7 @@ export default function EnterOtp({ email }) {
     const validateOtp = async (otpValue) => {
         setLoading(true);
         var raw = JSON.stringify({
-            email: email,
+            email: formData.email,
             otp: otpValue
         })
         try {
@@ -31,15 +31,15 @@ export default function EnterOtp({ email }) {
             else {
                 const responseRs = JSON.parse(result);
                 if (responseRs.status == 'success') {
-                    Cookies.set('authToken', responseRs.token, {expires : 1});
-                    localStorage.setItem('userId', responseRs.userId);
+                    Cookies.set('authToken', responseRs.token, { expires: 1 });
+                    Cookies.set('userId', responseRs.userId, { expires: 1 });
                     setOtpError('');
-                    setShowAlerts(<AlertComp show={true} variant="success" message="User logged in successfully"/>);
+                    setShowAlerts(<AlertComp show={true} variant="success" message="User logged in successfully" />);
                     setTimeout(() => {
                         setLoading(false);
-                        setShowAlerts(<AlertComp show={false}/>);
-                        navigate('/dashboard');
-                    }, 1500);                   
+                        setShowAlerts(<AlertComp show={false} />);
+                        window.location.href = '/dashboard';
+                    }, 2000);
                 }
                 else {
                     setOtpError(responseRs.msg);
@@ -90,7 +90,8 @@ export default function EnterOtp({ email }) {
         e.preventDefault();
         setLoading(true);
         var raw = JSON.stringify({
-            email: email
+            username : formData.username, 
+            email: formData.email
         })
         try {
             const result = await postAPI('/register-user', raw);
@@ -103,16 +104,21 @@ export default function EnterOtp({ email }) {
                     setLoading(false);
                     setTimeLeft(180);
                     setTimeExpired(false);
+                    setOtpError('')
+                    setOtp(Array(6).fill(''));
+                    if (inputRefs.current[0]) {
+                        inputRefs.current[0].focus();
+                    }
                 }
                 else {
-                    setShowAlerts(<AlertComp show={true} variant="danger" message={responseRs.msg}/>);
+                    setShowAlerts(<AlertComp show={true} variant="danger" message={responseRs.msg} />);
                     setTimeout(() => {
                         setShowAlerts(<AlertComp show={false} />);
-                    }, 1500);
+                    }, 2000);
                 }
             }
         }
-        catch(error) {
+        catch (error) {
             console.error(error);
         }
     }
@@ -121,6 +127,7 @@ export default function EnterOtp({ email }) {
             inputRefs.current[0].focus();
         }
     }, []);
+
     useEffect(() => {
         if (timeLeft > 0) {
             const timerId = setInterval(() => {
@@ -132,24 +139,25 @@ export default function EnterOtp({ email }) {
             setTimeExpired(true);
         }
     }, [timeLeft]);
-    useEffect(()=>{
-        if(timeExpired){
+
+    useEffect(() => {
+        if (timeExpired) {
             setOtp(Array(6).fill(''));
             setOtpError('');
             if (inputRefs.current[0]) {
                 inputRefs.current[0].focus();
             }
         }
-    },[timeExpired])
+    }, [timeExpired])
 
     return (
         <>
             {showAlerts}
             {loading ? <ShowLoader /> : <HideLoader />}
-            <div className='text-center pt-5 mt-5'>
+            <div className='text-center pt-5'>
                 <h2 className='fw-normal'>Please Enter a Code</h2>
                 <div className='mt-2'>
-                    <span className='fw-light font-16'>We've sent an email with otp to your email <br /><b>{email}</b></span>
+                    <small className='color-D8DADCE5'>We've sent an email with otp to your email <br /><b>{formData.email}</b></small>
                 </div>
             </div>
             <div className="d-flex justify-content-center mt-5">
@@ -159,7 +167,7 @@ export default function EnterOtp({ email }) {
             </div>
             <div className='text-danger mt-2'>{otpError}</div>
             {!timeExpired && (
-                <div className='text-center mt-3'>
+                <div className='text-center mt-2'>
                     <span className="font-16 text-danger fw-normal">{formatTime(timeLeft)}</span>
                 </div>
             )}
@@ -169,9 +177,9 @@ export default function EnterOtp({ email }) {
                 </div>
             )}
             {!timeExpired && (
-            <div className='text-center mt-3'>
+                <div className='text-center mt-3 mb-4'>
                     <span className='fw-light font-16'>Don't received code yet? <a className='fw-bold text-decoration-none cursor-pointer' onClick={handleResendOtp}>Resend Code</a></span>
-            </div>
+                </div>
             )}
         </>
     )

@@ -2,61 +2,90 @@
     {
         "path": "/dashboard",
         "imageKey": "dashboardIcon",
-        "altText":"dashboard",
-        "label":"Dashboard"     
+        "altText": "dashboard",
+        "label": "Dashboard",
+        "submenu": []
     },
     {
         "path": "/property",
         "imageKey": "propertyIcon",
-        "altText":"property",
-        "label":"Property"     
+        "altText": "property",
+        "label": "Property",
+        "submenu": [
+            {
+                "path": "/add-property",
+                "imageKey": "addproperties",
+                "altText": "Add Property",
+                "label": "Add Property"
+            },
+            {
+                "path": "/commercial-view",
+                "imageKey": "commercial",
+                "altText": "Commercial",
+                "label": "Commercial"
+            },
+            {
+                "path": "/residential",
+                "imageKey": "residential",
+                "altText": "Residential",
+                "label": "Residential"
+            }
+        ]
     },
     {
         "path": "/living-style",
         "imageKey": "livingStyle",
-        "altText":"living-style",
-        "label":"Living Style"     
+        "altText": "living-style",
+        "label": "Living Style",
+        "submenu": []
     },
     {
         "path": "/educational-guideline",
         "imageKey": "educationalGuideline",
-        "altText":"educational-guideline",
-        "label":"Educational Guideline"     
+        "altText": "educational-guideline",
+        "label": "Educational Guideline",
+        "submenu": []
     },
     {
         "path": "/architectural-sketches",
         "imageKey": "architecturalSketches",
-        "altText":"architectural-sketches",
-        "label":"Architectural Sketches"     
+        "altText": "architectural-sketches",
+        "label": "Architectural Sketches",
+        "submenu": []
     },
     {
         "path": "/task",
         "imageKey": "task",
-        "altText":"task",
-        "label":"Task"     
+        "altText": "task",
+        "label": "Task",
+        "submenu": []
     },
     {
         "path": "/files",
         "imageKey": "files",
-        "altText":"files",
-        "label":"Files"     
+        "altText": "files",
+        "label": "Files",
+        "submenu": []
     },
     {
         "path": "/financial-insights",
         "imageKey": "financialInsights",
-        "altText":"financial-insights",
-        "label":"Financial Insights"     
+        "altText": "financial-insights",
+        "label": "Financial Insights",
+        "submenu": []
     },
     {
         "path": "/settings",
         "imageKey": "settings",
-        "altText":"settings",
-        "label":"Settings"     
+        "altText": "settings",
+        "label": "Settings",
+        "submenu": []
     },
     {
         "path": "/account",
         "imageKey": "account",
-        "altText":"account",
-        "label":"Account"     
+        "altText": "account",
+        "label": "Account",
+        "submenu": []
     }
 ]

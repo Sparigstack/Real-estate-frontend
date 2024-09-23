@@ -3,27 +3,21 @@
   border: 1.5px solid #d8dadc;
   border-radius: 8px;
   color: white;
-  padding: 0.7rem 8rem;
+  padding: 10px 50px;
   letter-spacing: 1px;
   font-weight: 500;
   font-size: 18px;
 }
-.loginLayout{
-  background-color: #03053D;
+
+.loginLayout {
+  background: #03053D;
   min-height: 100vh;
 }
-/* .loginFooter{
-  position: fixed;
-  left:0;
-  bottom: 6%;
-  width: 100%;
-} */
-.font-42 {
-  font-size: 42px;
+
+.color-D8DADCE5 {
+  color: #D8DADCE5;
 }
-.font-16 {
-  font-size: 16px;
-}
+
 .custom-form-control {
   background-color: transparent;
   width: 25%;
@@ -36,6 +30,7 @@
   border-radius: var(--bs-border-radius);
   transition: border 0.15s ease-in-out;
 }
+
 .otpBtn {
   border: none;
   font-size: 16px;
@@ -45,6 +40,7 @@
   padding: 10px 30px 10px 30px;
   font-weight: 600;
 }
+
 .custom-radio .form-check-input {
   width: 20px;
   height: 20px;
@@ -55,14 +51,17 @@
   cursor: pointer;
   outline: none;
 }
+
 .custom-radio .form-check-input:focus {
   outline: none;
   box-shadow: none;
 }
+
 .custom-radio .form-check-input:checked {
   background-color: white;
   border: 2px solid white;
 }
+
 .custom-radio .form-check-input:checked::before {
   content: "";
   width: 10px;
@@ -74,12 +73,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
 }
-.countrycode {
-  position: absolute;
-  top: 34%;
-  padding-left: 12px;
-  pointer-events: none;
-}
+
 .otpInput {
   background-color: transparent;
   width: 3rem;
@@ -92,10 +86,17 @@
   border-radius: 10px;
   transition: border 0.15s ease-in-out;
 }
-.otpInput:focus{
+
+.otpInput:focus {
   outline: none;
 }
-.contact-form .custom-form-control::placeholder{
-  color: white;
-  font-weight: 300;
+
+.BackgroundImageLogin {
+  background: url('../assets/images/loginbackground.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
+  height: 100vh;
+  width: 100%;
 }

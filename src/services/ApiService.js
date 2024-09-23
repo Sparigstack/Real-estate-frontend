@@ -1,11 +1,9 @@
 import { useCallback } from "react";
-import { useNavigate } from "react-router-dom";
 import Cookies from 'js-cookie';
-
+import { Logout } from "../utils/js/Common";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 const useApiService = () => {
-    const navigate = useNavigate();
     const createHeaders = () => {
         const token = Cookies.get('authToken');
         const headers = new Headers();
@@ -23,8 +21,7 @@ const useApiService = () => {
         if (response?.status == 401) {
             alert('Token expired. Redirecting to the login page.');
             setTimeout(() => {
-                Cookies.remove('authToken');
-                navigate('/login');
+                Logout();
             }, 2000);
         } else if (!responseBody) {
             alert('Something went wrong');

@@ -5,7 +5,6 @@ import Dashboard from '../pages/Dashboard/Dashboard';
 import PrivateRoutes from './PrivateRoutes';
 import PageNotFound from '../pages/404-ErrorPage/PageNotFound';
 import Layout from '../components/layout/Layout';
-import UserDetailsForm from '../pages/Signup-Login/UserDetailsForm';
 
 export default function Approutes() {
   return (
@@ -13,11 +12,10 @@ export default function Approutes() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
-        <Route path="*" element={<PageNotFound />} />
         <Route element={<PrivateRoutes />}>
           <Route element={<Layout />}>
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/profile" element={<UserDetailsForm />} />
+            <Route path="*" element={<PageNotFound />} />
           </Route>
         </Route>
       </Routes>
