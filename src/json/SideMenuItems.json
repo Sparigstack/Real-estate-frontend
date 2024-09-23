@@ -40,6 +40,13 @@
         "submenu": []
     },
     {
+        "path": "/lead-management",
+        "imageKey": "leadManagement",
+        "altText": "lead-management",
+        "label": "Lead Management",
+        "submenu": []
+    },
+    {
         "path": "/educational-guideline",
         "imageKey": "educationalGuideline",
         "altText": "educational-guideline",
