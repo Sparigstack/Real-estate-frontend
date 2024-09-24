@@ -15,6 +15,9 @@ const Images = {
     searchIcon: new URL('../assets/images/search-icon.svg', import.meta.url).href,
     commercial: new URL('../assets/images/sidemenu/commercial.svg', import.meta.url).href,
     residential: new URL('../assets/images/sidemenu/residential.svg', import.meta.url).href,
-    leadManagement: new URL("../assets/images/sidemenu/lead_management.svg", import.meta.url).href
+    leadManagement: new URL("../assets/images/sidemenu/lead_management.svg", import.meta.url).href,
+    gridMail: new URL("../assets/images/grid_mail.svg", import.meta.url).href,
+    gridMsg: new URL("../assets/images/grid_msg.svg", import.meta.url).href,
+    gridEdit: new URL("../assets/images/grid_edit.svg", import.meta.url).href
 }
 export default Images

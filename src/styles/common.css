@@ -192,3 +192,57 @@
   flex: 0 0 115px;
   display: flex;
 }
+
+.TitleHeader {
+  padding: 8px;
+  background: #303260;
+  color: white;
+  border-radius: 6px;
+}
+
+.WhiteBtn {
+  border: none;
+  font-size: 13px;
+  color: black;
+  background: white;
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-weight: 600;
+}
+
+
+.overflowXHidden {
+  overflow-x: hidden;
+}
+
+
+.GridHeader {
+  background: #050854;
+  color: white;
+  font-size: 15px;
+  padding: 11px 5px;
+  font-weight: 700;
+  border-radius: 5px;
+}
+
+.GridData {
+  color: white;
+  font-size: 14px;
+  border-bottom: 1px solid #484155;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  word-wrap: break-word;
+}
+
+.iconsize {
+  height: 20px;
+  width: 20px;
+}
+
+.font-13 {
+  font-size: 13px;
+}
+
+select {
+  font-size: 13px !important;
+}

@@ -1,0 +1,59 @@
+.greenstatusicon {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #79E07D;
+}
+
+.bluestatusicon {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #38A5EB;
+}
+
+.yellowstatusicon {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #E0E26B;
+}
+
+.redstatusicon {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #D45959;
+}
+
+/* Custom scrollbar for WebKit browsers (Chrome, Safari) */
+.parent-container {
+    display: flex;
+    flex-direction: column;
+    height: 60vh;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+    width: 2px;
+}
+
+.hide-scrollbar::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.hide-scrollbar::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 10px;
+}
+
+.hide-scrollbar::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+}
+
+.hide-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: #888 #f1f1f1;
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+}

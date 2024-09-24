@@ -1,0 +1,24 @@
+.SuccessBtn {
+    border: none;
+    font-size: 14px;
+    color: white;
+    background: #03053D;
+    border-radius: 5px;
+    padding: 7px 30px;
+}
+
+.CancelBtn {
+    border: none;
+    font-size: 14px;
+    color: black;
+    background: white;
+    border-radius: 5px;
+    padding: 7px 30px;
+    border: 1px solid #EAEAEA
+}
+
+.modal-header {
+    padding: 10px 20px !important;
+    background: #F7F7F7;
+
+}

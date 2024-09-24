@@ -41,9 +41,9 @@
 
 .content-area {
     flex-grow: 1;
-    padding: 20px;
+    padding: 10px;
     background-color: #03053d;
-    overflow-y: auto;
+    overflow-y: hidden;
 }
 
 .side-menu-logo {

@@ -36,6 +36,7 @@ export default function LoginDetails({ setLoginView, formData, setFormData }) {
             }
         }
         catch (error) {
+            setLoading(false);
             console.error(error);
         }
     }
