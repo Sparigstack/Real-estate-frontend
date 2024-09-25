@@ -1,6 +1,6 @@
 import { faAngleLeft, faIndianRupeeSign } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Images from '../../utils/Images'
 import { formatCurrency } from '../../utils/js/Common'
 import CustomModal from '../../utils/CustomModal'
@@ -8,21 +8,43 @@ import AddUpdateLead from './AddUpdateLead'
 import ShowLoader from '../../components/loader/ShowLoader'
 import HideLoader from '../../components/loader/HideLoader'
 import useApiService from '../../services/ApiService'
+import Cookies from 'js-cookie'
 
 export default function AllLeads({ setGridFlag }) {
-    const { postAPI } = useApiService();
+    const { postAPI, getAPI } = useApiService();
     const fileInputRef = useRef(null);
     const [loading, setLoading] = useState(false);
     const [showAlerts, setShowAlerts] = useState(false);
     const [LeadPopup, setLeadPopup] = useState(false);
+    const [LeadData, setLeadData] = useState([]);
     const [formData, setFormData] = useState({
         name: '',
         email: '',
         source: 0,
         propertyinterest: 0,
         budget: '',
-        contactno: ''
+        contactno: '',
+        leadid: 0
     });
+    const userId = Cookies.get('userId');
+    useEffect(() => {
+        getAllLeads();
+    }, []);
+    const getAllLeads = async () => {
+        try {
+            const result = await getAPI(`/get-leads/${userId}`);
+            if (!result || result == "") {
+                alert('Something went wrong');
+            }
+            else {
+                const responseRs = JSON.parse(result);
+                setLeadData(responseRs)
+            }
+        }
+        catch (error) {
+            console.error(error);
+        }
+    }
     function handleHide() {
         setLeadPopup(false);
     }
@@ -34,7 +56,8 @@ export default function AllLeads({ setGridFlag }) {
             contactno: values.contactno,
             budget: values.budget,
             source: values.source,
-            propertyinterest: values.propertyinterest
+            propertyinterest: values.propertyinterest,
+            leadid: formData.leadid
         });
         console.log(raw)
         // try {
@@ -77,6 +100,31 @@ export default function AllLeads({ setGridFlag }) {
             fileInputRef.current.click();
         }
     };
+    const getLeadById = async (leadid) => {
+        try {
+            const result = await getAPI(`/get-lead-byid/${leadid}`);
+            if (!result || result == "") {
+                alert('Something went wrong');
+            }
+            else {
+                const responseRs = JSON.parse(result);
+                setLeadPopup(true);
+                setFormData({
+                    ...formData,
+                    name: responseRs,
+                    email: '',
+                    source: 0,
+                    propertyinterest: 0,
+                    budget: '',
+                    contactno: '',
+                    leadid: 0
+                })
+            }
+        }
+        catch (error) {
+            console.error(error);
+        }
+    }
     return (
         <div>
             {showAlerts}
@@ -102,7 +150,7 @@ export default function AllLeads({ setGridFlag }) {
                                 style={{ display: 'none' }}
                                 ref={fileInputRef}
                             />
-                            Bulk Upload CSV
+                            Upload CSV
                         </button>
                         <a className='font-13 text-decoration-underline ps-2 cursor-pointer'
                             href="/csv/lead_csv.csv"
@@ -112,10 +160,7 @@ export default function AllLeads({ setGridFlag }) {
                 </div>
             </div>
             <div className='d-flex justify-content-end my-3'>
-                <div className='pe-4' style={{ color: "#79E07D", fontSize: "13px" }}>
-                    <label className='greenstatusicon me-2'></label>
-                    Highly Interested
-                </div>
+                {/* 0-new, 1-negotiation, 2-in contact, 3-highly interested, 4-closed */}
                 <div className='pe-4' style={{ color: "#38A5EB", fontSize: "13px" }}>
                     <label className='bluestatusicon me-2'></label>
                     New
@@ -123,6 +168,14 @@ export default function AllLeads({ setGridFlag }) {
                 <div className='pe-4' style={{ color: "#E0E26B", fontSize: "13px" }}>
                     <label className='yellowstatusicon me-2'></label>
                     In Negotiation
+                </div>
+                <div className='pe-4' style={{ color: "#fa89d1", fontSize: "13px" }}>
+                    <label className='pinkstatusicon me-2'></label>
+                    In Contact
+                </div>
+                <div className='pe-4' style={{ color: "#79E07D", fontSize: "13px" }}>
+                    <label className='greenstatusicon me-2'></label>
+                    Highly Interested
                 </div>
                 <div style={{ color: "#D45959", fontSize: "13px" }}>
                     <label className='redstatusicon me-2'></label>
@@ -141,42 +194,46 @@ export default function AllLeads({ setGridFlag }) {
             </div>
             <div className="parent-container">
                 <div className='hide-scrollbar'>
-                    <div className='row GridData'>
-                        <div className='col-md-2 ps-3'>
-                            <label className='greenstatusicon me-2'></label>
-                            Ronak Shah<br />(9876563722)
+                    {LeadData.length > 0 ?
+                        LeadData.map((item, index) => {
+                            var statuscolor = "";
+                            if (item.status == 0) {
+                                statuscolor = "bluestatusicon";
+                            } else if (item.status == 1) {
+                                statuscolor = "yellowstatusicon";
+                            } else if (item.status == 2) {
+                                statuscolor = "pinkstatusicon";
+                            } else if (item.status == 3) {
+                                statuscolor = "greenstatusicon";
+                            } else if (item.status == 4) {
+                                statuscolor = "redstatusicon";
+                            }
+                            return <div className='row GridData' key={index}>
+                                <div className='col-md-2 ps-3'>
+                                    {item.status == 0}
+                                    <label className={`${statuscolor} me-2`}></label>
+                                    {item.name}<br />({item.contact_no})
+                                </div>
+                                <div className='col-md-3'>{item.email}</div>
+                                <div className='col-md-2 '>{item?.lead_source?.name}</div>
+                                <div className='col-md-2'>{item?.userproperty?.name}</div>
+                                <div className='col-md-1'>
+                                    <FontAwesomeIcon icon={faIndianRupeeSign} className='pe-1' />
+                                    {formatCurrency(item.budget)}
+                                </div>
+                                <div className='col-md-2 text-center'>
+                                    <img src={Images.gridEdit} className='cursor-pointer iconsize me-2' title='Edit Lead'
+                                        onClick={(e) => getLeadById(item.id)} />
+                                    <img src={Images.gridMsg} className='cursor-pointer iconsize me-2' title='Add Notes' />
+                                    <img src={Images.gridMail} className='cursor-pointer iconsize' title='Contact using Mail' />
+                                </div>
+                            </div>
+                        })
+                        :
+                        <div className='row text-center'>
+                            <label className='norecorddiv'>No Leads Found</label>
                         </div>
-                        <div className='col-md-3'>Ronakshah12@gmail.com</div>
-                        <div className='col-md-2 '>Reference</div>
-                        <div className='col-md-2'>The first</div>
-                        <div className='col-md-1'>
-                            <FontAwesomeIcon icon={faIndianRupeeSign} className='pe-1' />
-                            {formatCurrency(200000)}
-                        </div>
-                        <div className='col-md-2 text-center'>
-                            <img src={Images.gridEdit} className='cursor-pointer iconsize me-2' title='Edit Lead' />
-                            <img src={Images.gridMsg} className='cursor-pointer iconsize me-2' title='Add Notes' />
-                            <img src={Images.gridMail} className='cursor-pointer iconsize' title='Contact using Mail' />
-                        </div>
-                    </div>
-                    <div className='row GridData'>
-                        <div className='col-md-2 ps-3'>
-                            <label className='redstatusicon me-2'></label>
-                            Riya<br />(1234574657)
-                        </div>
-                        <div className='col-md-3'>Riya123@gmail.com</div>
-                        <div className='col-md-2 '>Social Media</div>
-                        <div className='col-md-2'>Ganesh Glory</div>
-                        <div className='col-md-1'>
-                            <FontAwesomeIcon icon={faIndianRupeeSign} className='pe-1' />
-                            {formatCurrency(30000000)}
-                        </div>
-                        <div className='col-md-2 text-center'>
-                            <img src={Images.gridEdit} className='cursor-pointer iconsize me-2' title='Edit Lead' />
-                            <img src={Images.gridMsg} className='cursor-pointer iconsize me-2' title='Add Notes' />
-                            <img src={Images.gridMail} className='cursor-pointer iconsize' title='Contact using Mail' />
-                        </div>
-                    </div>
+                    }
                 </div>
             </div>
             <CustomModal isShow={LeadPopup} size={"lg"} title="Add Lead" closePopup={handleHide}

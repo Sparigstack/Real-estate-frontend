@@ -26,6 +26,13 @@
     background-color: #D45959;
 }
 
+.pinkstatusicon {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #fa89d1;
+}
+
 /* Custom scrollbar for WebKit browsers (Chrome, Safari) */
 .parent-container {
     display: flex;

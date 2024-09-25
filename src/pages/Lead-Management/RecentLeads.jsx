@@ -9,7 +9,7 @@ export default function RecentLeads({ setGridFlag }) {
                 </div>
                 <div className='col-md-6 text-end'>
                     <button type="submit" className='WhiteBtn'>Mass Email</button>
-                    <button type="submit" className='WhiteBtn ms-3'>Bulk upload CSV</button>
+                    <button type="submit" className='WhiteBtn ms-3'>Upload CSV</button>
                     <label className='text-decoration-underline cursor-pointer ms-3' onClick={(e) => setGridFlag(2)}>All Leads</label>
                 </div>
             </div>

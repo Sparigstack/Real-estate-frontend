@@ -44,7 +44,20 @@
         "imageKey": "leadManagement",
         "altText": "lead-management",
         "label": "Lead Management",
-        "submenu": []
+        "submenu": [
+            {
+                "path": "/lead-management",
+                "imageKey": "mainLead",
+                "altText": "Leads",
+                "label": "Leads"
+            },
+            {
+                "path": "/leads-setting",
+                "imageKey": "leadSetting",
+                "altText": "Lead Setting",
+                "label": "Lead Setting"
+            }
+        ]
     },
     {
         "path": "/educational-guideline",

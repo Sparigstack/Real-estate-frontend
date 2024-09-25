@@ -246,3 +246,10 @@
 select {
   font-size: 13px !important;
 }
+
+.norecorddiv {
+  color: white;
+  font-size: 20px;
+  border-bottom: 1px solid #484155;
+  padding: 10px;
+}

@@ -1,10 +1,50 @@
 import { Field, Formik, Form, ErrorMessage } from 'formik';
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import AddUpdateLeadValidationSchema from '../../utils/validations/AddUpdateLeadValidationSchema';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faIndianRupeeSign } from '@fortawesome/free-solid-svg-icons';
+import useApiService from '../../services/ApiService';
+import Cookies from 'js-cookie';
 
 export default function AddUpdateLead({ formData, setFormData, handleAddLead, handleHide }) {
+    const { getAPI } = useApiService();
+    const userId = Cookies.get('userId');
+    const [sourcesData, setsourcesData] = useState([]);
+    const [propertiesData, setpropertiesData] = useState([]);
+    useEffect(() => {
+        getSources();
+        getProperties();
+    }, []);
+    async function getSources() {
+        try {
+            const result = await getAPI(`/get-sources`);
+            if (!result || result == "") {
+                alert('Something went wrong');
+            }
+            else {
+                const responseRs = JSON.parse(result);
+                setsourcesData(responseRs)
+            }
+        }
+        catch (error) {
+            console.error(error);
+        }
+    }
+    async function getProperties() {
+        try {
+            const result = await getAPI(`/get-user-properties/${userId}`);
+            if (!result || result == "") {
+                alert('Something went wrong');
+            }
+            else {
+                const responseRs = JSON.parse(result);
+                setpropertiesData(responseRs)
+            }
+        }
+        catch (error) {
+            console.error(error);
+        }
+    }
     return (
         <Formik initialValues={formData}
             validationSchema={AddUpdateLeadValidationSchema}
@@ -43,11 +83,9 @@ export default function AddUpdateLead({ formData, setFormData, handleAddLead, ha
                         <label className='font-13'>Source <span className='text-danger'>*</span></label>
                         <Field as="select" className="form-control" name='source'>
                             <option value="0" label="Select source" />
-                            <option value="Website" label="Website" />
-                            <option value="Referral" label="Reference" />
-                            <option value="Social Media" label="Social Media" />
-                            <option value="Call" label="Call" />
-                            <option value="Other" label="Other" />
+                            {sourcesData?.map((item, index) => {
+                                return <option value={item.id} label={item.name} key={index} />
+                            })}
                         </Field>
                         <ErrorMessage name='source' component="div" className="text-start errorText" />
                     </div>
@@ -55,8 +93,9 @@ export default function AddUpdateLead({ formData, setFormData, handleAddLead, ha
                         <label className='font-13'>Property Interest <span className='text-danger'>*</span></label>
                         <Field as="select" className="form-control" name='propertyinterest'>
                             <option value="0" label="Select Property" />
-                            <option value="1" label="The First" />
-                            <option value="2" label="Ganesh Gloery" />
+                            {propertiesData?.map((item, index) => {
+                                return <option value={item.id} label={item.name} key={index} />
+                            })}
                         </Field>
                         <ErrorMessage name='propertyinterest' component="div" className="text-start errorText" />
                     </div>
