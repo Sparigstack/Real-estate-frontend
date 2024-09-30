@@ -8,7 +8,9 @@ export default function UserProvider({ children }) {
     const { getAPI } = useApiService();
     const [userDetails, setUserDetails] = useState({
         userName: '',
-        email: ''
+        email: '',
+        client_id: '',
+        client_secret_key: ''
     });
     useEffect(() => {
         if (token) {
@@ -26,7 +28,9 @@ export default function UserProvider({ children }) {
                 setUserDetails({
                     ...userDetails,
                     userName: responseRs?.msg?.name || '',
-                    email: responseRs?.msg?.email
+                    email: responseRs?.msg?.email,
+                    client_id: responseRs?.msg?.client_id,
+                    client_secret_key: responseRs?.msg?.client_secret_key
                 })
             }
         }

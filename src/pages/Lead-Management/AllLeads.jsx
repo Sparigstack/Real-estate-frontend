@@ -9,6 +9,7 @@ import ShowLoader from '../../components/loader/ShowLoader'
 import HideLoader from '../../components/loader/HideLoader'
 import useApiService from '../../services/ApiService'
 import Cookies from 'js-cookie'
+import AlertComp from '../../components/AlertComp'
 
 export default function AllLeads({ setGridFlag }) {
     const { postAPI, getAPI } = useApiService();
@@ -16,7 +17,10 @@ export default function AllLeads({ setGridFlag }) {
     const [loading, setLoading] = useState(false);
     const [showAlerts, setShowAlerts] = useState(false);
     const [LeadPopup, setLeadPopup] = useState(false);
+    const [LeadNotesPopup, setLeadNotesPopup] = useState(false);
     const [LeadData, setLeadData] = useState([]);
+    const [LeadNotes, setLeadNotes] = useState('');
+    const [AddUpdateFlag, setAddUpdateFlag] = useState(1);
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -27,11 +31,17 @@ export default function AllLeads({ setGridFlag }) {
         leadid: 0
     });
     const userId = Cookies.get('userId');
+    const token = Cookies.get('authToken');
+    const headers = new Headers();
+    headers.append("Access-Control-Allow-Origin", "*");
+    headers.append("Authorization", `Bearer ${token}`);
+    const BASE_URL = import.meta.env.VITE_BASE_URL;
     useEffect(() => {
         getAllLeads();
     }, []);
     const getAllLeads = async () => {
         try {
+            setLoading(true);
             const result = await getAPI(`/get-leads/${userId}`);
             if (!result || result == "") {
                 alert('Something went wrong');
@@ -39,6 +49,7 @@ export default function AllLeads({ setGridFlag }) {
             else {
                 const responseRs = JSON.parse(result);
                 setLeadData(responseRs)
+                setLoading(false);
             }
         }
         catch (error) {
@@ -59,40 +70,69 @@ export default function AllLeads({ setGridFlag }) {
             propertyinterest: values.propertyinterest,
             leadid: formData.leadid
         });
-        console.log(raw)
-        // try {
-        //     const result = await postAPI('/register-user', raw);
-        //     if (!result || result == "") {
-        //         alert('Something went wrong');
-        //     } else {
-        //         const responseRs = JSON.parse(result);
-        //         if (responseRs.status == 'success') {
-        //             setLoading(false);
-        //             setLeadPopup(false);
-        //             setShowAlerts(<AlertComp show={true} variant="success" message={"Lead Added Successfully"} />);
-        //             setTimeout(() => {
-        //                 setLoading(false);
-        //                 setShowAlerts(<AlertComp show={false} />);
-        //             }, 2000);
-        //         }
-        //         else {
-        //             setShowAlerts(<AlertComp show={true} variant="danger" message={responseRs.msg} />);
-        //             setTimeout(() => {
-        //                 setLoading(false);
-        //                 setShowAlerts(<AlertComp show={false} />);
-        //             }, 2000);
-        //         }
-        //     }
-        // }
-        // catch (error) {
-        //     setLoading(false);
-        //     console.error(error);
-        // }
+        try {
+            const result = await postAPI('/add-edit-leads', raw);
+            if (!result || result == "") {
+                alert('Something went wrong');
+            } else {
+                const responseRs = JSON.parse(result);
+                if (responseRs.status == 'success') {
+                    setLoading(false);
+                    setLeadPopup(false);
+                    var msg = AddUpdateFlag == 1 ? 'Lead Added Successfully' : 'Lead Updated Successfully';
+                    setShowAlerts(<AlertComp show={true} variant="success" message={msg} />);
+                    setTimeout(() => {
+                        setLoading(false);
+                        setShowAlerts(<AlertComp show={false} />);
+                        getAllLeads();
+                    }, 2000);
+                }
+                else {
+                    setShowAlerts(<AlertComp show={true} variant="danger" message={responseRs.msg} />);
+                    setTimeout(() => {
+                        setLoading(false);
+                        setShowAlerts(<AlertComp show={false} />);
+                    }, 2000);
+                }
+            }
+        }
+        catch (error) {
+            setLoading(false);
+            console.error(error);
+        }
     }
-    const handleFileChange = (event) => {
+    const handleFileChange = async (event) => {
         const file = event.target.files[0];
         if (file) {
-            console.log("File uploaded:", file);
+            setLoading(true);
+            var formdata = new FormData();
+            formdata.append("file", file);
+            const requestOptions = {
+                method: "POST",
+                headers: headers,
+                body: formdata,
+                redirect: "follow",
+            };
+            try {
+                const response = await fetch(`${BASE_URL}/add-leads-csv`, requestOptions);
+                const result = await response.text();
+                const responseRs = JSON.parse(result);
+                setLoading(false);
+                if (responseRs.status == "success") {
+                    setShowAlerts(<AlertComp show={true} variant="success" message={'CSV imported Successfully'} />);
+                    setTimeout(() => {
+                        setShowAlerts(<AlertComp show={false} />);
+                        getAllLeads();
+                    }, 1500);
+                } else {
+                    setShowAlerts(<AlertComp show={true} variant="danger" message={responseRs.message} />);
+                    setTimeout(() => {
+                        setShowAlerts(<AlertComp show={false} />);
+                    }, 2000);
+                }
+            } catch (error) {
+                console.log('error', error);
+            }
         }
     };
     const handleButtonClick = () => {
@@ -102,26 +142,73 @@ export default function AllLeads({ setGridFlag }) {
     };
     const getLeadById = async (leadid) => {
         try {
-            const result = await getAPI(`/get-lead-byid/${leadid}`);
+            setAddUpdateFlag(2)
+            setLoading(true);
+            const result = await getAPI(`/fetch-lead-detail/${userId}/${leadid}`);
             if (!result || result == "") {
                 alert('Something went wrong');
             }
             else {
                 const responseRs = JSON.parse(result);
                 setLeadPopup(true);
+                setLoading(false);
                 setFormData({
                     ...formData,
-                    name: responseRs,
-                    email: '',
-                    source: 0,
-                    propertyinterest: 0,
-                    budget: '',
-                    contactno: '',
-                    leadid: 0
+                    name: responseRs.name,
+                    email: responseRs.email,
+                    source: responseRs.source_id,
+                    propertyinterest: responseRs.property_id,
+                    budget: responseRs.budget,
+                    contactno: responseRs.contact_no,
+                    leadid: responseRs.id
                 })
             }
         }
         catch (error) {
+            console.error(error);
+        }
+    }
+    const notesbody = (
+        <div className='row px-3'>
+            <textarea rows={5} className='form-control' value={LeadNotes} onChange={(e) => setLeadNotes(e.target.value)} />
+        </div>
+    )
+    function handleHideNotes() {
+        setLeadNotesPopup(false);
+        setLeadNotes("");
+    }
+    async function handleSaveNotes() {
+        setLoading(true);
+        var raw = JSON.stringify({
+            leadid: formData.leadid,
+            notes: LeadNotes
+        });
+        try {
+            const result = await postAPI('/update-lead-notes', raw);
+            if (!result || result == "") {
+                alert('Something went wrong');
+            } else {
+                const responseRs = JSON.parse(result);
+                setLoading(false);
+                if (responseRs.status == 'success') {
+                    setLeadNotesPopup(false)
+                    setShowAlerts(<AlertComp show={true} variant="success" message={'Notes Added Successfully'} />);
+                    setTimeout(() => {
+                        setLoading(false);
+                        setShowAlerts(<AlertComp show={false} />);
+                        getAllLeads();
+                    }, 2000);
+                }
+                else {
+                    setShowAlerts(<AlertComp show={true} variant="danger" message={responseRs.msg} />);
+                    setTimeout(() => {
+                        setShowAlerts(<AlertComp show={false} />);
+                    }, 2000);
+                }
+            }
+        }
+        catch (error) {
+            setLoading(false);
             console.error(error);
         }
     }
@@ -139,7 +226,21 @@ export default function AllLeads({ setGridFlag }) {
                         </h6>
                     </div>
                     <div className='col-md-6 text-end'>
-                        <button type="submit" className='WhiteBtn' onClick={(e) => setLeadPopup(true)}>Add Lead</button>
+                        <button type="submit" className='WhiteBtn' onClick={(e) => {
+                            setLeadPopup(true); setFormData({
+                                ...formData,
+                                name: '',
+                                email: '',
+                                source: 0,
+                                propertyinterest: 0,
+                                budget: '',
+                                contactno: '',
+                                leadid: 0
+                            });
+                            setAddUpdateFlag(1)
+                        }}>
+                            Add Lead
+                        </button>
                         <button type="submit" className='WhiteBtn ms-3'>Mass Email</button>
                         <button className='WhiteBtn ms-3' onClick={handleButtonClick}>
                             <input
@@ -224,7 +325,8 @@ export default function AllLeads({ setGridFlag }) {
                                 <div className='col-md-2 text-center'>
                                     <img src={Images.gridEdit} className='cursor-pointer iconsize me-2' title='Edit Lead'
                                         onClick={(e) => getLeadById(item.id)} />
-                                    <img src={Images.gridMsg} className='cursor-pointer iconsize me-2' title='Add Notes' />
+                                    <img src={Images.gridMsg} className='cursor-pointer iconsize me-2' title='Add Notes'
+                                        onClick={(e) => { setLeadNotesPopup(true); setLeadNotes(item.notes); setFormData({ ...formData, leadid: item.id }) }} />
                                     <img src={Images.gridMail} className='cursor-pointer iconsize' title='Contact using Mail' />
                                 </div>
                             </div>
@@ -236,8 +338,14 @@ export default function AllLeads({ setGridFlag }) {
                     }
                 </div>
             </div>
-            <CustomModal isShow={LeadPopup} size={"lg"} title="Add Lead" closePopup={handleHide}
+            <CustomModal isShow={LeadPopup} size={"lg"} title="Add Lead"
                 bodyContent={<AddUpdateLead formData={formData} setFormData={setFormData} handleAddLead={handleAddLead} handleHide={handleHide} />} />
+
+            <CustomModal isShow={LeadNotesPopup} size={"md"} title="Add Notes" closePopup={handleHideNotes}
+                bodyContent={notesbody} footerButtons={[
+                    { btnColor: 'CancelBtn', onClick: handleHideNotes, label: "Cancel" },
+                    { btnColor: 'SuccessBtn', onClick: handleSaveNotes, label: "Save" }
+                ]} />
         </div>
     )
 }

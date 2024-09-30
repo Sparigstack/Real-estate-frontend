@@ -100,7 +100,7 @@ export default function AddUpdateLead({ formData, setFormData, handleAddLead, ha
                         <ErrorMessage name='propertyinterest' component="div" className="text-start errorText" />
                     </div>
                     <div className='col-12 pt-2 text-end' style={{ borderTop: "1px solid #dee2e6" }}>
-                        <button className="CancelBtn me-2" onClick={handleHide}>
+                        <button type='button' className="CancelBtn me-2" onClick={handleHide}>
                             Cancel
                         </button>
                         <button type='submit' className="SuccessBtn">

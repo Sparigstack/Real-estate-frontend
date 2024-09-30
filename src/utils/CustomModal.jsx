@@ -15,18 +15,18 @@ export default function CustomModal(props) {
             <Modal.Body>
                 {props.bodyContent}
             </Modal.Body>
-
-            {props.footerButtons && props.footerButtons.map((button, index) => (
+            {props.footerButtons &&
                 <Modal.Footer>
-                    <button
-                        key={index}
-                        className={button.btnColor}
-                        onClick={button.onClick}>
-                        {button.label}
-                    </button>
+                    {props.footerButtons.map((button, index) => (
+                        <button
+                            key={index}
+                            className={button.btnColor}
+                            onClick={button.onClick}>
+                            {button.label}
+                        </button>
+                    ))}
                 </Modal.Footer>
-            ))}
-
+            }
         </Modal>
     )
 }

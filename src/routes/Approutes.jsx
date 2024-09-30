@@ -6,6 +6,7 @@ import PrivateRoutes from './PrivateRoutes';
 import PageNotFound from '../pages/404-ErrorPage/PageNotFound';
 import Layout from '../components/layout/Layout';
 import LeadManagementIndex from '../pages/Lead-Management';
+import LeadSettingIndex from '../pages/LeadSetting';
 
 export default function Approutes() {
   return (
@@ -17,6 +18,7 @@ export default function Approutes() {
           <Route element={<Layout />}>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/lead-management" element={<LeadManagementIndex />} />
+            <Route path="/leads-setting" element={<LeadSettingIndex />} />
             <Route path="*" element={<PageNotFound />} />
           </Route>
         </Route>
