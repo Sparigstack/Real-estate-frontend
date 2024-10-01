@@ -1,6 +1,6 @@
-import { faAngleLeft, faIndianRupeeSign } from '@fortawesome/free-solid-svg-icons'
+import { faAngleLeft, faIndianRupeeSign, faSort } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import Images from '../../utils/Images'
 import { formatCurrency } from '../../utils/js/Common'
 import CustomModal from '../../utils/CustomModal'
@@ -10,8 +10,11 @@ import HideLoader from '../../components/loader/HideLoader'
 import useApiService from '../../services/ApiService'
 import Cookies from 'js-cookie'
 import AlertComp from '../../components/AlertComp'
+import CustomPagination from '../../components/CustomPagination'
+import { debounce } from 'lodash';
+import HeaderName from '../../utils/HeaderName'
 
-export default function AllLeads({ setGridFlag }) {
+export default function AllLeads() {
     const { postAPI, getAPI } = useApiService();
     const fileInputRef = useRef(null);
     const [loading, setLoading] = useState(false);
@@ -30,70 +33,73 @@ export default function AllLeads({ setGridFlag }) {
         contactno: '',
         leadid: 0
     });
+    const [utils, setUtils] = useState({
+        search: null,
+        sortbykey: 'desc',
+        sortbyvalue: null,
+    })
     const userId = Cookies.get('userId');
     const token = Cookies.get('authToken');
     const headers = new Headers();
     headers.append("Access-Control-Allow-Origin", "*");
     headers.append("Authorization", `Bearer ${token}`);
     const BASE_URL = import.meta.env.VITE_BASE_URL;
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalItems, setTotalItems] = useState('');
+    var itemsPerPage = 5;
+
+    const debouncedSearch = useCallback(debounce((searchValue) => {
+        getAllLeads(searchValue, utils.sortbyvalue);
+    }, 500), [utils.sortbyvalue, currentPage]);
+
     useEffect(() => {
-        getAllLeads();
-    }, []);
-    const getAllLeads = async () => {
+        getAllLeads(utils.search, utils.sortbyvalue);
+    }, [currentPage]);
+
+    const getAllLeads = async (search = '', sortbyvalue = null) => {
         try {
+            const sortby = utils.sortbykey == 'asc' ? 'desc' : 'asc';
             setLoading(true);
-            const result = await getAPI(`/get-leads/${userId}`);
-            if (!result || result == "") {
-                alert('Something went wrong');
+            const result = await getAPI(`/get-leads/${userId}&${search}&${sortby}&${sortbyvalue}&${currentPage}&${itemsPerPage}`);
+            if (!result) {
+                throw new Error('Something went wrong');
             }
-            else {
-                const responseRs = JSON.parse(result);
-                setLeadData(responseRs)
-                setLoading(false);
-            }
+            const responseRs = JSON.parse(result);
+            setLeadData(responseRs);
+            setTotalItems(responseRs.length);
+            setUtils((prev) => ({ ...prev, sortbykey: sortby }));
+            setLoading(false);
         }
         catch (error) {
+            setLoading(false);
             console.error(error);
         }
     }
-    function handleHide() {
-        setLeadPopup(false);
-    }
-    async function handleAddLead(values) {
+    const handleHide = () => setLeadPopup(false);
+
+    const handleAddLead = async (values) => {
         setLoading(true);
-        var raw = JSON.stringify({
-            name: values.name,
-            email: values.email,
-            contactno: values.contactno,
-            budget: values.budget,
-            source: values.source,
-            propertyinterest: values.propertyinterest,
-            leadid: formData.leadid
-        });
         try {
+            const raw = JSON.stringify({ ...values, leadid: formData.leadid });
             const result = await postAPI('/add-edit-leads', raw);
-            if (!result || result == "") {
-                alert('Something went wrong');
-            } else {
-                const responseRs = JSON.parse(result);
-                if (responseRs.status == 'success') {
-                    setLoading(false);
-                    setLeadPopup(false);
-                    var msg = AddUpdateFlag == 1 ? 'Lead Added Successfully' : 'Lead Updated Successfully';
-                    setShowAlerts(<AlertComp show={true} variant="success" message={msg} />);
-                    setTimeout(() => {
-                        setLoading(false);
-                        setShowAlerts(<AlertComp show={false} />);
-                        getAllLeads();
-                    }, 2000);
-                }
-                else {
-                    setShowAlerts(<AlertComp show={true} variant="danger" message={responseRs.msg} />);
-                    setTimeout(() => {
-                        setLoading(false);
-                        setShowAlerts(<AlertComp show={false} />);
-                    }, 2000);
-                }
+
+            if (!result) {
+                throw new Error('Something went wrong');
+            }
+
+            const responseRs = JSON.parse(result);
+            setLoading(false);
+            if (responseRs.status == 'success') {
+                setLeadPopup(false);
+                var msg = AddUpdateFlag == 1 ? 'Lead Added Successfully' : 'Lead Updated Successfully';
+                setShowAlerts(<AlertComp show={true} variant="success" message={msg} />);
+                setTimeout(() => {
+                    setShowAlerts(<AlertComp show={false} />);
+                    getAllLeads();
+                }, 2000);
+            }
+            else {
+                showErrorAlert(responseRs.msg);
             }
         }
         catch (error) {
@@ -101,70 +107,58 @@ export default function AllLeads({ setGridFlag }) {
             console.error(error);
         }
     }
+
+    const showErrorAlert = (message) => {
+        setShowAlerts(<AlertComp show={true} variant="danger" message={message} />);
+        setTimeout(() => setShowAlerts(<AlertComp show={false} />), 2000);
+    };
+
     const handleFileChange = async (event) => {
         const file = event.target.files[0];
-        if (file) {
-            setLoading(true);
-            var formdata = new FormData();
-            formdata.append("file", file);
-            const requestOptions = {
-                method: "POST",
-                headers: headers,
-                body: formdata,
-                redirect: "follow",
-            };
-            try {
-                const response = await fetch(`${BASE_URL}/add-leads-csv`, requestOptions);
-                const result = await response.text();
-                const responseRs = JSON.parse(result);
-                setLoading(false);
-                if (responseRs.status == "success") {
-                    setShowAlerts(<AlertComp show={true} variant="success" message={'CSV imported Successfully'} />);
-                    setTimeout(() => {
-                        setShowAlerts(<AlertComp show={false} />);
-                        getAllLeads();
-                    }, 1500);
-                } else {
-                    setShowAlerts(<AlertComp show={true} variant="danger" message={responseRs.message} />);
-                    setTimeout(() => {
-                        setShowAlerts(<AlertComp show={false} />);
-                    }, 2000);
-                }
-            } catch (error) {
-                console.log('error', error);
-            }
-        }
-    };
-    const handleButtonClick = () => {
-        if (fileInputRef.current) {
-            fileInputRef.current.click();
-        }
-    };
-    const getLeadById = async (leadid) => {
+        if (!file) return;
+        setLoading(true);
+        var formdata = new FormData();
+        formdata.append("file", file);
+        const requestOptions = { method: "POST", headers, body: formdata };
         try {
-            setAddUpdateFlag(2)
-            setLoading(true);
+            const response = await fetch(`${BASE_URL}/add-leads-csv`, requestOptions);
+            const result = await response.text();
+            const responseRs = JSON.parse(result);
+            setLoading(false);
+            if (responseRs.status == "success") {
+                setShowAlerts(<AlertComp show={true} variant="success" message={'CSV imported Successfully'} />);
+                fileInputRef.current.value = '';
+                setTimeout(() => {
+                    setShowAlerts(<AlertComp show={false} />);
+                    getAllLeads();
+                }, 1500);
+            } else {
+                showErrorAlert(responseRs.message);
+            }
+        } catch (error) {
+            setLoading(false);
+            console.log('error', error);
+        }
+    };
+
+    const handleButtonClick = () => fileInputRef.current?.click();
+
+    const getLeadById = async (leadid) => {
+        if (!leadid) return;
+        setLoading(true);
+        try {
             const result = await getAPI(`/fetch-lead-detail/${userId}/${leadid}`);
-            if (!result || result == "") {
-                alert('Something went wrong');
+            if (!result) {
+                throw new Error('Something went wrong');
             }
-            else {
-                const responseRs = JSON.parse(result);
-                setLeadPopup(true);
-                setLoading(false);
-                setFormData({
-                    ...formData,
-                    name: responseRs.name,
-                    email: responseRs.email,
-                    source: responseRs.source_id,
-                    propertyinterest: responseRs.property_id,
-                    budget: responseRs.budget,
-                    contactno: responseRs.contact_no,
-                    leadid: responseRs.id
-                })
-            }
+            const responseRs = JSON.parse(result);
+            setLeadPopup(true);
+            setLoading(false);
+            setFormData({ ...formData, ...responseRs, leadid: responseRs.id });
+            setAddUpdateFlag(2)
         }
         catch (error) {
+            setLoading(false);
             console.error(error);
         }
     }
@@ -178,33 +172,27 @@ export default function AllLeads({ setGridFlag }) {
         setLeadNotes("");
     }
     async function handleSaveNotes() {
+        if (!LeadNotes) return setLeadNotesPopup(false);
         setLoading(true);
-        var raw = JSON.stringify({
-            leadid: formData.leadid,
-            notes: LeadNotes
-        });
+        const raw = JSON.stringify({ leadid: formData.leadid, notes: LeadNotes });
         try {
             const result = await postAPI('/update-lead-notes', raw);
-            if (!result || result == "") {
-                alert('Something went wrong');
-            } else {
-                const responseRs = JSON.parse(result);
-                setLoading(false);
-                if (responseRs.status == 'success') {
-                    setLeadNotesPopup(false)
-                    setShowAlerts(<AlertComp show={true} variant="success" message={'Notes Added Successfully'} />);
-                    setTimeout(() => {
-                        setLoading(false);
-                        setShowAlerts(<AlertComp show={false} />);
-                        getAllLeads();
-                    }, 2000);
-                }
-                else {
-                    setShowAlerts(<AlertComp show={true} variant="danger" message={responseRs.msg} />);
-                    setTimeout(() => {
-                        setShowAlerts(<AlertComp show={false} />);
-                    }, 2000);
-                }
+            if (!result) {
+                throw new Error('Something went wrong');
+            }
+            const responseRs = JSON.parse(result);
+            setLoading(false);
+            if (responseRs.status == 'success') {
+                setLeadNotesPopup(false)
+                setShowAlerts(<AlertComp show={true} variant="success" message={'Notes Added Successfully'} />);
+                setTimeout(() => {
+                    setLoading(false);
+                    setShowAlerts(<AlertComp show={false} />);
+                    getAllLeads();
+                }, 2000);
+            }
+            else {
+                showErrorAlert(responseRs.msg);
             }
         }
         catch (error) {
@@ -212,140 +200,147 @@ export default function AllLeads({ setGridFlag }) {
             console.error(error);
         }
     }
+    const handlePageChange = (page) => setCurrentPage(page);
     return (
         <div>
+            <HeaderName header="Recent Leads / All Leads" />
             {showAlerts}
             {loading ? <ShowLoader /> : <HideLoader />}
-            <div className='TitleHeader '>
-                <div className='row align-items-center'>
-                    <div className='col-md-6'>
-                        <h6 className='mb-0 fw-bold'>
-                            <FontAwesomeIcon icon={faAngleLeft} className='cursor-pointer me-3'
-                                onClick={(e) => setGridFlag(1)} />
-                            Recent Leads / All Leads
-                        </h6>
-                    </div>
-                    <div className='col-md-6 text-end'>
-                        <button type="submit" className='WhiteBtn' onClick={(e) => {
-                            setLeadPopup(true); setFormData({
-                                ...formData,
-                                name: '',
-                                email: '',
-                                source: 0,
-                                propertyinterest: 0,
-                                budget: '',
-                                contactno: '',
-                                leadid: 0
-                            });
-                            setAddUpdateFlag(1)
-                        }}>
-                            Add Lead
-                        </button>
-                        <button type="submit" className='WhiteBtn ms-3'>Mass Email</button>
-                        <button className='WhiteBtn ms-3' onClick={handleButtonClick}>
-                            <input
-                                type="file"
-                                accept=".csv"
-                                onChange={handleFileChange}
-                                className="ms-3 cursor-pointer"
-                                style={{ display: 'none' }}
-                                ref={fileInputRef}
-                            />
-                            Upload CSV
-                        </button>
-                        <a className='font-13 text-decoration-underline ps-2 cursor-pointer'
-                            href="/csv/lead_csv.csv"
-                            download="Lead.csv"
-                            style={{ color: "white" }}>Template CSV</a>
+            <div className='row align-items-center'>
+                <div className='col-md-4'>
+                    <div className="position-relative">
+                        <img src={Images.searchIcon} alt="search-icon" className="search-icon" />
+                        <input
+                            type="text"
+                            className="form-control searchInput"
+                            placeholder="Search"
+                            onChange={(e) => {
+                                debouncedSearch(e.target.value);
+                                setUtils({ ...utils, search: e.target.value })
+                            }}
+                        />
                     </div>
                 </div>
+                <div className='col-md-8 text-end'>
+                    <a className='font-13 text-decoration-underline pe-2 cursor-pointer fontwhite'
+                        href="/csv/lead_csv.csv"
+                        download="Lead.csv"
+                    >Template CSV</a>
+                    <button type="submit" className='WhiteBtn' onClick={(e) => {
+                        setLeadPopup(true); setFormData({
+                            ...formData,
+                            name: '',
+                            email: '',
+                            source: 0,
+                            propertyinterest: 0,
+                            budget: '',
+                            contactno: '',
+                            leadid: 0
+                        });
+                        setAddUpdateFlag(1)
+                    }}>
+                        Add Lead
+                    </button>
+                    <button type="submit" className='WhiteBtn ms-3'>Mass Email</button>
+                    <button className='WhiteBtn ms-3' onClick={handleButtonClick}>
+                        <input
+                            type="file"
+                            accept=".csv"
+                            onChange={handleFileChange}
+                            className="ms-3 cursor-pointer"
+                            style={{ display: 'none' }}
+                            ref={fileInputRef}
+                        />
+                        Upload CSV
+                    </button>
+
+                </div>
             </div>
-            <div className='d-flex justify-content-end my-3'>
-                {/* 0-new, 1-negotiation, 2-in contact, 3-highly interested, 4-closed */}
-                <div className='pe-4' style={{ color: "#38A5EB", fontSize: "13px" }}>
-                    <label className='bluestatusicon me-2'></label>
-                    New
-                </div>
-                <div className='pe-4' style={{ color: "#E0E26B", fontSize: "13px" }}>
-                    <label className='yellowstatusicon me-2'></label>
-                    In Negotiation
-                </div>
-                <div className='pe-4' style={{ color: "#fa89d1", fontSize: "13px" }}>
-                    <label className='pinkstatusicon me-2'></label>
-                    In Contact
-                </div>
-                <div className='pe-4' style={{ color: "#79E07D", fontSize: "13px" }}>
-                    <label className='greenstatusicon me-2'></label>
-                    Highly Interested
-                </div>
-                <div style={{ color: "#D45959", fontSize: "13px" }}>
-                    <label className='redstatusicon me-2'></label>
-                    Closed
-                </div>
-            </div>
-            <div className='GridHeader'>
+            <div className='GridHeader mt-2'>
                 <div className='row'>
-                    <div className='col-md-2'>Name</div>
-                    <div className='col-md-3'>Email</div>
-                    <div className='col-md-2'>Source</div>
-                    <div className='col-md-2'>Property Interest</div>
-                    <div className='col-md-1'>Budget</div>
+                    <div className='col-md-1'>
+                        Status
+                    </div>
+                    <div className='col-md-2 cursor-pointer' title='Sort by Name' onClick={(e) => { getAllLeads(utils.search, 'name'); setUtils((prevdata) => ({ ...prevdata, sortbyvalue: 'name' })) }}>
+                        Name<FontAwesomeIcon icon={faSort} className='ps-2' />
+                    </div>
+                    <div className='col-md-2 cursor-pointer' title='Sort by Email' onClick={(e) => { getAllLeads(utils.search, 'email'); setUtils((prevdata) => ({ ...prevdata, sortbyvalue: 'email' })) }}>
+                        Email<FontAwesomeIcon icon={faSort} className='ps-2' />
+                    </div>
+                    <div className='col-md-2 cursor-pointer' title='Sort by Source' onClick={(e) => { getAllLeads(utils.search, 'source'); setUtils((prevdata) => ({ ...prevdata, sortbyvalue: 'source' })) }}>
+                        Source<FontAwesomeIcon icon={faSort} className='ps-2' />
+                    </div>
+                    <div className='col-md-2 cursor-pointer ps-0' title='Sort by Property' onClick={(e) => { getAllLeads(utils.search, 'property'); setUtils((prevdata) => ({ ...prevdata, sortbyvalue: 'property' })) }}>
+                        Property <FontAwesomeIcon icon={faSort} className='ps-2' />
+                    </div>
+                    <div className='col-md-1 cursor-pointer ps-0' title='Sort by Budget' onClick={(e) => { getAllLeads(utils.search, 'budget'); setUtils((prevdata) => ({ ...prevdata, sortbyvalue: 'budget' })) }}>
+                        Budget<FontAwesomeIcon icon={faSort} className='ps-2' />
+                    </div>
                     <div className='col-md-2 text-center'>Action</div>
                 </div>
             </div>
             <div className="parent-container">
                 <div className='hide-scrollbar'>
-                    {LeadData.length > 0 ?
-                        LeadData.map((item, index) => {
-                            var statuscolor = "";
-                            if (item.status == 0) {
-                                statuscolor = "bluestatusicon";
-                            } else if (item.status == 1) {
-                                statuscolor = "yellowstatusicon";
-                            } else if (item.status == 2) {
-                                statuscolor = "pinkstatusicon";
-                            } else if (item.status == 3) {
-                                statuscolor = "greenstatusicon";
-                            } else if (item.status == 4) {
-                                statuscolor = "redstatusicon";
-                            }
-                            return <div className='row GridData' key={index}>
-                                <div className='col-md-2 ps-3'>
-                                    {item.status == 0}
-                                    <label className={`${statuscolor} me-2`}></label>
-                                    {item.name}<br />({item.contact_no})
-                                </div>
-                                <div className='col-md-3'>{item.email}</div>
-                                <div className='col-md-2 '>{item?.lead_source?.name}</div>
-                                <div className='col-md-2'>{item?.userproperty?.name}</div>
-                                <div className='col-md-1'>
-                                    <FontAwesomeIcon icon={faIndianRupeeSign} className='pe-1' />
-                                    {formatCurrency(item.budget)}
-                                </div>
-                                <div className='col-md-2 text-center'>
-                                    <img src={Images.gridEdit} className='cursor-pointer iconsize me-2' title='Edit Lead'
-                                        onClick={(e) => getLeadById(item.id)} />
-                                    <img src={Images.gridMsg} className='cursor-pointer iconsize me-2' title='Add Notes'
-                                        onClick={(e) => { setLeadNotesPopup(true); setLeadNotes(item.notes); setFormData({ ...formData, leadid: item.id }) }} />
-                                    <img src={Images.gridMail} className='cursor-pointer iconsize' title='Contact using Mail' />
-                                </div>
+                    {LeadData.length ? LeadData.map((item, index) => {
+                        var statuscolor = "";
+                        var statusname = "";
+                        if (item.status == 0) {
+                            statuscolor = "#38A5EB";
+                            statusname = "New";
+                        } else if (item.status == 1) {
+                            statuscolor = "#E0E26B";
+                            statusname = "In Negotiation";
+                        } else if (item.status == 2) {
+                            statuscolor = "#fa89d1";
+                            statusname = "In Contact";
+                        } else if (item.status == 3) {
+                            statuscolor = "#79E07D";
+                            statusname = "Highly Interested";
+                        } else if (item.status == 4) {
+                            statuscolor = "#D45959";
+                            statusname = 'Closed'
+                        }
+                        return <div className='row GridData' key={index}>
+                            <div className='col-md-1'>
+                                <label style={{ color: `${statuscolor}` }} className={`me-2 font-12`}>{statusname}</label>
                             </div>
-                        })
+                            <div className='col-md-2 ps-3'>
+                                {item.name}<br />({item.contact_no})
+                            </div>
+                            <div className='col-md-2'>{item.email}</div>
+                            <div className='col-md-2 '>{item?.lead_source?.name}</div>
+                            <div className='col-md-2'>{item?.userproperty?.name}</div>
+                            <div className='col-md-1'>
+                                <FontAwesomeIcon icon={faIndianRupeeSign} className='pe-1' />
+                                {formatCurrency(item.budget)}
+                            </div>
+                            <div className='col-md-2 text-center'>
+                                <img src={Images.gridEdit} className='cursor-pointer iconsize me-2' title='Edit Lead'
+                                    onClick={(e) => getLeadById(item.id)} />
+                                <img src={Images.gridMsg} className='cursor-pointer iconsize me-2' title='Add Notes'
+                                    onClick={(e) => { setLeadNotesPopup(true); setLeadNotes(item.notes); setFormData({ ...formData, leadid: item.id }) }} />
+                                <a href={`mailto:${item.email}`} target="_blank" rel="noopener noreferrer">
+                                    <img src={Images.gridMail} className='cursor-pointer iconsize' title='Contact using Mail' />
+                                </a>
+                            </div>
+                        </div>
+                    })
                         :
                         <div className='row text-center'>
                             <label className='norecorddiv'>No Leads Found</label>
                         </div>
                     }
                 </div>
+                <CustomPagination currentPage={currentPage} totalItems={totalItems} itemsPerPage={itemsPerPage} handlePageChange={handlePageChange} />
             </div>
             <CustomModal isShow={LeadPopup} size={"lg"} title="Add Lead"
                 bodyContent={<AddUpdateLead formData={formData} setFormData={setFormData} handleAddLead={handleAddLead} handleHide={handleHide} />} />
 
-            <CustomModal isShow={LeadNotesPopup} size={"md"} title="Add Notes" closePopup={handleHideNotes}
+            <CustomModal isShow={LeadNotesPopup} size={"md"} title="Add Lead Notes" closePopup={handleHideNotes}
                 bodyContent={notesbody} footerButtons={[
                     { btnColor: 'CancelBtn', onClick: handleHideNotes, label: "Cancel" },
                     { btnColor: 'SuccessBtn', onClick: handleSaveNotes, label: "Save" }
                 ]} />
-        </div>
+        </div >
     )
 }

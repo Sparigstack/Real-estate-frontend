@@ -1,15 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import ShowLoader from '../../components/loader/ShowLoader';
 import HideLoader from '../../components/loader/HideLoader';
 import useApiService from '../../services/ApiService';
 import Cookies from 'js-cookie';
-import { useNavigate } from 'react-router-dom';
 import AlertComp from '../../components/AlertComp';
 
 export default function EnterOtp({ formData }) {
     const { postAPI } = useApiService();
     const inputRefs = useRef([]);
-    const navigate = useNavigate();
     const [otp, setOtp] = useState(Array(6).fill(''));
     const [otpError, setOtpError] = useState('');
     const [loading, setLoading] = useState(false);
@@ -17,7 +15,7 @@ export default function EnterOtp({ formData }) {
     const [timeExpired, setTimeExpired] = useState(false);
     const [showAlerts, setShowAlerts] = useState(false);
 
-    const validateOtp = async (otpValue) => {
+    const validateOtp = useCallback(async (otpValue) => {
         setLoading(true);
         var raw = JSON.stringify({
             email: formData.email,
@@ -25,32 +23,31 @@ export default function EnterOtp({ formData }) {
         })
         try {
             const result = await postAPI('/check-user-otp', raw);
-            if (!result || result == "") {
-                alert('Something went wrong');
+            if (!result) {
+                throw new Error('Something went wrong');
+            }
+            const responseRs = JSON.parse(result);
+            if (responseRs.status == 'success') {
+                Cookies.set('authToken', responseRs.token, { expires: 1 });
+                Cookies.set('userId', responseRs.userId, { expires: 1 });
+                setOtpError('');
+                setShowAlerts(<AlertComp show={true} variant="success" message="User logged in successfully" />);
+                setTimeout(() => {
+                    setLoading(false);
+                    setShowAlerts(<AlertComp show={false} />);
+                    window.location.href = '/dashboard';
+                }, 2000);
             }
             else {
-                const responseRs = JSON.parse(result);
-                if (responseRs.status == 'success') {
-                    Cookies.set('authToken', responseRs.token, { expires: 1 });
-                    Cookies.set('userId', responseRs.userId, { expires: 1 });
-                    setOtpError('');
-                    setShowAlerts(<AlertComp show={true} variant="success" message="User logged in successfully" />);
-                    setTimeout(() => {
-                        setLoading(false);
-                        setShowAlerts(<AlertComp show={false} />);
-                        window.location.href = '/dashboard';
-                    }, 2000);
-                }
-                else {
-                    setOtpError(responseRs.msg);
-                    setLoading(false);
-                }
+                setOtpError(responseRs.msg);
+                setLoading(false);
             }
         }
         catch {
+            setLoading(false);
             console.error(error);
         }
-    }
+    })
     const handleChangeOtp = (e, index) => {
         const { value } = e.target;
         const newOtp = [...otp];
@@ -90,42 +87,39 @@ export default function EnterOtp({ formData }) {
         e.preventDefault();
         setLoading(true);
         var raw = JSON.stringify({
-            username : formData.username, 
+            username: formData.username,
             email: formData.email
         })
         try {
             const result = await postAPI('/register-user', raw);
-            if (!result || result == '') {
-                alert('Something went wrong');
+            if (!result) {
+                throw new Error('Something went wrong');
+            }
+            const responseRs = JSON.parse(result);
+            if (responseRs.status == 'success') {
+                setLoading(false);
+                setTimeLeft(180);
+                setTimeExpired(false);
+                setOtpError('')
+                setOtp(Array(6).fill(''));
+                if (inputRefs.current[0]) {
+                    inputRefs.current[0].focus();
+                }
             }
             else {
-                const responseRs = JSON.parse(result);
-                if (responseRs.status == 'success') {
-                    setLoading(false);
-                    setTimeLeft(180);
-                    setTimeExpired(false);
-                    setOtpError('')
-                    setOtp(Array(6).fill(''));
-                    if (inputRefs.current[0]) {
-                        inputRefs.current[0].focus();
-                    }
-                }
-                else {
-                    setShowAlerts(<AlertComp show={true} variant="danger" message={responseRs.msg} />);
-                    setTimeout(() => {
-                        setShowAlerts(<AlertComp show={false} />);
-                    }, 2000);
-                }
+                setShowAlerts(<AlertComp show={true} variant="danger" message={responseRs.msg} />);
+                setTimeout(() => {
+                    setShowAlerts(<AlertComp show={false} />);
+                }, 2000);
             }
         }
         catch (error) {
+            setLoading(false);
             console.error(error);
         }
     }
     useEffect(() => {
-        if (inputRefs.current[0]) {
-            inputRefs.current[0].focus();
-        }
+        inputRefs.current[0]?.focus();
     }, []);
 
     useEffect(() => {

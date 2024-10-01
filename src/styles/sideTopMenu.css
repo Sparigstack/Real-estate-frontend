@@ -31,7 +31,7 @@
 }
 
 .topmenu-container {
-    height: 70px;
+    height: 60px;
     background-color: #303260;
     display: flex;
     align-items: center;
@@ -77,8 +77,8 @@
 
 .searchInput {
     padding-left: 45px !important;
-    background-color: #03053D !important;
-    border-color: #03053D !important;
+    background-color: #2e3361 !important;
+    border-color: #2e3361 !important;
     color: white !important;
 }
 
@@ -87,13 +87,22 @@
     opacity: 1 !important;
 }
 
+.whiteSearch {
+    padding-left: 40px !important;
+    border: none !important;
+    color: black !important;
+}
+
+.whiteSearch::placeholder {
+    font-size: 13px;
+}
 
 .profileOpen {
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
     background-color: #03053d;
     color: white;
     border-radius: 50%;

@@ -6,6 +6,7 @@ export default function UserProvider({ children }) {
     const userId = Cookies.get('userId');
     const token = Cookies.get('authToken');
     const { getAPI } = useApiService();
+    const [HeaderName, setHeaderName] = useState('');
     const [userDetails, setUserDetails] = useState({
         userName: '',
         email: '',
@@ -20,19 +21,17 @@ export default function UserProvider({ children }) {
     const getUserDetails = async () => {
         try {
             const result = await getAPI(`/get-user-details/${userId}`);
-            if (!result || result == "") {
-                alert('Something went wrong');
+            if (!result) {
+                throw new Error('Something went wrong');
             }
-            else {
-                const responseRs = JSON.parse(result);
-                setUserDetails({
-                    ...userDetails,
-                    userName: responseRs?.msg?.name || '',
-                    email: responseRs?.msg?.email,
-                    client_id: responseRs?.msg?.client_id,
-                    client_secret_key: responseRs?.msg?.client_secret_key
-                })
-            }
+            const responseRs = JSON.parse(result);
+            setUserDetails({
+                ...userDetails,
+                userName: responseRs?.msg?.name || '',
+                email: responseRs?.msg?.email,
+                client_id: responseRs?.msg?.client_id,
+                client_secret_key: responseRs?.msg?.client_secret_key
+            })
         }
         catch (error) {
             console.error(error);
@@ -40,7 +39,7 @@ export default function UserProvider({ children }) {
     }
 
     return (
-        <UserContext.Provider value={{ userDetails, setUserDetails }}>
+        <UserContext.Provider value={{ userDetails, setUserDetails, HeaderName, setHeaderName }}>
             {children}
         </UserContext.Provider>
     )

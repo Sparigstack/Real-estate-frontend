@@ -76,10 +76,10 @@
 
 .otpInput {
   background-color: transparent;
-  width: 3rem;
-  height: 3rem;
-  padding: 1.7rem 0;
-  font-size: 1rem;
+  width: 2rem;
+  height: 0rem;
+  padding: 1rem 0;
+  font-size: 12px;
   font-weight: 300;
   line-height: 1.5;
   color: white;
@@ -99,4 +99,5 @@
   background-attachment: fixed;
   height: 100vh;
   width: 100%;
+  overflow-y: scroll;
 }

@@ -18,13 +18,12 @@ export default function AddUpdateLead({ formData, setFormData, handleAddLead, ha
     async function getSources() {
         try {
             const result = await getAPI(`/get-sources`);
-            if (!result || result == "") {
-                alert('Something went wrong');
+            if (!result) {
+                throw new Error('Something went wrong');
             }
-            else {
-                const responseRs = JSON.parse(result);
-                setsourcesData(responseRs)
-            }
+
+            const responseRs = JSON.parse(result);
+            setsourcesData(responseRs)
         }
         catch (error) {
             console.error(error);
@@ -33,13 +32,11 @@ export default function AddUpdateLead({ formData, setFormData, handleAddLead, ha
     async function getProperties() {
         try {
             const result = await getAPI(`/get-user-properties/${userId}`);
-            if (!result || result == "") {
-                alert('Something went wrong');
+            if (!result) {
+                throw new Error('Something went wrong');
             }
-            else {
-                const responseRs = JSON.parse(result);
-                setpropertiesData(responseRs)
-            }
+            const responseRs = JSON.parse(result);
+            setpropertiesData(responseRs)
         }
         catch (error) {
             console.error(error);

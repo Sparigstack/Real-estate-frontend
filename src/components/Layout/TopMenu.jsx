@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import '../../styles/sideTopMenu.css'
-import Images from '../../utils/Images'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGauge, faSignOutAlt, faUser } from '@fortawesome/free-solid-svg-icons';
 import useApiService from '../../services/ApiService';
@@ -11,6 +10,7 @@ import { UserContext } from '../../context/UserContext';
 import { Logout } from '../../utils/js/Common';
 
 export default function TopMenu() {
+    const { HeaderName } = useContext(UserContext);
     const [openProfile, setOpenProfile] = useState(false);
     const [loading, setLoading] = useState(false);
     const [showAlerts, setShowAlerts] = useState(false);
@@ -40,24 +40,24 @@ export default function TopMenu() {
         setLoading(true);
         try {
             const result = await postAPI('/logout');
-            if (!result || result == "") {
-                alert('Something went wrong');
-            } else {
-                const responseRs = JSON.parse(result);
-                if (responseRs.status == 'success') {
-                    setShowAlerts(<AlertComp show={true} variant="success" message="User logged out successfully" />);
-                    setTimeout(() => {
-                        setLoading(false);
-                        setShowAlerts(<AlertComp show={false} />);
-                        Logout();
-                    }, 2000);
-                }
-                else {
+            if (!result) {
+                throw new Error('Something went wrong');
+            }
+            const responseRs = JSON.parse(result);
+            if (responseRs.status == 'success') {
+                setShowAlerts(<AlertComp show={true} variant="success" message="User logged out successfully" />);
+                setTimeout(() => {
+                    setLoading(false);
+                    setShowAlerts(<AlertComp show={false} />);
                     Logout();
-                }
+                }, 2000);
+            }
+            else {
+                Logout();
             }
         }
         catch (error) {
+            setLoading(false);
             console.error(error);
         }
     }
@@ -67,14 +67,9 @@ export default function TopMenu() {
             {showAlerts}
             {loading ? <ShowLoader /> : <HideLoader />}
             <div className="topmenu-wrapper">
-                <div className="position-relative" style={{ width: "40%" }}>
-                    <img src={Images.searchIcon} alt="search-icon" className="search-icon" />
-                    <input
-                        type="text"
-                        className="form-control searchInput"
-                        placeholder="Search"
-                    />
-                </div>
+                <label className='mainheading'>
+                    {HeaderName}
+                </label>
                 <div>
                     <button className="profileOpen" onClick={toggleProfile}>
                         {userDetails?.userName?.charAt(0).toUpperCase()}
