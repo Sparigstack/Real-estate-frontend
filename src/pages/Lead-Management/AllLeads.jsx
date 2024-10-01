@@ -46,7 +46,7 @@ export default function AllLeads() {
     const BASE_URL = import.meta.env.VITE_BASE_URL;
     const [currentPage, setCurrentPage] = useState(1);
     const [totalItems, setTotalItems] = useState('');
-    var itemsPerPage = 5;
+    var itemsPerPage = 2;
 
     const debouncedSearch = useCallback(debounce((searchValue) => {
         getAllLeads(searchValue, utils.sortbyvalue);
@@ -65,8 +65,8 @@ export default function AllLeads() {
                 throw new Error('Something went wrong');
             }
             const responseRs = JSON.parse(result);
-            setLeadData(responseRs);
-            setTotalItems(responseRs.length);
+            setLeadData(responseRs.data);
+            setTotalItems(responseRs.total);
             setUtils((prev) => ({ ...prev, sortbykey: sortby }));
             setLoading(false);
         }
