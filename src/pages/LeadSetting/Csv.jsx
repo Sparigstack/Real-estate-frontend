@@ -1,35 +1,31 @@
 import React, { useRef, useState } from 'react'
 import ShowLoader from '../../components/loader/ShowLoader';
 import HideLoader from '../../components/loader/HideLoader';
-import Cookies from 'js-cookie';
 import AlertComp from '../../components/AlertComp';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileImport } from '@fortawesome/free-solid-svg-icons';
+import useApiService from '../../services/ApiService';
 
 export default function Csv() {
+    const { postAPI } = useApiService();
     const fileInputRef = useRef(null);
     const handleButtonClick = () => fileInputRef.current?.click();
     const [loading, setLoading] = useState(false);
     const [showAlerts, setShowAlerts] = useState(false);
-    const token = Cookies.get('authToken');
-    const BASE_URL = import.meta.env.VITE_BASE_URL;
     const navigate = useNavigate();
-    const headers = new Headers();
-    headers.append("Access-Control-Allow-Origin", "*");
-    headers.append("Authorization", `Bearer ${token}`);
     const handleFileChange = async (event) => {
         const file = event.target.files[0];
         if (!file) return;
         setLoading(true);
-        var formdata = new FormData();
-        formdata.append("file", file);
-        const requestOptions = { method: "POST", headers, body: formdata };
         try {
-            const response = await fetch(`${BASE_URL}/add-leads-csv`, requestOptions);
-            const result = await response.text();
+            var formdata = new FormData();
+            formdata.append("file", file);
+            const result = await postAPI('/add-leads-csv', formdata, 1);
+            if (!result) {
+                throw new Error('Something went wrong');
+            }
             const responseRs = JSON.parse(result);
-            setLoading(false);
             if (responseRs.status == "success") {
                 setShowAlerts(<AlertComp show={true} variant="success" message={'CSV imported Successfully'} />);
                 setTimeout(() => {

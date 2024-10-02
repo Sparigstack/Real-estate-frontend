@@ -1,4 +1,4 @@
-import { faAngleLeft, faIndianRupeeSign, faSort } from '@fortawesome/free-solid-svg-icons'
+import { faIndianRupeeSign, faSort } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import Images from '../../utils/Images'
@@ -39,14 +39,9 @@ export default function AllLeads() {
         sortbyvalue: null,
     })
     const userId = Cookies.get('userId');
-    const token = Cookies.get('authToken');
-    const headers = new Headers();
-    headers.append("Access-Control-Allow-Origin", "*");
-    headers.append("Authorization", `Bearer ${token}`);
-    const BASE_URL = import.meta.env.VITE_BASE_URL;
     const [currentPage, setCurrentPage] = useState(1);
     const [totalItems, setTotalItems] = useState('');
-    var itemsPerPage = 2;
+    var itemsPerPage = 5;
 
     const debouncedSearch = useCallback(debounce((searchValue) => {
         getAllLeads(searchValue, utils.sortbyvalue);
@@ -60,7 +55,7 @@ export default function AllLeads() {
         try {
             const sortby = utils.sortbykey == 'asc' ? 'desc' : 'asc';
             setLoading(true);
-            const result = await getAPI(`/get-leads/${userId}&${search}&${sortby}&${sortbyvalue}&${currentPage}&${itemsPerPage}`);
+            const result = await getAPI(`/get-leads/${userId}&${search}&${sortby}&${sortbyvalue}&${currentPage}&${itemsPerPage}`, 3);
             if (!result) {
                 throw new Error('Something went wrong');
             }
@@ -81,7 +76,7 @@ export default function AllLeads() {
         setLoading(true);
         try {
             const raw = JSON.stringify({ ...values, leadid: formData.leadid });
-            const result = await postAPI('/add-edit-leads', raw);
+            const result = await postAPI('/add-edit-leads', raw, 3);
 
             if (!result) {
                 throw new Error('Something went wrong');
@@ -117,14 +112,14 @@ export default function AllLeads() {
         const file = event.target.files[0];
         if (!file) return;
         setLoading(true);
-        var formdata = new FormData();
-        formdata.append("file", file);
-        const requestOptions = { method: "POST", headers, body: formdata };
         try {
-            const response = await fetch(`${BASE_URL}/add-leads-csv`, requestOptions);
-            const result = await response.text();
+            var formdata = new FormData();
+            formdata.append("file", file);
+            const result = await postAPI('/add-leads-csv', formdata, 1);
+            if (!result) {
+                throw new Error('Something went wrong');
+            }
             const responseRs = JSON.parse(result);
-            setLoading(false);
             if (responseRs.status == "success") {
                 setShowAlerts(<AlertComp show={true} variant="success" message={'CSV imported Successfully'} />);
                 fileInputRef.current.value = '';
@@ -147,7 +142,7 @@ export default function AllLeads() {
         if (!leadid) return;
         setLoading(true);
         try {
-            const result = await getAPI(`/fetch-lead-detail/${userId}/${leadid}`);
+            const result = await getAPI(`/fetch-lead-detail/${userId}/${leadid}`, 3);
             if (!result) {
                 throw new Error('Something went wrong');
             }
@@ -176,7 +171,7 @@ export default function AllLeads() {
         setLoading(true);
         const raw = JSON.stringify({ leadid: formData.leadid, notes: LeadNotes });
         try {
-            const result = await postAPI('/update-lead-notes', raw);
+            const result = await postAPI('/update-lead-notes', raw, 3);
             if (!result) {
                 throw new Error('Something went wrong');
             }

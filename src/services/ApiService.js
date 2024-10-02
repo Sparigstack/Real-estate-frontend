@@ -4,16 +4,33 @@ import { Logout } from "../utils/js/Common";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 const useApiService = () => {
-    const createHeaders = () => {
+    const createHeaders = (headerflag) => {
         const token = Cookies.get('authToken');
-        const headers = new Headers();
-        headers.append("Content-Type", "application/json");
-        headers.append("Accept", "application/json");
-        headers.append("Access-Control-Allow-Origin", "*");
-        if(token) {
-            headers.append("Authorization", `Bearer ${token}`);
-        }        
-        return headers;
+        if (headerflag == 1) { //without content-type for csv
+            const headers = new Headers();
+            headers.append("Access-Control-Allow-Origin", "*");
+            if (token) {
+                headers.append("Authorization", `Bearer ${token}`);
+            }
+            return headers;
+        }
+        else if (headerflag == 2) { //without authorization
+            const headers = new Headers();
+            headers.append("Content-Type", "application/json");
+            headers.append("Accept", "application/json");
+            headers.append("Access-Control-Allow-Origin", "*");
+            return headers;
+        }
+        else {
+            const headers = new Headers();
+            headers.append("Content-Type", "application/json");
+            headers.append("Accept", "application/json");
+            headers.append("Access-Control-Allow-Origin", "*");
+            if (token) {
+                headers.append("Authorization", `Bearer ${token}`);
+            }
+            return headers;
+        }
     };
 
     const handleResponse = async (response) => {
@@ -34,25 +51,25 @@ const useApiService = () => {
         return error;
     };
 
-    const apiRequest = useCallback(async (method, endpoint, data = null) => {
+    const apiRequest = useCallback(async (method, endpoint, headerflag, data = null) => {
         const requestOptions = {
             method,
-            headers: createHeaders(),
+            headers: createHeaders(headerflag),
             redirect: "follow",
             ...(data && { body: data }),
         };
 
         try {
-            const response = await fetch(`${BASE_URL}${endpoint}`, requestOptions);   
+            const response = await fetch(`${BASE_URL}${endpoint}`, requestOptions);
             return await handleResponse(response);
         } catch (error) {
             return handleError(error);
         }
     }, [BASE_URL]);
 
-    const postAPI = useCallback((endpoint, data = null) => apiRequest('POST', endpoint, data), [apiRequest]);
-    const getAPI = useCallback((endpoint) => apiRequest('GET', endpoint), [apiRequest]);
-		
+    const postAPI = useCallback((endpoint, data = null, headerflag) => apiRequest('POST', endpoint, headerflag, data), [apiRequest]);
+    const getAPI = useCallback((endpoint, headerflag) => apiRequest('GET', endpoint, headerflag), [apiRequest]);
+
     return {
         postAPI,
         getAPI

@@ -39,7 +39,7 @@ export default function TopMenu() {
     const handleLogout = async () => {
         setLoading(true);
         try {
-            const result = await postAPI('/logout');
+            const result = await postAPI('/logout', 3);
             if (!result) {
                 throw new Error('Something went wrong');
             }

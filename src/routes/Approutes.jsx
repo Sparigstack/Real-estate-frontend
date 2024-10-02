@@ -8,6 +8,7 @@ import Layout from '../components/layout/Layout';
 import LeadManagementIndex from '../pages/Lead-Management';
 import LeadSettingIndex from '../pages/LeadSetting';
 import RestApi from '../pages/LeadSetting/RestApi';
+import WebFormContent from '../pages/LeadSetting/WebFormContent';
 
 export default function Approutes() {
   return (
@@ -15,6 +16,7 @@ export default function Approutes() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/webform/:userId" element={<WebFormContent />} />
         <Route element={<PrivateRoutes />}>
           <Route element={<Layout />}>
             <Route path="/dashboard" element={<Dashboard />} />

@@ -22,7 +22,7 @@ export default function EnterOtp({ formData }) {
             otp: otpValue
         })
         try {
-            const result = await postAPI('/check-user-otp', raw);
+            const result = await postAPI('/check-user-otp', raw, 2);
             if (!result) {
                 throw new Error('Something went wrong');
             }
@@ -91,7 +91,7 @@ export default function EnterOtp({ formData }) {
             email: formData.email
         })
         try {
-            const result = await postAPI('/register-user', raw);
+            const result = await postAPI('/register-user', raw, 2);
             if (!result) {
                 throw new Error('Something went wrong');
             }

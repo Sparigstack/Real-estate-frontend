@@ -20,7 +20,7 @@ export default function UserProvider({ children }) {
     }, [token])
     const getUserDetails = async () => {
         try {
-            const result = await getAPI(`/get-user-details/${userId}`);
+            const result = await getAPI(`/get-user-details/${userId}`, 3);
             if (!result) {
                 throw new Error('Something went wrong');
             }

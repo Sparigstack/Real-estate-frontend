@@ -17,7 +17,7 @@ export default function LoginDetails({ setLoginView, formData, setFormData }) {
             username: values?.username
         })
         try {
-            const result = await postAPI('/register-user', raw);
+            const result = await postAPI('/register-user', raw, 2);
             if (!result) {
                 throw new Error('Something went wrong');
             }

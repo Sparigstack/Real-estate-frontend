@@ -17,7 +17,7 @@ export default function AddUpdateLead({ formData, setFormData, handleAddLead, ha
     }, []);
     async function getSources() {
         try {
-            const result = await getAPI(`/get-sources`);
+            const result = await getAPI(`/get-sources`, 2);
             if (!result) {
                 throw new Error('Something went wrong');
             }
@@ -31,7 +31,7 @@ export default function AddUpdateLead({ formData, setFormData, handleAddLead, ha
     }
     async function getProperties() {
         try {
-            const result = await getAPI(`/get-user-properties/${userId}`);
+            const result = await getAPI(`/get-user-properties/${userId}`, 2);
             if (!result) {
                 throw new Error('Something went wrong');
             }
