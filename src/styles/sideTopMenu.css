@@ -4,12 +4,16 @@
     width: 100%;
 }
 
+.sub-menu {
+    background: #03053D;
+}
+
 .sub-menu li {
     list-style: none;
 }
 
 .sidemenu-container {
-    width: 250px;
+    width: 210px;
     background-color: #303260;
     display: flex;
     flex-direction: column;
@@ -27,11 +31,11 @@
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-    margin-left: 250px;
+    margin-left: 210px;
 }
 
 .topmenu-container {
-    height: 60px;
+    height: 50px;
     background-color: #303260;
     display: flex;
     align-items: center;
@@ -77,8 +81,8 @@
 
 .searchInput {
     padding-left: 45px !important;
-    background-color: #2e3361 !important;
-    border-color: #2e3361 !important;
+    background-color: transparent !important;
+    border-color: #AEAEAECC !important;
     color: white !important;
 }
 
@@ -109,7 +113,7 @@
     font-size: 16px;
     font-weight: bold;
     cursor: pointer !important;
-    border: 1px solid white;
+    border: none;
 }
 
 .profile-menu {

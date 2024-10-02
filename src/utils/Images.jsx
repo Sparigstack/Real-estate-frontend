@@ -20,6 +20,10 @@ const Images = {
     leadSetting: new URL("../assets/images/sidemenu/lead_setting.svg", import.meta.url).href,
     gridMail: new URL("../assets/images/grid_mail.svg", import.meta.url).href,
     gridMsg: new URL("../assets/images/grid_msg.svg", import.meta.url).href,
-    gridEdit: new URL("../assets/images/grid_edit.svg", import.meta.url).href
+    gridEdit: new URL("../assets/images/grid_edit.svg", import.meta.url).href,
+    addicon: new URL("../assets/images/add.svg", import.meta.url).href,
+    emailicon: new URL("../assets/images/email.svg", import.meta.url).href,
+    template_csv: new URL("../assets/images/template_csv.svg", import.meta.url).href,
+    people: new URL("../assets/images/people.svg", import.meta.url).href
 }
 export default Images

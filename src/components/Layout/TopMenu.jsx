@@ -17,6 +17,8 @@ export default function TopMenu() {
     const { postAPI } = useApiService();
     const { userDetails } = useContext(UserContext);
     const profileRef = useRef(null);
+    const [firstPart, secondPart] = HeaderName.split('/');
+
     useEffect(() => {
         if (openProfile) {
             document.addEventListener('mousedown', handleClickOutside)
@@ -68,7 +70,8 @@ export default function TopMenu() {
             {loading ? <ShowLoader /> : <HideLoader />}
             <div className="topmenu-wrapper">
                 <label className='mainheading'>
-                    {HeaderName}
+                    <span className={`${secondPart ? 'graycolor' : 'fontwhite'}`}>{firstPart}</span>
+                    <span style={{ color: 'white' }}>{secondPart && '/'} {secondPart}</span >
                 </label>
                 <div>
                     <button className="profileOpen" onClick={toggleProfile}>

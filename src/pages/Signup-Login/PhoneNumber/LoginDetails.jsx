@@ -56,7 +56,7 @@ export default function LoginDetails({ setLoginView, formData, setFormData }) {
                         handleGetOtp(values);
                     }}>
                     {() => (
-                        <Form className='w-md-25 d-inline-block justify-content-center'>
+                        <Form className='w-25 d-inline-block justify-content-center'>
                             <div className='position-relative mb-4'>
                                 <label className='custom-label'>User Name <span className='text-danger'>*</span></label>
                                 <Field type="text" className="customInput" name='username' autoComplete='off' />

@@ -76,16 +76,17 @@
 
 .otpInput {
   background-color: transparent;
-  width: 2rem;
-  height: 0rem;
-  padding: 1rem 0;
-  font-size: 12px;
+  width: 3rem;
+  height: 3rem;
+  padding: 1.7rem 0;
+  font-size: 1rem;
   font-weight: 300;
   line-height: 1.5;
   color: white;
   border-radius: 10px;
   transition: border 0.15s ease-in-out;
 }
+
 
 .otpInput:focus {
   outline: none;
