@@ -91,7 +91,7 @@ export default function AllLeads() {
                 setShowAlerts(<AlertComp show={true} variant="success" message={msg} />);
                 setTimeout(() => {
                     setShowAlerts(<AlertComp show={false} />);
-                    getAllLeads();
+                    getAllLeads(utils.search, utils.sortbyvalue);
                 }, 2000);
             }
             else {
@@ -126,7 +126,7 @@ export default function AllLeads() {
                 fileInputRef.current.value = '';
                 setTimeout(() => {
                     setShowAlerts(<AlertComp show={false} />);
-                    getAllLeads();
+                    getAllLeads(utils.search, utils.sortbyvalue);
                 }, 1500);
             } else {
                 showErrorAlert(responseRs.message);
@@ -184,7 +184,7 @@ export default function AllLeads() {
                 setTimeout(() => {
                     setLoading(false);
                     setShowAlerts(<AlertComp show={false} />);
-                    getAllLeads();
+                    getAllLeads(utils.search, utils.sortbyvalue);
                 }, 2000);
             }
             else {
