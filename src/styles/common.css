@@ -118,15 +118,15 @@
 }
 
 .propertiesOptions {
-  background: #46486f;
+  background: #46486f6b;
   border-radius: 8px;
   text-align: center;
   color: white;
-  padding: 30px 40px;
-  opacity: 50%;
+  padding: 30px 65px;
 }
 
 .propertiesOptions:hover {
+  background: #46486F;
   border: 2px solid white;
   opacity: 100%;
 }
@@ -299,4 +299,8 @@ select {
 
 .graycolor {
   color: #BBBABA;
+}
+
+.h-100vh {
+  height: 100vh;
 }

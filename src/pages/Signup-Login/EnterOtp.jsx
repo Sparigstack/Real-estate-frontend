@@ -28,13 +28,14 @@ export default function EnterOtp({ formData }) {
             }
             const responseRs = JSON.parse(result);
             if (responseRs.status == 'success') {
-                Cookies.set('authToken', responseRs.token, { expires: 1 });
-                Cookies.set('userId', responseRs.userId, { expires: 1 });
+                Cookies.set('authToken', responseRs.token, { expires: 1, secure: true, sameSite: 'Strict' });
+                Cookies.set('userId', responseRs.userId, { expires: 1, secure: true, sameSite: 'Strict' });
                 setOtpError('');
                 setShowAlerts(<AlertComp show={true} variant="success" message="User logged in successfully" />);
                 setTimeout(() => {
                     setLoading(false);
                     setShowAlerts(<AlertComp show={false} />);
+                    // window.location.href = '/properties';
                     window.location.href = '/dashboard';
                 }, 2000);
             }

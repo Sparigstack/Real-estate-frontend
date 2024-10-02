@@ -36,7 +36,6 @@ const useApiService = () => {
     const handleResponse = async (response) => {
         const responseBody = await response.text();
         if (response?.status == 401) {
-            alert('Token expired. Redirecting to the login page.');
             setTimeout(() => {
                 Logout();
             }, 2000);

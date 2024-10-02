@@ -24,6 +24,7 @@ const Images = {
     addicon: new URL("../assets/images/add.svg", import.meta.url).href,
     emailicon: new URL("../assets/images/email.svg", import.meta.url).href,
     template_csv: new URL("../assets/images/template_csv.svg", import.meta.url).href,
-    people: new URL("../assets/images/people.svg", import.meta.url).href
+    people: new URL("../assets/images/people.svg", import.meta.url).href,
+    error_page: new URL("../assets/images/error_page.svg", import.meta.url).href
 }
 export default Images
