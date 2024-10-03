@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import Login from '../pages/Signup-Login/Login';
 import Dashboard from '../pages/Dashboard/Dashboard';
 import PrivateRoutes from './PrivateRoutes';
@@ -11,16 +11,23 @@ import RestApi from '../pages/LeadSetting/RestApi';
 import WebFormContent from '../pages/LeadSetting/WebFormContent';
 import Properties from '../pages/Properties';
 import AddPropertyForm from '../pages/Properties/AddPropertyForm';
+import AddPropertyIndex from '../pages/Properties/AddPropertyIndex';
+import Cookies from 'js-cookie';
 
 export default function Approutes() {
+  const token = Cookies.get('authToken');
+  const propertyId = Cookies.get('propertyId');
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/" element={token ? <Navigate to="/dashboard" /> : <Login />} />
+        <Route path="/login" element={token ? <Navigate to="/dashboard" /> : <Login />} />
         <Route path="/webform/:userId" element={<WebFormContent />} />
-        <Route path="/properties" element={<Properties />} />
-        <Route path="/add-properties/:schemeType" element={<AddPropertyForm />} />
+
+        <Route path="/properties" element={propertyId ? <Properties /> : <Navigate to="/" />} />
+        <Route path="/add-property-scheme" element={propertyId ? <AddPropertyIndex /> : <Navigate to="/login" />} />
+        <Route path="/add-properties/:schemeType" element={propertyId ? <AddPropertyForm /> : <Navigate to="/" />} />
+
         <Route element={<PrivateRoutes />}>
           <Route element={<Layout />}>
             <Route path="/dashboard" element={<Dashboard />} />

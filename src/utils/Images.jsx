@@ -25,6 +25,10 @@ const Images = {
     emailicon: new URL("../assets/images/email.svg", import.meta.url).href,
     template_csv: new URL("../assets/images/template_csv.svg", import.meta.url).href,
     people: new URL("../assets/images/people.svg", import.meta.url).href,
-    error_page: new URL("../assets/images/error_page.svg", import.meta.url).href
+    error_page: new URL("../assets/images/error_page.svg", import.meta.url).href,
+    blackaddicon: new URL("../assets/images/black-add-icon.svg", import.meta.url).href,
+    filter: new URL("../assets/images/filter.svg", import.meta.url).href,
+    dummy_property: new URL("../assets/images/dummy_property.svg", import.meta.url).href,
+    scheme: new URL("../assets/images/scheme.svg", import.meta.url).href
 }
 export default Images

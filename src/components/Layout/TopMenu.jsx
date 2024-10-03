@@ -1,23 +1,25 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import '../../styles/sideTopMenu.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGauge, faSignOutAlt, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faBuilding, faGauge, faSignOutAlt, faUser } from '@fortawesome/free-solid-svg-icons';
 import useApiService from '../../services/ApiService';
 import ShowLoader from '../loader/ShowLoader';
 import HideLoader from '../loader/HideLoader';
 import AlertComp from '../AlertComp';
 import { UserContext } from '../../context/UserContext';
 import { Logout } from '../../utils/js/Common';
+import Images from '../../utils/Images';
+import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 export default function TopMenu() {
-    const { HeaderName } = useContext(UserContext);
     const [openProfile, setOpenProfile] = useState(false);
     const [loading, setLoading] = useState(false);
     const [showAlerts, setShowAlerts] = useState(false);
     const { postAPI } = useApiService();
-    const { userDetails } = useContext(UserContext);
+    const { userDetails, propertyName } = useContext(UserContext);
     const profileRef = useRef(null);
-    const [firstPart, secondPart] = HeaderName.split('/');
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (openProfile) {
@@ -69,9 +71,10 @@ export default function TopMenu() {
             {showAlerts}
             {loading ? <ShowLoader /> : <HideLoader />}
             <div className="topmenu-wrapper">
-                <label className='mainheading'>
-                    <span className={`${secondPart ? 'graycolor' : 'fontwhite'}`}>{firstPart}</span>
-                    <span style={{ color: 'white' }}>{secondPart && '/'} {secondPart}</span >
+                <label>
+                    <h4 className={'fontwhite mb-0'}>
+                        <img src={Images.scheme} className='img-fluid pe-2' />
+                        {propertyName}</h4>
                 </label>
                 <div>
                     <button className="profileOpen" onClick={toggleProfile}>
@@ -94,6 +97,7 @@ export default function TopMenu() {
                                     </a>
                                 </li>
                                 <hr className='m-0 p-0' />
+                                <li onClick={(e) => { Cookies.remove('propertyId'); navigate('/properties') }}><FontAwesomeIcon icon={faBuilding} className='pe-2' />Switch to Scheme</li>
                                 <li><FontAwesomeIcon icon={faUser} className='pe-2' />Profile</li>
                                 <li><FontAwesomeIcon icon={faGauge} className='pe-2' />Dashboard</li>
                                 <li onClick={handleLogout}><FontAwesomeIcon icon={faSignOutAlt} className='pe-2' />Logout</li>

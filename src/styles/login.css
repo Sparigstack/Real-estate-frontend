@@ -41,6 +41,16 @@
   font-weight: 600;
 }
 
+.cancelBtn {
+  border: 1px solid white;
+  font-size: 16px;
+  color: white;
+  background: transparent;
+  border-radius: 8px;
+  padding: 10px 30px 10px 30px;
+  font-weight: 600;
+}
+
 .custom-radio .form-check-input {
   width: 20px;
   height: 20px;

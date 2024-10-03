@@ -35,8 +35,8 @@ export default function EnterOtp({ formData }) {
                 setTimeout(() => {
                     setLoading(false);
                     setShowAlerts(<AlertComp show={false} />);
-                    // window.location.href = '/properties';
-                    window.location.href = '/dashboard';
+                    window.location.href = '/properties';
+                    // window.location.href = '/dashboard';
                 }, 2000);
             }
             else {

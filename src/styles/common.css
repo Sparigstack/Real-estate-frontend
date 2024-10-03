@@ -8,13 +8,21 @@
   position: absolute;
 }
 
-
+/*Font Size css start*/
 .font-12 {
   font-size: 12px;
 }
 
 .font-13 {
   font-size: 13px;
+}
+
+.font-14 {
+  font-size: 14px;
+}
+
+.font-15 {
+  font-size: 15px;
 }
 
 .font-16 {
@@ -29,7 +37,7 @@
   font-size: 30px;
 }
 
-
+/*Font Size css end*/
 .custom-label {
   background: #03053d;
   color: white;
@@ -59,99 +67,10 @@
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
-.countrycode {
-  position: absolute;
-  top: 31%;
-  padding-left: 12px;
-  pointer-events: none;
-  color: white;
-  font-size: 14px;
-}
-
-.close-icon {
-  position: absolute;
-  top: -7px;
-  left: 22%;
-  cursor: pointer;
-  color: #a12c2c;
-  border-radius: 50px;
-  background: white;
-  padding: 1px;
-}
-
-.contact-form .input-group {
-  border-radius: 8px;
-}
-
-.contact-form .input-group> :not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback) {
-  border-top-left-radius: 8px;
-  border-bottom-left-radius: 8px;
-}
-
-.contact-form .input-group-text {
-  border-bottom-left-radius: 8px !important;
-  border-bottom-right-radius: 8px !important;
-  border-top-left-radius: 8px !important;
-  border-top-right-radius: 8px !important;
-}
-
-.commercial-form-input .input-group {
-  border-radius: 8px;
-}
-
-.commercial-form-input .input-group> :not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback) {
-  border-top-left-radius: 8px;
-  border-bottom-left-radius: 8px;
-}
-
-.commercial-form-input .input-group-text {
-  border-bottom-left-radius: 8px !important;
-  border-bottom-right-radius: 8px !important;
-  border-top-left-radius: 8px !important;
-  border-top-right-radius: 8px !important;
-}
-
 .heading {
   font-size: 32px;
   font-weight: 700;
   color: white;
-}
-
-.propertiesOptions {
-  background: #46486f6b;
-  border-radius: 8px;
-  text-align: center;
-  color: white;
-  padding: 30px 65px;
-}
-
-.propertiesOptions:hover {
-  background: #46486F;
-  border: 2px solid white;
-  opacity: 100%;
-}
-
-.helpAndChatbot {
-  position: fixed;
-  bottom: 10px;
-  left: 94%;
-}
-
-.help-image {
-  position: absolute;
-  right: 35px;
-  top: 0;
-  opacity: 0;
-  height: 55px;
-}
-
-.chatbot-container:hover .help-image {
-  opacity: 1;
-}
-
-.contact-form .custom-form-control::placeholder {
-  color: white;
-  opacity: 50%;
 }
 
 .customInput::placeholder {
@@ -159,68 +78,13 @@
   opacity: 50%;
 }
 
-.subPropertyTypesBtn {
-  border: 1px solid #ffffff33;
-  background: transparent;
-  color: white;
-  font-size: 14px;
-  font-weight: 600;
-  border-radius: 8px;
-  padding: 12px 15px;
-}
-
-.subPropertyTypesBtn:hover {
-  background: #aab8ff;
-  color: black;
-}
-
-.subPropertyTypeActive {
-  background: #aab8ff;
-  color: black;
-  font-size: 14px;
-  font-weight: 600;
-  border-radius: 8px;
-  padding: 12px 15px;
-  border: none;
-}
-
-.custom-accordian .accordion {
-  --bs-accordion-bg: none;
-}
-
-.custom-accordian .accordion-button:not(.collapsed) {
-  color: black;
-  background-color: white;
-}
-
-.custom-accordian .accordion-button.collapsed {
-  color: white;
-  background-color: none;
-}
-
-.custom-accordian .accordion-button.collapsed::after {
-  filter: brightness(0) invert(1);
-}
-
-.unit-container {
-  flex: 0 0 115px;
-  display: flex;
-}
-
-.TitleHeader {
-  padding: 8px;
-  background: #303260;
-  color: white;
-  border-radius: 6px;
-}
-
 .WhiteBtn {
   border: none;
   font-size: 13px;
   color: black;
   background: white;
-  border-radius: 8px;
-  padding: 6px 10px;
+  border-radius: 5px;
+  padding: 8px 10px;
   font-weight: 600;
 }
 
@@ -264,11 +128,6 @@ select {
   padding: 10px;
 }
 
-.mainheading {
-  color: white;
-  font-size: 18px;
-  font-weight: 600;
-}
 
 .fontwhite {
   color: white;
@@ -303,4 +162,20 @@ select {
 
 .h-100vh {
   height: 100vh;
+}
+
+/*custom input group */
+.property-form .input-group-text {
+  border-bottom-left-radius: 0px !important;
+  border-bottom-right-radius: 8px !important;
+  border-top-left-radius: 0px !important;
+  border-top-right-radius: 8px !important;
+}
+
+.PageHeader {
+  color: white;
+  font-size: 20px;
+  background-color: #303260;
+  padding: 5px 10px;
+  border-radius: 5px;
 }

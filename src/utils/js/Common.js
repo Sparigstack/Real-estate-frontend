@@ -15,6 +15,7 @@ export const convertToBase64 = (file) => {
 export function Logout() {
     Cookies.remove('authToken');
     Cookies.remove('userId');
+    Cookies.remove('propertyId');
     window.location.href = '/login';
 }
 

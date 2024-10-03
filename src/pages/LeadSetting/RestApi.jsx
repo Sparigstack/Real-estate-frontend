@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import HeaderName from '../../utils/HeaderName'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
 
@@ -13,7 +12,6 @@ export default function RestApi() {
     };
     return (
         <>
-            <HeaderName header="Lead Setting / Rest API" />
             <div className='scrollable-content' style={{ height: "85vh" }}>
                 <div className='card m-2 p-3 '>
                     <div className='col-12'>

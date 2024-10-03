@@ -3,7 +3,6 @@ import { UserContext } from '../../context/UserContext'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCopy, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import Accordion from 'react-bootstrap/Accordion';
-import HeaderName from '../../utils/HeaderName';
 import Csv from './Csv';
 import { useNavigate } from 'react-router-dom';
 import WebForm from './WebForm';
@@ -26,7 +25,6 @@ export default function LeadSettingIndex() {
     };
     return (
         <>
-            <HeaderName header="Lead Setting" />
             <div className='scrollable-content'>
                 <div className='row m-auto justify-content-center'>
                     <div className='d-flex pt-4 justify-content-center'>

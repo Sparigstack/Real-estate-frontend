@@ -12,7 +12,6 @@ import Cookies from 'js-cookie'
 import AlertComp from '../../components/AlertComp'
 import CustomPagination from '../../components/CustomPagination'
 import { debounce } from 'lodash';
-import HeaderName from '../../utils/HeaderName'
 
 export default function AllLeads() {
     const { postAPI, getAPI } = useApiService();
@@ -199,7 +198,6 @@ export default function AllLeads() {
     const handlePageChange = (page) => setCurrentPage(page);
     return (
         <div>
-            <HeaderName header="Recent Leads / All Leads" />
             {showAlerts}
             {loading ? <ShowLoader /> : <HideLoader />}
             <div className='row align-items-center'>
