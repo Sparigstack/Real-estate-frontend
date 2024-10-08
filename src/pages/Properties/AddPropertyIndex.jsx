@@ -12,14 +12,6 @@ export default function AddProperty() {
     const { logout } = useAuth();
     const location = useLocation();
     const showbackbutton = location.state && location.state.ShowBack;
-    const handleLogout = () => {
-        setloading(true);
-        setTimeout(() => {
-            logout();
-            setloading(false);
-            navigate("/");
-        }, 2000);
-    };
     return (
         <div className="content-area h-100vh">
             {loading && <ShowLoader />}
@@ -29,7 +21,7 @@ export default function AddProperty() {
                     {showbackbutton && (
                         <label className='fontwhite font-18 cursor-pointer' onClick={(e) => navigate("/properties")}>Back to Properties</label>
                     )}
-                    <FontAwesomeIcon icon={faRightFromBracket} className='logout-icon ms-3' onClick={handleLogout} />
+                    <FontAwesomeIcon icon={faRightFromBracket} className='logout-icon ms-3' onClick={logout} />
                 </div>
                 <div className="d-flex pt-5 align-items-center justify-content-center position-relative">
                     <img src={Images.realEstateLogo} alt="realestatelogo" className='' />

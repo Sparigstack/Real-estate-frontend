@@ -2,12 +2,14 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
 import Login from '../pages/Signup-Login/Login';
 import useApiService from '../hooks/useApiService';
+import ShowLoader from '../components/loader/ShowLoader';
 
 const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
     const [authToken, setAuthToken] = useState(Cookies.get('authToken') || null);
     const [userId, setUserId] = useState(Cookies.get('userId') || null);
+    const [loading, setloading] = useState(false);
     const [userDetails, setUserDetails] = useState({
         userName: '',
         email: '',
@@ -45,11 +47,13 @@ export const AuthProvider = ({ children }) => {
 
     const logout = async () => {
         try {
+            setloading(true);
             const result = await postAPI('/logout');
             if (!result) {
                 throw new Error('Something went wrong');
             }
             const responseRs = JSON.parse(result);
+            setloading(false);
             if (responseRs.status == 'success') {
                 setTimeout(() => {
                     setAuthToken(null);
@@ -70,9 +74,12 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ authToken, userDetails, setUserDetails, logout }}>
-            {authToken ? children : <Login />}
-        </AuthContext.Provider>
+        <>
+            {loading && <ShowLoader />}
+            <AuthContext.Provider value={{ authToken, userDetails, setUserDetails, logout }}>
+                {authToken ? children : <Login />}
+            </AuthContext.Provider>
+        </>
     );
 };
 

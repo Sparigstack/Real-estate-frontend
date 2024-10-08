@@ -48,14 +48,6 @@ export default function YourProperties() {
         }, 2000);
 
     }
-    const handleLogout = () => {
-        setloading(true);
-        setTimeout(() => {
-            logout();
-            setloading(false);
-            navigate("/");
-        }, 2000);
-    };
     return (
         <div className="content-area h-100vh p-3">
             {loading && <ShowLoader />}
@@ -69,7 +61,7 @@ export default function YourProperties() {
                     </button>
                 </div>
                 <div className='col-md-1'>
-                    <div className='col-12 justify-content-center align-items-center fontwhite d-flex cursor-pointer' onClick={handleLogout}>
+                    <div className='col-12 justify-content-center align-items-center fontwhite d-flex cursor-pointer' onClick={logout}>
                         <FontAwesomeIcon icon={faRightFromBracket} className='logout-icon' />
                     </div>
                 </div>
