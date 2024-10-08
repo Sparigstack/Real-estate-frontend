@@ -33,7 +33,7 @@
 
 .otpBtn {
   border: none;
-  font-size: 16px;
+  font-size: 14px;
   color: black;
   background: white;
   border-radius: 8px;
@@ -42,9 +42,9 @@
 }
 
 .cancelBtn {
-  border: 1px solid white;
-  font-size: 16px;
-  color: white;
+  border: 1px solid #40416C;
+  font-size: 14px;
+  color: #CFD0DA;
   background: transparent;
   border-radius: 8px;
   padding: 10px 30px 10px 30px;

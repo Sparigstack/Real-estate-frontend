@@ -6,12 +6,11 @@ import { formatCurrency } from '../../utils/js/Common'
 import CustomModal from '../../utils/CustomModal'
 import AddUpdateLead from './AddUpdateLead'
 import ShowLoader from '../../components/loader/ShowLoader'
-import HideLoader from '../../components/loader/HideLoader'
-import useApiService from '../../services/ApiService'
 import Cookies from 'js-cookie'
-import AlertComp from '../../components/AlertComp'
-import CustomPagination from '../../components/CustomPagination'
+import AlertComp from '../../components/alerts/AlertComp'
+import CustomPagination from '../../components/pagination/CustomPagination'
 import { debounce } from 'lodash';
+import useApiService from '../../hooks/useApiService'
 
 export default function AllLeads() {
     const { postAPI, getAPI } = useApiService();
@@ -199,7 +198,7 @@ export default function AllLeads() {
     return (
         <div>
             {showAlerts}
-            {loading ? <ShowLoader /> : <HideLoader />}
+            {loading && <ShowLoader />}
             <div className='row align-items-center'>
                 <div className='col-md-4'>
                     <div className="position-relative">

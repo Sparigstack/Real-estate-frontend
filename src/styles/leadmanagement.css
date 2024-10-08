@@ -20,8 +20,3 @@
 .leadaccordian .accordion-button {
     font-weight: 600;
 }
-
-.scrollable-content {
-    overflow-y: scroll;
-    height: 80vh;
-}

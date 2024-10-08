@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import Images from '../../utils/Images';
 import { NavLink } from 'react-router-dom';
-import '../../styles/sideTopMenu.css';
 import SideMenuItems from '../../json/SideMenuItems.json';
 import { faSortDown, faSortUp } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

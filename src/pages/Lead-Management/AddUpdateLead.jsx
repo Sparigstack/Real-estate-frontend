@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react'
 import AddUpdateLeadValidationSchema from '../../utils/validations/AddUpdateLeadValidationSchema';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faIndianRupeeSign } from '@fortawesome/free-solid-svg-icons';
-import useApiService from '../../services/ApiService';
 import Cookies from 'js-cookie';
+import useApiService from '../../hooks/useApiService';
 
 export default function AddUpdateLead({ formData, setFormData, handleAddLead, handleHide }) {
     const { getAPI } = useApiService();
@@ -44,6 +44,8 @@ export default function AddUpdateLead({ formData, setFormData, handleAddLead, ha
     }
     return (
         <Formik initialValues={formData}
+            validateOnBlur={false}
+            validateOnChange={false}
             validationSchema={AddUpdateLeadValidationSchema}
             onSubmit={(values) => {
                 setFormData(values);

@@ -1,14 +1,14 @@
-import React, { useContext, useRef, useState } from 'react'
-import { UserContext } from '../../context/UserContext'
+import React, { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCopy, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import Accordion from 'react-bootstrap/Accordion';
 import Csv from './Csv';
 import { useNavigate } from 'react-router-dom';
 import WebForm from './WebForm';
+import useAuth from '../../hooks/useAuth';
 
 export default function LeadSettingIndex() {
-    const { userDetails } = useContext(UserContext);
+    const { userDetails } = useAuth();
     const [showcopymsg, setshowcopymsg] = useState(false)
     const [visiblesecretkey, setvisiblesecretkey] = useState(false)
     const navigate = useNavigate();

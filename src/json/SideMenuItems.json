@@ -7,7 +7,7 @@
         "submenu": []
     },
     {
-        "path": "/property",
+        "path": "/add-properties",
         "imageKey": "propertyIcon",
         "altText": "property",
         "label": "Property",

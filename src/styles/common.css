@@ -29,6 +29,10 @@
   font-size: 16px;
 }
 
+.font-18 {
+  font-size: 18px;
+}
+
 .font-22 {
   font-size: 22px;
 }
@@ -161,7 +165,7 @@ select {
 }
 
 .h-100vh {
-  height: 100vh;
+  height: 100vh !important;
 }
 
 /*custom input group */
@@ -178,4 +182,10 @@ select {
   background-color: #303260;
   padding: 5px 10px;
   border-radius: 5px;
+}
+
+.logout-icon {
+  border: 1px solid white;
+  padding: 10px;
+  border-radius: 50%;
 }

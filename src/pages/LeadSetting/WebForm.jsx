@@ -5,7 +5,7 @@ import Cookies from 'js-cookie';
 
 export default function WebForm() {
     const userId = Cookies.get('userId');
-    const frontendurl = import.meta.env.VITE_Frontend_URL;
+    const frontendurl = import.meta.env.VITE_REDIRECT_URL;
     const [showcopymsg, setshowcopymsg] = useState(false)
     const handleCopyClick = (labelValue) => {
         navigator.clipboard.writeText(labelValue);

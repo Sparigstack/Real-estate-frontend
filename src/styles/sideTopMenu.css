@@ -47,7 +47,7 @@
     flex-grow: 1;
     padding: 10px;
     background-color: #03053d;
-    overflow-y: hidden;
+    overflow-y: scroll;
     overflow-x: hidden;
 }
 

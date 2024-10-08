@@ -1,11 +1,10 @@
 import React, { useRef, useState } from 'react'
 import ShowLoader from '../../components/loader/ShowLoader';
-import HideLoader from '../../components/loader/HideLoader';
-import AlertComp from '../../components/AlertComp';
+import AlertComp from '../../components/alerts/AlertComp';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileImport } from '@fortawesome/free-solid-svg-icons';
-import useApiService from '../../services/ApiService';
+import useApiService from '../../hooks/useApiService';
 
 export default function Csv() {
     const { postAPI } = useApiService();
@@ -44,7 +43,7 @@ export default function Csv() {
     return (
         <div>
             {showAlerts}
-            {loading ? <ShowLoader /> : <HideLoader />}
+            {loading && <ShowLoader />}
             <button className='WhiteBtn ms-3' style={{ border: "1px solid black" }} onClick={handleButtonClick}>
                 <input
                     type="file"

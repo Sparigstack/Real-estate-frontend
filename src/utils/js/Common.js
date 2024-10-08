@@ -1,4 +1,4 @@
-import Cookies from "js-cookie";
+import Cookies from 'js-cookie';
 export const convertToBase64 = (file) => {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -12,11 +12,12 @@ export const convertToBase64 = (file) => {
     });
 }
 
-export function Logout() {
-    Cookies.remove('authToken');
-    Cookies.remove('userId');
-    Cookies.remove('propertyId');
-    window.location.href = '/login';
+export async function Logout() {
+    Cookies.remove('authToken')
+    Cookies.remove('userId')
+    Cookies.remove('propertyId')
+    Cookies.remove('propertyName')
+    window.location.href = "/";
 }
 
 export function formatCurrency(amount) {
@@ -28,3 +29,4 @@ export function formatCurrency(amount) {
         return amount.toString();
     }
 }
+

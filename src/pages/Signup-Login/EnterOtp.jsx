@@ -1,9 +1,9 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import ShowLoader from '../../components/loader/ShowLoader';
-import HideLoader from '../../components/loader/HideLoader';
-import useApiService from '../../services/ApiService';
 import Cookies from 'js-cookie';
-import AlertComp from '../../components/AlertComp';
+import AlertComp from '../../components/alerts/AlertComp';
+import useApiService from '../../hooks/useApiService';
+import { useNavigate } from 'react-router-dom';
 
 export default function EnterOtp({ formData }) {
     const { postAPI } = useApiService();
@@ -14,8 +14,10 @@ export default function EnterOtp({ formData }) {
     const [timeLeft, setTimeLeft] = useState(180);
     const [timeExpired, setTimeExpired] = useState(false);
     const [showAlerts, setShowAlerts] = useState(false);
+    const navigate = useNavigate();
+    const alertTimeoutRef = useRef();
 
-    const validateOtp = useCallback(async (otpValue) => {
+    const validateOtp = async (otpValue) => {
         setLoading(true);
         var raw = JSON.stringify({
             email: formData.email,
@@ -31,13 +33,19 @@ export default function EnterOtp({ formData }) {
                 Cookies.set('authToken', responseRs.token, { expires: 1, secure: true, sameSite: 'Strict' });
                 Cookies.set('userId', responseRs.userId, { expires: 1, secure: true, sameSite: 'Strict' });
                 setOtpError('');
-                setShowAlerts(<AlertComp show={true} variant="success" message="User logged in successfully" />);
+                showAlert('User logged in successfully', 'success');
                 setTimeout(() => {
                     setLoading(false);
                     setShowAlerts(<AlertComp show={false} />);
-                    window.location.href = '/properties';
-                    // window.location.href = '/dashboard';
-                }, 2000);
+                    if (responseRs.userProperty == 1) {
+                        // navigate('/properties');
+                        window.location.href = "/properties";
+                    } else {
+                        // navigate('/add-property');
+                        window.location.href = "/add-property";
+                    }
+
+                }, 500);
             }
             else {
                 setOtpError(responseRs.msg);
@@ -48,7 +56,7 @@ export default function EnterOtp({ formData }) {
             setLoading(false);
             console.error(error);
         }
-    })
+    }
     const handleChangeOtp = (e, index) => {
         const { value } = e.target;
         const newOtp = [...otp];
@@ -57,13 +65,14 @@ export default function EnterOtp({ formData }) {
         if (value.length == 1 && index < inputRefs.current.length - 1) {
             inputRefs.current[index + 1].focus();
         }
-        if (value.length == 0 && index > 0) {
+        else if (value.length == 0 && index > 0) {
             inputRefs.current[index - 1].focus();
         }
-        if (index == inputRefs.current.length - 1) {
-            const otpValue = newOtp.join('');
-            validateOtp(otpValue);
+
+        if (newOtp.every(digit => digit)) {
+            validateOtp(newOtp.join(''));
         }
+
     }
 
     const handlePasteOtp = (e) => {
@@ -72,12 +81,15 @@ export default function EnterOtp({ formData }) {
         if (pastedOtp.length == inputRefs.current.length) {
             const newOtp = pastedOtp.split('');
             setOtp(newOtp);
-            inputRefs.current[inputRefs.current.length - 1].focus();
-            const otpValue = newOtp.join('');
-            validateOtp(otpValue);
+            validateOtp(newOtp.join(''));
         }
     }
-
+    const showAlert = (message, variant = 'success') => {
+        setShowAlerts(<AlertComp show={true} variant={variant} message={message} />);
+        alertTimeoutRef.current = setTimeout(() => {
+            setShowAlerts(<AlertComp show={false} />);
+        }, 2000);
+    };
     const formatTime = (timeInSeconds) => {
         const minutes = Math.floor(timeInSeconds / 60);
         const seconds = timeInSeconds % 60;
@@ -120,6 +132,11 @@ export default function EnterOtp({ formData }) {
         }
     }
     useEffect(() => {
+        return () => {
+            if (alertTimeoutRef.current) clearTimeout(alertTimeoutRef.current);
+        };
+    }, []);
+    useEffect(() => {
         inputRefs.current[0]?.focus();
     }, []);
 
@@ -148,7 +165,7 @@ export default function EnterOtp({ formData }) {
     return (
         <>
             {showAlerts}
-            {loading ? <ShowLoader /> : <HideLoader />}
+            {loading && <ShowLoader />}
             <div className='text-center pt-5'>
                 <h2 className='fw-normal'>Please Enter a Code</h2>
                 <div className='mt-2'>

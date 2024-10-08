@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import RecentLeads from './RecentLeads'
 import AllLeads from './AllLeads';
-import '../../styles/leadmanagement.css';
 
 export default function LeadManagementIndex() {
     const [GridFlag, setGridFlag] = useState(1); //1->RecentLeads 2->AllLeads

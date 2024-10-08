@@ -1,6 +1,4 @@
 import React from 'react'
-// import "rc-pagination/assets/index.css";
-import '../styles/custompagination.css';
 import Pagination from "rc-pagination";
 
 export default function CustomPagination({ currentPage, totalItems, itemsPerPage, handlePageChange }) {

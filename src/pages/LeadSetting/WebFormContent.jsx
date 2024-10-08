@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { Field, Formik, Form, ErrorMessage } from 'formik';
 import AddUpdateLeadValidationSchema from '../../utils/validations/AddUpdateLeadValidationSchema';
-import useApiService from '../../services/ApiService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faIndianRupeeSign } from '@fortawesome/free-solid-svg-icons';
 import { useParams } from 'react-router-dom';
-import AlertComp from '../../components/AlertComp';
+import AlertComp from '../../components/alerts/AlertComp';
+import useApiService from '../../hooks/useApiService';
 
 export default function WebFormContent() {
     const { getAPI, postAPI } = useApiService();
@@ -92,6 +92,8 @@ export default function WebFormContent() {
         <div className='col-12'>
             {alerts}
             <Formik initialValues={formData}
+                validateOnBlur={false}
+                validateOnChange={false}
                 validationSchema={AddUpdateLeadValidationSchema}
                 onSubmit={(values) => {
                     setFormData(values);

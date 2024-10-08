@@ -1,25 +1,20 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
-import '../../styles/sideTopMenu.css'
+import React, { useEffect, useRef, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBuilding, faGauge, faSignOutAlt, faUser } from '@fortawesome/free-solid-svg-icons';
-import useApiService from '../../services/ApiService';
-import ShowLoader from '../loader/ShowLoader';
-import HideLoader from '../loader/HideLoader';
-import AlertComp from '../AlertComp';
-import { UserContext } from '../../context/UserContext';
-import { Logout } from '../../utils/js/Common';
 import Images from '../../utils/Images';
-import { useNavigate } from 'react-router-dom';
+import useAuth from '../../hooks/useAuth';
+import useProperty from '../../hooks/useProperty';
 import Cookies from 'js-cookie';
 
 export default function TopMenu() {
     const [openProfile, setOpenProfile] = useState(false);
-    const [loading, setLoading] = useState(false);
-    const [showAlerts, setShowAlerts] = useState(false);
-    const { postAPI } = useApiService();
-    const { userDetails, propertyName } = useContext(UserContext);
+    const { userDetails, logout } = useAuth();
     const profileRef = useRef(null);
-    const navigate = useNavigate();
+    const propertyName = Cookies.get('propertyName');
+    const { handleSwitchProperty } = useProperty();
+    useEffect(() => {
+        console.log(propertyName)
+    }, [propertyName]);
 
     useEffect(() => {
         if (openProfile) {
@@ -40,36 +35,8 @@ export default function TopMenu() {
     const toggleProfile = () => {
         setOpenProfile(!openProfile);
     }
-    const handleLogout = async () => {
-        setLoading(true);
-        try {
-            const result = await postAPI('/logout', 3);
-            if (!result) {
-                throw new Error('Something went wrong');
-            }
-            const responseRs = JSON.parse(result);
-            if (responseRs.status == 'success') {
-                setShowAlerts(<AlertComp show={true} variant="success" message="User logged out successfully" />);
-                setTimeout(() => {
-                    setLoading(false);
-                    setShowAlerts(<AlertComp show={false} />);
-                    Logout();
-                }, 2000);
-            }
-            else {
-                Logout();
-            }
-        }
-        catch (error) {
-            setLoading(false);
-            console.error(error);
-        }
-    }
-
     return (
         <>
-            {showAlerts}
-            {loading ? <ShowLoader /> : <HideLoader />}
             <div className="topmenu-wrapper">
                 <label>
                     <h4 className={'fontwhite mb-0'}>
@@ -97,10 +64,10 @@ export default function TopMenu() {
                                     </a>
                                 </li>
                                 <hr className='m-0 p-0' />
-                                <li onClick={(e) => { Cookies.remove('propertyId'); navigate('/properties') }}><FontAwesomeIcon icon={faBuilding} className='pe-2' />Switch to Scheme</li>
+                                <li onClick={handleSwitchProperty}><FontAwesomeIcon icon={faBuilding} className='pe-2' />Switch to Scheme</li>
                                 <li><FontAwesomeIcon icon={faUser} className='pe-2' />Profile</li>
                                 <li><FontAwesomeIcon icon={faGauge} className='pe-2' />Dashboard</li>
-                                <li onClick={handleLogout}><FontAwesomeIcon icon={faSignOutAlt} className='pe-2' />Logout</li>
+                                <li onClick={logout}><FontAwesomeIcon icon={faSignOutAlt} className='pe-2' />Logout</li>
                             </ul>
                         </div>
                     )}

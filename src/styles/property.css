@@ -91,3 +91,9 @@
     gap: 20px;
     /* Spacing between property cards */
 }
+
+.upload-image-box {
+    padding: 10px 27px;
+    border-radius: 5px;
+    border: 1px dashed #C4C4C4
+}

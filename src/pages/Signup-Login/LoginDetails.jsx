@@ -1,10 +1,9 @@
 import React, { useState } from 'react'
 import { Field, Formik, Form, ErrorMessage } from 'formik';
-import LoginValidationSchema from '../../../utils/validations/LoginValidationSchema.jsx';
-import ShowLoader from '../../../components/loader/ShowLoader.jsx';
-import HideLoader from '../../../components/loader/HideLoader.jsx';
-import useApiService from '../../../services/ApiService.js';
-import AlertComp from '../../../components/AlertComp.jsx';
+import LoginValidationSchema from '../../utils/validations/LoginValidationSchema.jsx';
+import ShowLoader from '../../components/loader/ShowLoader.jsx';
+import AlertComp from '../../components/alerts/AlertComp.jsx';
+import useApiService from '../../hooks/useApiService.jsx';
 
 export default function LoginDetails({ setLoginView, formData, setFormData }) {
     const { postAPI } = useApiService();
@@ -42,7 +41,7 @@ export default function LoginDetails({ setLoginView, formData, setFormData }) {
     return (
         <>
             {showAlerts}
-            {loading ? <ShowLoader /> : <HideLoader />}
+            {loading && <ShowLoader />}
             <div className='text-center pt-5'>
                 <h2 className='fw-normal'>Please Enter Details</h2>
                 <div className='mt-2'>
@@ -50,7 +49,10 @@ export default function LoginDetails({ setLoginView, formData, setFormData }) {
                 </div>
             </div>
             <div className='p-3 mt-2'>
-                <Formik initialValues={formData} validationSchema={LoginValidationSchema}
+                <Formik initialValues={formData}
+                    validateOnBlur={false}
+                    validateOnChange={false}
+                    validationSchema={LoginValidationSchema}
                     onSubmit={(values) => {
                         setFormData(values);
                         handleGetOtp(values);

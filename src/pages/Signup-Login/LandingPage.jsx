@@ -1,11 +1,10 @@
 import React, { useState } from 'react'
 import ShowLoader from '../../components/loader/ShowLoader';
-import HideLoader from '../../components/loader/HideLoader';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import Images from '../../utils/Images';
 
-export default function SignUpLoginPage({ setLoginView }) {
+export default function LandingPage({ setLoginView }) {
     const [loading, setLoading] = useState(false);
     const handleLoginClick = () => {
         setLoading(true);
@@ -16,7 +15,7 @@ export default function SignUpLoginPage({ setLoginView }) {
     }
     return (
         <>
-            {loading ? <ShowLoader /> : <HideLoader />}
+            {loading && <ShowLoader />}
             <div className='text-center text-white pt-5'>
                 <h2 className='pt-3 fw-bolder'>Blueprint to Completion,</h2>
                 <h2 className='p-2'>Seamless Builders Management..!</h2>
