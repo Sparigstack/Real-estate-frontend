@@ -11,6 +11,7 @@ import useAuth from '../../hooks/useAuth';
 import useProperty from '../../hooks/useProperty';
 
 export default function YourProperties() {
+    var cdnurl = import.meta.env.VITE_CDN_KEY;
     const navigate = useNavigate();
     const [loading, setloading] = useState(false);
     const { logout } = useAuth();
@@ -81,7 +82,7 @@ export default function YourProperties() {
                     <div className="d-flex flex-wrap">
                         {propertiesData?.commercial.slice(0, Math.min(4, propertiesData?.commercial?.length)).map((item, index) => {
                             return <PropertyCard key={index} cardclick={(e) => getCardClick(item)} city={item?.city_name}
-                                img={item.property_img || Images.dummy_property} name={item.name} area={item?.area} />
+                                img={item.property_img ? `${cdnurl}/${item.property_img}` : Images.dummy_property} name={item.name} area={item?.area} />
                         })}
                     </div>
                 </div>
@@ -100,7 +101,7 @@ export default function YourProperties() {
                     <div className="d-flex flex-wrap">
                         {propertiesData?.residential?.slice(0, 4).map((item, index) => {
                             return <PropertyCard key={index} cardclick={(e) => getCardClick(item)} city={item?.city_name}
-                                img={item.property_img || Images.dummy_property} name={item.name} area={item?.area} />
+                                img={item.property_img ? `${cdnurl}/${item.property_img}` : Images.dummy_property} name={item.name} area={item?.area} />
                         })}
                     </div>
                 </div>

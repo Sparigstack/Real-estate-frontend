@@ -10,6 +10,7 @@ import useApiService from '../../hooks/useApiService';
 import useProperty from '../../hooks/useProperty';
 
 export default function AllProperties() {
+    var cdnurl = import.meta.env.VITE_CDN_KEY;
     var { getAPI } = useApiService();
     const userId = Cookies.get('userId');
     var { propertyType } = useParams();
@@ -32,7 +33,7 @@ export default function AllProperties() {
     })
     useEffect(() => {
         GetPropertiesData(null, 0, 0, 0);
-        GetAllStates();
+
     }, [])
     const debouncedSearch = useCallback(debounce((searchValue) => {
         GetPropertiesData(searchValue, 0, 0, 0);
@@ -61,13 +62,16 @@ export default function AllProperties() {
         setFilterPopup(false);
         setFilterData({
             ...FilterData,
-            state: '',
-            city: '',
-            area: ''
+            state: 0,
+            city: 0,
+            area: 0
         });
+        setFilterDataDetails({
+            ...FilterDataDetails, state_array: [], city_array: [], area_array: []
+        })
     }
     const handleApplyFilter = () => {
-        setFilterPopup(false);
+        handleHidePopup();
         GetPropertiesData(searchstring, FilterData.state, FilterData.city, FilterData.area);
         setShowResetFilter(true);
     }
@@ -190,7 +194,7 @@ export default function AllProperties() {
                                 }}
                             />
                             <img src={Images.filter} alt="search-icon" className="filter-icon cursor-pointer"
-                                title='Filter Properties' onClick={(e) => { setFilterPopup(true); setFilterData({ ...FilterData, state: 0, city: 0, area: 0 }) }} />
+                                title='Filter Properties' onClick={(e) => { setFilterPopup(true); setFilterData({ ...FilterData, state: 0, city: 0, area: 0 }); GetAllStates(); }} />
                         </div>
                     </div>
                     <div className='col-md-2 text-end '>
@@ -205,7 +209,7 @@ export default function AllProperties() {
                         {propertiesData.length > 0 ?
                             propertiesData?.map((item, index) => {
                                 return <PropertyCard key={index} cardclick={(e) => getCardClick(item)} city={item?.city_name}
-                                    img={item.property_img || Images.dummy_property} name={item.name} area={item?.area} />
+                                    img={item.property_img ? `${cdnurl}/${item.property_img}` : Images.dummy_property} name={item.name} area={item?.area} />
                             })
                             :
                             <div className='col-12 text-center fontwhite'>

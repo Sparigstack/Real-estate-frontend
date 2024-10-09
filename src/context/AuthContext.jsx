@@ -5,11 +5,13 @@ import useApiService from '../hooks/useApiService';
 import ShowLoader from '../components/loader/ShowLoader';
 import AlertComp from '../components/alerts/AlertComp';
 import { useNavigate } from 'react-router-dom';
+import useProperty from '../hooks/useProperty';
 
 const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
     const navigate = useNavigate();
+    const { setPropertyName, setPropertyId } = useProperty();
     const [authToken, setAuthToken] = useState(Cookies.get('authToken') || null);
     const [userId, setUserId] = useState(Cookies.get('userId') || null);
     const [loading, setloading] = useState(false);
@@ -56,25 +58,17 @@ export const AuthProvider = ({ children }) => {
             if (!result) {
                 throw new Error('Something went wrong');
             }
-            const responseRs = JSON.parse(result);
             setShowAlerts(<AlertComp show={true} variant={'success'} message={'Logout Successfully!!'} />);
-            if (responseRs.status == 'success') {
+            setTimeout(() => {
                 setShowAlerts(<AlertComp show={false} />);
                 setUserDetails({ userName: '', email: '', client_id: '', client_secret_key: '' });
                 setloading(false);
                 setAuthToken(null);
                 setUserId(null);
-                navigate("/login", { replace: true });
-            }
-            else {
-                setShowAlerts(<AlertComp show={false} />);
-                setUserDetails({ userName: '', email: '', client_id: '', client_secret_key: '' });
-                setloading(false);
-                setAuthToken(null);
-                setUserId(null);
-                navigate("/login", { replace: true });
+                setPropertyId(null);
+                setPropertyName(null);
+            }, 2000);
 
-            }
         }
         catch (error) {
             setloading(false);
