@@ -1,5 +1,5 @@
 import React, { Suspense, lazy } from 'react'
-import { Route, Routes, Navigate, useNavigate } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import useAuth from '../hooks/useAuth';
 import useProperty from '../hooks/useProperty';
 
@@ -17,7 +17,6 @@ const YourProperties = lazy(() => import('../pages/Properties/YourProperties'));
 const AddProperty = lazy(() => import('../pages/Properties/AddPropertyIndex'));
 
 export default function Approutes() {
-  const navigate = useNavigate();
   const { authToken } = useAuth();
   const { propertyId } = useProperty();
   return (
