@@ -35,7 +35,7 @@ export default function AllProperties() {
         GetAllStates();
     }, [])
     const debouncedSearch = useCallback(debounce((searchValue) => {
-        GetPropertiesData(searchValue);
+        GetPropertiesData(searchValue, 0, 0, 0);
     }, 500), []);
     const GetPropertiesData = async (searchstring, state, city, area) => {
         try {
