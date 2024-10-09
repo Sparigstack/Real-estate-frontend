@@ -1,5 +1,5 @@
 import React, { Suspense, lazy } from 'react'
-import { Route, Routes, Navigate } from "react-router-dom";
+import { Route, Routes, Navigate, useNavigate } from "react-router-dom";
 import useAuth from '../hooks/useAuth';
 import useProperty from '../hooks/useProperty';
 
@@ -17,12 +17,13 @@ const YourProperties = lazy(() => import('../pages/Properties/YourProperties'));
 const AddProperty = lazy(() => import('../pages/Properties/AddPropertyIndex'));
 
 export default function Approutes() {
+  const navigate = useNavigate();
   const { authToken } = useAuth();
   const { propertyId } = useProperty();
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <Routes>
-        <Route path="/" element={<Login />} />
+        <Route path="/" element={<NavigateToDashboardOrLogin />} />
         <Route path="login" element={<Login />} />
         <Route path="webform/:userId" element={<WebFormContent />} />
 
@@ -33,7 +34,7 @@ export default function Approutes() {
         <Route path="all-properties/:propertyType" element={<AllProperties />} />
 
         {authToken && propertyId ? (
-          <Route element={<Layout />}>
+          <Route element={<LayoutWrapper />}>
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="lead-management" element={<LeadManagementIndex />} />
             <Route path="leads-setting" element={<LeadSettingIndex />} />
@@ -41,7 +42,7 @@ export default function Approutes() {
             <Route path="*" element={<PageNotFound />} />
           </Route>
         ) : (
-          <Route path="*" element={<Navigate to="/login" />} />
+          <Route path="/" element={<Navigate to="/login" />} />
         )}
 
       </Routes>
@@ -52,7 +53,7 @@ export default function Approutes() {
 function NavigateToDashboardOrLogin() {
   const { authToken } = useAuth();
   const { propertyId } = useProperty();
-  if (!authToken) return <Login />;
+  if (!authToken) return <Navigate to="/" />;
   return propertyId ? <Navigate to="/dashboard" /> : <Navigate to="/properties" />;
 }
 
@@ -60,7 +61,7 @@ function NavigateToDashboardOrLogin() {
 function LayoutWrapper() {
   const { propertyId } = useProperty();
   if (!propertyId) {
-    return <YourProperties />;
+    return <Navigate to="/properties" />;
   }
   return <Layout />;
 }
