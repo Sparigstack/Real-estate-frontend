@@ -1,10 +1,10 @@
 import React, { useRef, useState } from 'react'
-import ShowLoader from '../../components/loader/ShowLoader';
 import AlertComp from '../../components/alerts/AlertComp';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileImport } from '@fortawesome/free-solid-svg-icons';
 import useApiService from '../../hooks/useApiService';
+import Loader from '../../components/loader/Loader';
 
 export default function Csv() {
     const { postAPIAuthKey } = useApiService();
@@ -43,7 +43,7 @@ export default function Csv() {
     return (
         <div>
             {showAlerts}
-            {loading && <ShowLoader />}
+            {loading && <Loader runningcheck={loading} />}
             <button className='WhiteBtn ms-3' style={{ border: "1px solid black" }} onClick={handleButtonClick}>
                 <input
                     type="file"

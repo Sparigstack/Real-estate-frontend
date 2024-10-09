@@ -5,13 +5,13 @@ import PropertyCard from './PropertyCard';
 import CustomModal from '../../utils/CustomModal';
 import Cookies from 'js-cookie'
 import { debounce } from 'lodash';
-import ShowLoader from '../../components/loader/ShowLoader';
 import useApiService from '../../hooks/useApiService';
 import useProperty from '../../hooks/useProperty';
 import FilterModal from './FilterModal';
 import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import useAuth from '../../hooks/useAuth';
+import Loader from '../../components/loader/Loader';
 
 export default function AllProperties() {
     var cdnurl = import.meta.env.VITE_CDN_KEY;
@@ -26,7 +26,7 @@ export default function AllProperties() {
     });
     const navigate = useNavigate();
     const [FilterPopup, setFilterPopup] = useState(false);
-    const [loding, setloding] = useState(false);
+    const [loading, setloading] = useState(false);
     const [ShowResetFilter, setShowResetFilter] = useState(false);
     const [FilterData, setFilterData] = useState({
         state: 0,
@@ -46,7 +46,7 @@ export default function AllProperties() {
 
     const GetPropertiesData = async (searchstring, state, city, area) => {
         try {
-            setloding(true);
+            setloading(true);
             var stateval = state == 0 ? null : state;
             var cityval = city == 0 ? null : city;
             var areaval = area == 0 ? null : area;
@@ -56,7 +56,7 @@ export default function AllProperties() {
                 throw new Error('Something went wrong');
             }
             const responseRs = JSON.parse(result);
-            setloding(false);
+            setloading(false);
             setpropertiesData({
                 Commercial: responseRs.commercialProperties.filter(property =>
                     filterProperties(property, searchstring)),
@@ -92,19 +92,19 @@ export default function AllProperties() {
         setShowResetFilter(true);
     }
     const getCardClick = async (item) => {
-        setloding(true);
+        setloading(true);
         Cookies.set('propertyId', item.id, { expires: 1, secure: true, sameSite: 'Strict' });
         Cookies.set('propertyName', item.name, { expires: 1, secure: true, sameSite: 'Strict' });
         await switchProperty(item.id, item.name);
         setTimeout(() => {
-            setloding(false);
+            setloading(false);
             navigate("/dashboard");
         }, 2000);
 
     }
     return (
         <>
-            {loding && <ShowLoader />}
+            {loading && <Loader runningcheck={loading} />}
             <div className="content-area h-100vh p-3">
                 <div className='row align-items-center '>
                     <div className='col-md-4 fontwhite'>

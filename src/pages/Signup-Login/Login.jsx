@@ -3,7 +3,7 @@ import LoginLayout from './LoginLayout'
 import LandingPage from './LandingPage'
 import EnterOtp from './EnterOtp'
 import LoginDetails from './LoginDetails'
-import ShowLoader from '../../components/loader/ShowLoader'
+import Loader from '../../components/loader/Loader'
 
 export default function Login() {
     const [loginview, setLoginView] = useState(1);
@@ -13,7 +13,7 @@ export default function Login() {
     return (
         <>
             {showAlerts}
-            {loading && <ShowLoader />}
+            {loading && <Loader runningcheck={loading} />}
             <LoginLayout loginview={loginview} setLoginView={setLoginView}>
                 {loginview == 1 && <LandingPage setLoginView={setLoginView} setLoading={setLoading} />}
                 {loginview == 2 && <LoginDetails setShowAlerts={setShowAlerts} setLoginView={setLoginView} setLoading={setLoading} formData={formData} setFormData={setFormData} />}

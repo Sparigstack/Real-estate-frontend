@@ -2,7 +2,6 @@ import React, { Suspense, lazy } from 'react'
 import { Route, Routes, Navigate } from "react-router-dom";
 import useAuth from '../hooks/useAuth';
 import useProperty from '../hooks/useProperty';
-import ShowLoader from '../components/loader/ShowLoader';
 
 const Login = lazy(() => import('../pages/Signup-Login/Login'));
 const Dashboard = lazy(() => import('../pages/Dashboard/Dashboard'));
@@ -19,7 +18,7 @@ export default function Approutes() {
   const { authToken } = useAuth();
   const { propertyId } = useProperty();
   return (
-    <Suspense fallback={<ShowLoader />}>
+    <Suspense fallback={<div>Loading..</div>}>
       <Routes>
         <Route path="/" element={<NavigateToDashboardOrLogin />} />
         <Route path="login" element={<Login />} />

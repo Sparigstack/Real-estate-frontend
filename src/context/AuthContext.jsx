@@ -2,9 +2,9 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
 import Login from '../pages/Signup-Login/Login';
 import useApiService from '../hooks/useApiService';
-import ShowLoader from '../components/loader/ShowLoader';
 import AlertComp from '../components/alerts/AlertComp';
 import useProperty from '../hooks/useProperty';
+import Loader from '../components/loader/Loader';
 
 const AuthContext = createContext({});
 
@@ -77,7 +77,7 @@ export const AuthProvider = ({ children }) => {
     return (
         <>
             {showAlerts}
-            {loading && <ShowLoader />}
+            {loading && <Loader runningcheck={loading} />}
             <AuthContext.Provider value={{ authToken, userDetails, setUserDetails, logout, setAuthToken, setUserId }}>
                 {authToken ? children : <Login />}
             </AuthContext.Provider>

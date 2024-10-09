@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import PropertiesValidationSchema from '../../utils/validations/PropertiesValidationSchema';
 import { Field, Formik, Form, ErrorMessage } from 'formik'
-import ShowLoader from '../../components/loader/ShowLoader';
 import Cookies from 'js-cookie';
 import AlertComp from '../../components/alerts/AlertComp';
 import { useNavigate } from 'react-router-dom';
@@ -10,6 +9,7 @@ import Images from '../../utils/Images';
 import useApiService from '../../hooks/useApiService';
 import useProperty from '../../hooks/useProperty';
 import useCommonApiService from '../../hooks/useCommonApiService';
+import Loader from '../../components/loader/Loader';
 
 export default function AddPropertyForm({ schemeType, setFormView }) {
     const { switchProperty } = useProperty();
@@ -129,7 +129,7 @@ export default function AddPropertyForm({ schemeType, setFormView }) {
     return (
         <div className='h-100vh content-area'>
             {showAlerts}
-            {loading && <ShowLoader />}
+            {loading && <Loader runningcheck={loading} />}
             <div className='col-md-10 offset-md-1 p-2'>
                 <div className='row align-items-center'>
                     <div className='col-1'>
