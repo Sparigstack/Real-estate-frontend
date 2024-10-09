@@ -3,13 +3,17 @@ import Cookies from 'js-cookie';
 import Login from '../pages/Signup-Login/Login';
 import useApiService from '../hooks/useApiService';
 import ShowLoader from '../components/loader/ShowLoader';
+import AlertComp from '../components/alerts/AlertComp';
+import { useNavigate } from 'react-router-dom';
 
 const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
+    const navigate = useNavigate();
     const [authToken, setAuthToken] = useState(Cookies.get('authToken') || null);
     const [userId, setUserId] = useState(Cookies.get('userId') || null);
     const [loading, setloading] = useState(false);
+    const [showAlerts, setShowAlerts] = useState(false);
     const [userDetails, setUserDetails] = useState({
         userName: '',
         email: '',
@@ -53,17 +57,23 @@ export const AuthProvider = ({ children }) => {
                 throw new Error('Something went wrong');
             }
             const responseRs = JSON.parse(result);
-            setloading(false);
+            setShowAlerts(<AlertComp show={true} variant={'success'} message={'Logout Successfully!!'} />);
             if (responseRs.status == 'success') {
                 setTimeout(() => {
+                    setShowAlerts(<AlertComp show={false} />);
+                    setloading(false);
                     setAuthToken(null);
                     setUserId(null);
+                    navigate("/");
                     setUserDetails({ userName: '', email: '', client_id: '', client_secret_key: '' });
                 }, 2000);
             }
             else {
+                setShowAlerts(<AlertComp show={false} />);
+                setloading(false);
                 setAuthToken(null);
                 setUserId(null);
+                navigate("/");
                 setUserDetails({ userName: '', email: '', client_id: '', client_secret_key: '' });
             }
         }
@@ -75,8 +85,9 @@ export const AuthProvider = ({ children }) => {
 
     return (
         <>
+            {showAlerts}
             {loading && <ShowLoader />}
-            <AuthContext.Provider value={{ authToken, userDetails, setUserDetails, logout }}>
+            <AuthContext.Provider value={{ authToken, userDetails, setUserDetails, logout, setAuthToken, setUserId }}>
                 {authToken ? children : <Login />}
             </AuthContext.Provider>
         </>

@@ -1,20 +1,20 @@
-import React from 'react'
+import React, { lazy } from 'react'
 import { Route, Routes, Navigate } from "react-router-dom";
-import Login from '../pages/Signup-Login/Login';
-import Dashboard from '../pages/Dashboard/Dashboard';
-import PageNotFound from '../pages/404-ErrorPage/PageNotFound';
-import Layout from '../components/layout/Layout';
-import LeadManagementIndex from '../pages/Lead-Management';
-import LeadSettingIndex from '../pages/LeadSetting';
-import RestApi from '../pages/LeadSetting/RestApi';
-import WebFormContent from '../pages/LeadSetting/WebFormContent';
-import AddPropertyForm from '../pages/Properties/AddPropertyForm';
-import AllProperties from '../pages/Properties/AllProperties';
-import YourProperties from '../pages/Properties/YourProperties';
-import AddProperty from '../pages/Properties/AddPropertyIndex';
 import useAuth from '../hooks/useAuth';
 import useProperty from '../hooks/useProperty';
 
+const Login = lazy(() => import('../pages/Signup-Login/Login'));
+const Dashboard = lazy(() => import('../pages/Dashboard/Dashboard'));
+const PageNotFound = lazy(() => import('../pages/404-ErrorPage/PageNotFound'));
+const Layout = lazy(() => import('../components/layout/Layout'));
+const LeadManagementIndex = lazy(() => import('../pages/Lead-Management'));
+const LeadSettingIndex = lazy(() => import('../pages/LeadSetting'));
+const RestApi = lazy(() => import('../pages/LeadSetting/RestApi'));
+const WebFormContent = lazy(() => import('../pages/LeadSetting/WebFormContent'));
+const AddPropertyForm = lazy(() => import('../pages/Properties/AddPropertyForm'));
+const AllProperties = lazy(() => import('../pages/Properties/AllProperties'));
+const YourProperties = lazy(() => import('../pages/Properties/YourProperties'));
+const AddProperty = lazy(() => import('../pages/Properties/AddPropertyIndex'));
 
 export default function Approutes() {
   const { authToken } = useAuth();
@@ -25,7 +25,7 @@ export default function Approutes() {
       <Route path="webform/:userId" element={<WebFormContent />} />
 
       {/* Routes for selecting and adding properties */}
-      <Route path="properties" exact element={<YourProperties />} />
+      <Route path="properties" element={<YourProperties />} />
       <Route path="add-property" element={<AddProperty />} />
       <Route path="add-property-form/:schemeType" element={<AddPropertyForm />} />
       <Route path="all-properties/:propertyType" element={<AllProperties />} />
