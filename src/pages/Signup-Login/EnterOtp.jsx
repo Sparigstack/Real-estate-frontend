@@ -34,11 +34,11 @@ export default function EnterOtp({ formData }) {
             if (responseRs.status == 'success') {
                 Cookies.set('authToken', responseRs.token, { expires: 1, secure: true, sameSite: 'Strict' });
                 Cookies.set('userId', responseRs.userId, { expires: 1, secure: true, sameSite: 'Strict' });
-                setAuthToken(responseRs.token)
-                setUserId(responseRs.userId)
                 setOtpError('');
                 showAlert('User logged in successfully', 'success');
                 setTimeout(() => {
+                    setAuthToken(responseRs.token)
+                    setUserId(responseRs.userId)
                     setLoading(false);
                     setShowAlerts(<AlertComp show={false} />);
                     if (responseRs.userProperty == 1) {

@@ -56,6 +56,7 @@ export const AuthProvider = ({ children }) => {
             if (!result) {
                 throw new Error('Something went wrong');
             }
+            console.log("logout")
             const responseRs = JSON.parse(result);
             setShowAlerts(<AlertComp show={true} variant={'success'} message={'Logout Successfully!!'} />);
             if (responseRs.status == 'success') {
@@ -64,8 +65,8 @@ export const AuthProvider = ({ children }) => {
                     setloading(false);
                     setAuthToken(null);
                     setUserId(null);
-                    navigate("/");
                     setUserDetails({ userName: '', email: '', client_id: '', client_secret_key: '' });
+                    navigate("/");
                 }, 2000);
             }
             else {
@@ -73,8 +74,9 @@ export const AuthProvider = ({ children }) => {
                 setloading(false);
                 setAuthToken(null);
                 setUserId(null);
-                navigate("/");
                 setUserDetails({ userName: '', email: '', client_id: '', client_secret_key: '' });
+                navigate("/");
+
             }
         }
         catch (error) {

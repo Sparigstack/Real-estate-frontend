@@ -1,4 +1,4 @@
-import React, { lazy } from 'react'
+import React, { Suspense, lazy } from 'react'
 import { Route, Routes, Navigate } from "react-router-dom";
 import useAuth from '../hooks/useAuth';
 import useProperty from '../hooks/useProperty';
@@ -18,31 +18,34 @@ const AddProperty = lazy(() => import('../pages/Properties/AddPropertyIndex'));
 
 export default function Approutes() {
   const { authToken } = useAuth();
+  const { propertyId } = useProperty();
   return (
-    <Routes>
-      <Route path="/" element={<NavigateToDashboardOrLogin />} />
-      <Route path="login" element={<Login />} />
-      <Route path="webform/:userId" element={<WebFormContent />} />
+    <Suspense fallback={<div>Loading...</div>}>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="login" element={<Login />} />
+        <Route path="webform/:userId" element={<WebFormContent />} />
 
-      {/* Routes for selecting and adding properties */}
-      <Route path="properties" element={<YourProperties />} />
-      <Route path="add-property" element={<AddProperty />} />
-      <Route path="add-property-form/:schemeType" element={<AddPropertyForm />} />
-      <Route path="all-properties/:propertyType" element={<AllProperties />} />
+        {/* Routes for selecting and adding properties */}
+        <Route path="properties" element={<YourProperties />} />
+        <Route path="add-property" element={<AddProperty />} />
+        <Route path="add-property-form/:schemeType" element={<AddPropertyForm />} />
+        <Route path="all-properties/:propertyType" element={<AllProperties />} />
 
-      {authToken ? (
-        <Route element={<LayoutWrapper />}>
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="lead-management" element={<LeadManagementIndex />} />
-          <Route path="leads-setting" element={<LeadSettingIndex />} />
-          <Route path="rest-api" element={<RestApi />} />
-          <Route path="*" element={<PageNotFound />} />
-        </Route>
-      ) : (
-        <Route path="*" element={<Navigate to="/login" />} />
-      )}
+        {authToken && propertyId ? (
+          <Route element={<Layout />}>
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="lead-management" element={<LeadManagementIndex />} />
+            <Route path="leads-setting" element={<LeadSettingIndex />} />
+            <Route path="rest-api" element={<RestApi />} />
+            <Route path="*" element={<PageNotFound />} />
+          </Route>
+        ) : (
+          <Route path="*" element={<Navigate to="/login" />} />
+        )}
 
-    </Routes>
+      </Routes>
+    </Suspense>
   )
 }
 

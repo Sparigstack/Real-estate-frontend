@@ -7,13 +7,13 @@
         "submenu": []
     },
     {
-        "path": "/add-properties",
+        "path": "/testing",
         "imageKey": "propertyIcon",
         "altText": "property",
         "label": "Property",
         "submenu": [
             {
-                "path": "/add-property",
+                "path": "/testing",
                 "imageKey": "addproperties",
                 "altText": "Add Property",
                 "label": "Add Property"

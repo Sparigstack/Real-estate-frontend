@@ -8,9 +8,11 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { convertToBase64 } from '../../utils/js/Common';
 import Images from '../../utils/Images';
 import useApiService from '../../hooks/useApiService';
+import useProperty from '../../hooks/useProperty';
 
 export default function AddPropertyForm() {
     var { schemeType } = useParams();
+    const { switchProperty } = useProperty();
     const { getAPI, postAPI } = useApiService();
     const userId = Cookies.get('userId');
     const navigate = useNavigate();
@@ -97,6 +99,7 @@ export default function AddPropertyForm() {
                     Cookies.set('propertyId', responseRs.propertyId, { expires: 1, secure: true, sameSite: 'Strict' });
                     Cookies.set('propertyName', responseRs.propertyName, { expires: 1, secure: true, sameSite: 'Strict' });
                     setShowAlerts(<AlertComp show={true} variant="success" message="Property Added Successfully." />);
+                    await switchProperty(responseRs.propertyId, responseRs.propertyName);
                     setTimeout(() => {
                         setLoading(false);
                         setShowAlerts(<AlertComp show={false} />);
