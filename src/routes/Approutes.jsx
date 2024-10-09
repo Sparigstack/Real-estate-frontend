@@ -50,7 +50,7 @@ function NavigateToDashboardOrLogin() {
   const { authToken } = useAuth();
   const { propertyId } = useProperty();
   if (!authToken) return <Login />;
-  return propertyId ? <Navigate to="/dashboard" /> : <Navigate to="/add-property" />;
+  return propertyId ? <Navigate to="/dashboard" /> : <Navigate to="/properties" />;
 }
 
 

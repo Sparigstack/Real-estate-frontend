@@ -46,7 +46,6 @@ export default function EnterOtp({ formData }) {
                     } else {
                         navigate('/add-property');
                     }
-
                 }, 2000);
             }
             else {
