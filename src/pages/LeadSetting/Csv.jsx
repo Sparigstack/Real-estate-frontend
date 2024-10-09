@@ -7,7 +7,7 @@ import { faFileImport } from '@fortawesome/free-solid-svg-icons';
 import useApiService from '../../hooks/useApiService';
 
 export default function Csv() {
-    const { postAPI } = useApiService();
+    const { postAPIAuthKey } = useApiService();
     const fileInputRef = useRef(null);
     const handleButtonClick = () => fileInputRef.current?.click();
     const [loading, setLoading] = useState(false);
@@ -20,7 +20,7 @@ export default function Csv() {
         try {
             var formdata = new FormData();
             formdata.append("file", file);
-            const result = await postAPI('/add-leads-csv', formdata, 1);
+            const result = await postAPIAuthKey('/add-leads-csv', formdata);
             if (!result) {
                 throw new Error('Something went wrong');
             }

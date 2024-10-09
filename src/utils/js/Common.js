@@ -12,14 +12,6 @@ export const convertToBase64 = (file) => {
     });
 }
 
-export async function Logout() {
-    Cookies.remove('authToken')
-    Cookies.remove('userId')
-    Cookies.remove('propertyId')
-    Cookies.remove('propertyName')
-    window.location.href = "/";
-}
-
 export function formatCurrency(amount) {
     if (amount >= 10000000) {
         return (amount / 10000000).toFixed(1) + ' Cr';

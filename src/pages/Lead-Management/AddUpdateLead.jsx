@@ -5,43 +5,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faIndianRupeeSign } from '@fortawesome/free-solid-svg-icons';
 import Cookies from 'js-cookie';
 import useApiService from '../../hooks/useApiService';
+import useCommonApiService from '../../hooks/useCommonApiService';
 
 export default function AddUpdateLead({ formData, setFormData, handleAddLead, handleHide }) {
-    const { getAPI } = useApiService();
+    const { getSources } = useCommonApiService();
     const userId = Cookies.get('userId');
     const [sourcesData, setsourcesData] = useState([]);
     const [propertiesData, setpropertiesData] = useState([]);
     useEffect(() => {
-        getSources();
-        getProperties();
+        const sources = getSources();
+        setsourcesData(sources)
     }, []);
-    async function getSources() {
-        try {
-            const result = await getAPI(`/get-sources`, 2);
-            if (!result) {
-                throw new Error('Something went wrong');
-            }
-
-            const responseRs = JSON.parse(result);
-            setsourcesData(responseRs)
-        }
-        catch (error) {
-            console.error(error);
-        }
-    }
-    async function getProperties() {
-        try {
-            const result = await getAPI(`/get-user-properties/${userId}`, 2);
-            if (!result) {
-                throw new Error('Something went wrong');
-            }
-            const responseRs = JSON.parse(result);
-            setpropertiesData(responseRs)
-        }
-        catch (error) {
-            console.error(error);
-        }
-    }
     return (
         <Formik initialValues={formData}
             validateOnBlur={false}

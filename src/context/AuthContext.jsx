@@ -4,13 +4,11 @@ import Login from '../pages/Signup-Login/Login';
 import useApiService from '../hooks/useApiService';
 import ShowLoader from '../components/loader/ShowLoader';
 import AlertComp from '../components/alerts/AlertComp';
-import { useNavigate } from 'react-router-dom';
 import useProperty from '../hooks/useProperty';
 
 const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
-    const navigate = useNavigate();
     const { setPropertyName, setPropertyId } = useProperty();
     const [authToken, setAuthToken] = useState(Cookies.get('authToken') || null);
     const [userId, setUserId] = useState(Cookies.get('userId') || null);
@@ -22,7 +20,7 @@ export const AuthProvider = ({ children }) => {
         client_id: '',
         client_secret_key: ''
     });
-    const { getAPI, postAPI } = useApiService();
+    const { getAPIAuthKey, postAPIAuthKey } = useApiService();
 
     useEffect(() => {
         if (authToken && userId) {
@@ -37,7 +35,7 @@ export const AuthProvider = ({ children }) => {
 
     const getUserDetails = async () => {
         try {
-            const result = await getAPI(`/get-user-details/${userId}`, 3);
+            const result = await getAPIAuthKey(`/get-user-details/${userId}`);
             if (!result) throw new Error('Something went wrong');
             const response = JSON.parse(result);
             setUserDetails({
@@ -54,7 +52,7 @@ export const AuthProvider = ({ children }) => {
     const logout = async () => {
         try {
             setloading(true);
-            const result = await postAPI('/logout');
+            const result = await postAPIAuthKey('/logout');
             if (!result) {
                 throw new Error('Something went wrong');
             }

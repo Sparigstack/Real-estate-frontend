@@ -14,13 +14,11 @@ export default function Login() {
         <>
             {showAlerts}
             {loading && <ShowLoader />}
-            <div className='position-relative'>
-                <LoginLayout loginview={loginview} setLoginView={setLoginView}>
-                    {loginview == 1 && <LandingPage setLoginView={setLoginView} setLoading={setLoading} />}
-                    {loginview == 2 && <LoginDetails setShowAlerts={setShowAlerts} setLoginView={setLoginView} setLoading={setLoading} formData={formData} setFormData={setFormData} />}
-                    {loginview == 3 && <EnterOtp formData={formData} setLoading={setLoading} setShowAlerts={setShowAlerts} />}
-                </LoginLayout>
-            </div>
+            <LoginLayout loginview={loginview} setLoginView={setLoginView}>
+                {loginview == 1 && <LandingPage setLoginView={setLoginView} setLoading={setLoading} />}
+                {loginview == 2 && <LoginDetails setShowAlerts={setShowAlerts} setLoginView={setLoginView} setLoading={setLoading} formData={formData} setFormData={setFormData} />}
+                {loginview == 3 && <EnterOtp formData={formData} setLoading={setLoading} setShowAlerts={setShowAlerts} />}
+            </LoginLayout>
         </>
     )
 }

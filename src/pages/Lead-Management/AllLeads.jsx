@@ -13,7 +13,7 @@ import { debounce } from 'lodash';
 import useApiService from '../../hooks/useApiService'
 
 export default function AllLeads() {
-    const { postAPI, getAPI } = useApiService();
+    const { postAPIAuthKey, getAPIAuthKey } = useApiService();
     const fileInputRef = useRef(null);
     const [loading, setLoading] = useState(false);
     const [showAlerts, setShowAlerts] = useState(false);
@@ -54,7 +54,7 @@ export default function AllLeads() {
             const sortby = utils.sortbykey == 'asc' ? 'desc' : 'asc';
             var searchstring = search == '' ? null : search;
             setLoading(true);
-            const result = await getAPI(`/get-leads/${userId}&${searchstring}&${sortby}&${sortbyvalue}&${currentPage}&${itemsPerPage}`, 3);
+            const result = await getAPIAuthKey(`/get-leads/${userId}&${searchstring}&${sortby}&${sortbyvalue}&${currentPage}&${itemsPerPage}`);
             if (!result) {
                 throw new Error('Something went wrong');
             }
@@ -75,7 +75,7 @@ export default function AllLeads() {
         setLoading(true);
         try {
             const raw = JSON.stringify({ ...values, leadid: formData.leadid });
-            const result = await postAPI('/add-edit-leads', raw, 3);
+            const result = await postAPIAuthKey('/add-edit-leads', raw);
 
             if (!result) {
                 throw new Error('Something went wrong');
@@ -114,7 +114,7 @@ export default function AllLeads() {
         try {
             var formdata = new FormData();
             formdata.append("file", file);
-            const result = await postAPI('/add-leads-csv', formdata, 1);
+            const result = await postAPIAuthKey('/add-leads-csv', formdata);
             if (!result) {
                 throw new Error('Something went wrong');
             }
@@ -141,7 +141,7 @@ export default function AllLeads() {
         if (!leadid) return;
         setLoading(true);
         try {
-            const result = await getAPI(`/fetch-lead-detail/${userId}/${leadid}`, 3);
+            const result = await getAPIAuthKey(`/fetch-lead-detail/${userId}/${leadid}`);
             if (!result) {
                 throw new Error('Something went wrong');
             }
@@ -170,7 +170,7 @@ export default function AllLeads() {
         setLoading(true);
         const raw = JSON.stringify({ leadid: formData.leadid, notes: LeadNotes });
         try {
-            const result = await postAPI('/update-lead-notes', raw, 3);
+            const result = await postAPIAuthKey('/update-lead-notes', raw);
             if (!result) {
                 throw new Error('Something went wrong');
             }

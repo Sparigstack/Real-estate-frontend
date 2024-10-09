@@ -44,6 +44,7 @@ export default function TopMenu() {
                         {propertyName}</h4>
                 </label>
                 <div>
+                    <label className='fontwhite pe-3 cursor-pointer' onClick={handleSwitchProperty}><FontAwesomeIcon icon={faBuilding} className='pe-2' />Switch Scheme</label>
                     <button className="profileOpen" onClick={toggleProfile}>
                         {userDetails?.userName?.charAt(0).toUpperCase()}
                     </button>
@@ -64,7 +65,7 @@ export default function TopMenu() {
                                     </a>
                                 </li>
                                 <hr className='m-0 p-0' />
-                                <li onClick={handleSwitchProperty}><FontAwesomeIcon icon={faBuilding} className='pe-2' />Switch to Scheme</li>
+
                                 <li><FontAwesomeIcon icon={faUser} className='pe-2' />Profile</li>
                                 <li><FontAwesomeIcon icon={faGauge} className='pe-2' />Dashboard</li>
                                 <li onClick={logout}><FontAwesomeIcon icon={faSignOutAlt} className='pe-2' />Logout</li>

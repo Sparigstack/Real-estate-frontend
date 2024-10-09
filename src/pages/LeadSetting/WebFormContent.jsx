@@ -6,9 +6,11 @@ import { faIndianRupeeSign } from '@fortawesome/free-solid-svg-icons';
 import { useParams } from 'react-router-dom';
 import AlertComp from '../../components/alerts/AlertComp';
 import useApiService from '../../hooks/useApiService';
+import useCommonApiService from '../../hooks/useCommonApiService';
 
 export default function WebFormContent() {
-    const { getAPI, postAPI } = useApiService();
+    const { postAPI } = useApiService();
+    const { getSources } = useCommonApiService();
     const { userId } = useParams();
     const [formData, setFormData] = useState({
         name: '',
@@ -22,40 +24,13 @@ export default function WebFormContent() {
     const [propertiesData, setpropertiesData] = useState([]);
     const [alerts, setShowAlerts] = useState('');
     useEffect(() => {
-        getSources();
-        getProperties();
+        const sources = getSources();
+        setsourcesData(sources)
     }, []);
-    async function getSources() {
-        try {
-            const result = await getAPI(`/get-sources`, 2);
-            if (!result) {
-                throw new Error('Something went wrong');
-            }
-
-            const responseRs = JSON.parse(result);
-            setsourcesData(responseRs)
-        }
-        catch (error) {
-            console.error(error);
-        }
-    }
-    async function getProperties() {
-        try {
-            const result = await getAPI(`/get-user-properties/${userId}`, 2);
-            if (!result) {
-                throw new Error('Something went wrong');
-            }
-            const responseRs = JSON.parse(result);
-            setpropertiesData(responseRs)
-        }
-        catch (error) {
-            console.error(error);
-        }
-    }
     const handleAddLead = async (values) => {
         try {
             const raw = JSON.stringify({ ...values, leadid: formData.leadid });
-            const result = await postAPI('/web-form-lead', raw, 2);
+            const result = await postAPI('/web-form-lead', raw);
 
             if (!result) {
                 throw new Error('Something went wrong');

@@ -1,43 +1,25 @@
 import { useCallback } from "react";
+import useAuth from "./useAuth";
 import Cookies from 'js-cookie';
-import { Logout } from "../utils/js/Common";
 
-const BASE_URL = import.meta.env.VITE_BASE_URL;
 const useApiService = () => {
-    const createHeaders = (headerflag) => {
-        const token = Cookies.get('authToken');
-        if (headerflag == 1) { //without content-type for csv
-            const headers = new Headers();
-            headers.append("Access-Control-Allow-Origin", "*");
-            if (token) {
-                headers.append("Authorization", `Bearer ${token}`);
-            }
-            return headers;
-        }
-        else if (headerflag == 2) { //without authorization
-            const headers = new Headers();
-            headers.append("Content-Type", "application/json");
-            headers.append("Accept", "application/json");
-            headers.append("Access-Control-Allow-Origin", "*");
-            return headers;
-        }
-        else {
-            const headers = new Headers();
-            headers.append("Content-Type", "application/json");
-            headers.append("Accept", "application/json");
-            headers.append("Access-Control-Allow-Origin", "*");
-            if (token) {
-                headers.append("Authorization", `Bearer ${token}`);
-            }
-            return headers;
-        }
+    const { logout } = useAuth();
+    const authToken = Cookies.get('authToken');
+    const BASE_URL = import.meta.env.VITE_BASE_URL;
+
+    const createHeaders = (useAuthToken) => {
+        const headers = new Headers();
+        headers.append("Content-Type", "application/json");
+        headers.append("Access-Control-Allow-Origin", "*");
+        useAuthToken && headers.append("Authorization", `Bearer ${authToken}`);
+        return headers;
     };
 
     const handleResponse = async (response) => {
         const responseBody = await response.text();
         if (response?.status == 401) {
             setTimeout(() => {
-                Logout();
+                logout();
             }, 2000);
         } else if (!responseBody) {
             alert('Something went wrong');
@@ -50,10 +32,10 @@ const useApiService = () => {
         return error;
     };
 
-    const apiRequest = useCallback(async (method, endpoint, headerflag, data = null) => {
+    const apiRequest = useCallback(async (method, endpoint, data = null, useAuthToken = false) => {
         const requestOptions = {
             method,
-            headers: createHeaders(headerflag),
+            headers: createHeaders(useAuthToken),
             redirect: "follow",
             ...(data && { body: data }),
         };
@@ -64,14 +46,18 @@ const useApiService = () => {
         } catch (error) {
             return handleError(error);
         }
-    }, [BASE_URL]);
+    }, [BASE_URL, authToken]);
 
-    const postAPI = useCallback((endpoint, data = null, headerflag) => apiRequest('POST', endpoint, headerflag, data), [apiRequest]);
-    const getAPI = useCallback((endpoint, headerflag) => apiRequest('GET', endpoint, headerflag), [apiRequest]);
+    const postAPI = useCallback((endpoint, data = null) => apiRequest('POST', endpoint, data), [apiRequest]);
+    const getAPI = useCallback((endpoint) => apiRequest('GET', endpoint), [apiRequest]);
+    const postAPIAuthKey = useCallback((endpoint, data = null) => apiRequest('POST', endpoint, data, true), [apiRequest]);
+    const getAPIAuthKey = useCallback((endpoint, data = null) => apiRequest('GET', endpoint, data, true), [apiRequest]);
 
     return {
         postAPI,
-        getAPI
+        getAPI,
+        postAPIAuthKey,
+        getAPIAuthKey
     };
 };
 export default useApiService;

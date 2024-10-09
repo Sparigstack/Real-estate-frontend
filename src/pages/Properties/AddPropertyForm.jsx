@@ -4,19 +4,20 @@ import { Field, Formik, Form, ErrorMessage } from 'formik'
 import ShowLoader from '../../components/loader/ShowLoader';
 import Cookies from 'js-cookie';
 import AlertComp from '../../components/alerts/AlertComp';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { convertToBase64 } from '../../utils/js/Common';
 import Images from '../../utils/Images';
 import useApiService from '../../hooks/useApiService';
 import useProperty from '../../hooks/useProperty';
+import useCommonApiService from '../../hooks/useCommonApiService';
 
-export default function AddPropertyForm() {
-    var { schemeType } = useParams();
+export default function AddPropertyForm({ schemeType, setFormView }) {
     const { switchProperty } = useProperty();
-    const { getAPI, postAPI } = useApiService();
+    const { getAPIAuthKey, postAPIAuthKey } = useApiService();
     const userId = Cookies.get('userId');
     const navigate = useNavigate();
     const logoUploadRef = useRef(null);
+    const { getAllStates, getCities } = useCommonApiService();
     const [filedetails, setfileDetails] = useState({
         uploadedFileName: '',
         uploadedFileBase64: ''
@@ -42,7 +43,7 @@ export default function AddPropertyForm() {
     useEffect(() => {
         const getPropertyTypes = async () => {
             try {
-                const result = await getAPI(`/get-property-types/${schemeType}`, 3);
+                const result = await getAPIAuthKey(`/get-property-types/${schemeType}`);
                 if (!result || result == "") {
                     alert('Something went wrong');
                 }
@@ -50,29 +51,19 @@ export default function AddPropertyForm() {
                     const responseRs = JSON.parse(result);
                     setpropertyTypeArray(responseRs?.sub_properties)
                 }
+
+                var states = await getAllStates();
+                if (states) {
+                    setStateArray(states);  // Set the fetched states in state
+                }
             }
             catch (error) {
                 console.error(error);
             }
         }
         getPropertyTypes();
-        getAllStates();
+
     }, []);
-    const getAllStates = async () => {
-        try {
-            const result = await getAPI(`/get-state-details`, 3);
-            if (!result || result == "") {
-                alert('Something went wrong');
-            }
-            else {
-                const responseRs = JSON.parse(result);
-                setStateArray(responseRs)
-            }
-        }
-        catch (error) {
-            console.error(error);
-        }
-    }
     const submitCommercialDetails = async (values) => {
         setLoading(true);
         var raw = JSON.stringify({
@@ -90,7 +81,7 @@ export default function AddPropertyForm() {
             area: values?.area
         })
         try {
-            const result = await postAPI('/add-property-details', raw, 3);
+            const result = await postAPIAuthKey('/add-property-details', raw);
             if (!result || result == "") {
                 alert('Something went wrong');
             } else {
@@ -130,29 +121,20 @@ export default function AddPropertyForm() {
         }
     }
     const GetCities = async (stateid) => {
-        try {
-            const result = await getAPI(`/get-state-with-cities-details/${stateid}`, 3);
-            if (!result || result == "") {
-                alert('Something went wrong');
-            }
-            else {
-                const responseRs = JSON.parse(result);
-                setCityArray(responseRs?.cities)
-            }
-        }
-        catch (error) {
-            console.error(error);
+        var cities = await getCities(stateid);
+        if (cities) {
+            setCityArray(cities)
         }
     }
     return (
         <div className='h-100vh content-area'>
             {showAlerts}
             {loading && <ShowLoader />}
-            <div className='col-md-10 offset-md-1 p-4'>
+            <div className='col-md-10 offset-md-1 p-2'>
                 <div className='row align-items-center'>
                     <div className='col-1'>
                         <img src={Images.backArrow} alt="back-arrow" style={{ height: "40px" }}
-                            className='cursor-pointer' onClick={() => navigate('/add-property', { state: { ShowBack: true } })} />
+                            className='cursor-pointer' onClick={() => setFormView(1)} />
                     </div>
                     <div className='col-11'>
                         <h4 className='heading mb-0'>{schemeType == 1 ? 'Commercial!' : 'Residentials!'}</h4>
@@ -255,7 +237,7 @@ export default function AddPropertyForm() {
                                 </div>
                             </div>
                             <div className='text-center'>
-                                <button type="button" className='cancelBtn me-2' onClick={(e) => navigate('/add-property')}>Cancel</button>
+                                <button type="button" className='cancelBtn me-2' onClick={(e) => setFormView(1)}>Cancel</button>
                                 <button type="submit" className='otpBtn'>Continue</button>
                             </div>
                         </Form>
