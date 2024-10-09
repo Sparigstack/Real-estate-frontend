@@ -42,7 +42,7 @@ export default function Approutes() {
             <Route path="*" element={<PageNotFound />} />
           </Route>
         ) : (
-          <Route path="/" element={<Navigate to="/login" />} />
+          <Route path="*" element={<Navigate to="/login" />} />
         )}
 
       </Routes>
