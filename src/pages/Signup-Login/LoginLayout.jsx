@@ -1,10 +1,12 @@
 import React from 'react'
 import Images from '../../utils/Images'
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 export default function LoginLayout({ children, loginview, setLoginView }) {
     return (
         <>
-            <div className="BackgroundImageLogin">
+            <LazyLoadImage src={Images.loginbackground} alt="" className="BackgroundImageLogin" />
+            <div className="position-absolute top-0" style={{ left: "25%" }}>
                 <div className='text-center text-white pt-5'>
                     <div className="d-flex align-items-center justify-content-center position-relative">
                         {loginview != 1 && (

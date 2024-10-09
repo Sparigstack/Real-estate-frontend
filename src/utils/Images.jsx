@@ -30,6 +30,7 @@ const Images = {
     filter: new URL("../assets/images/filter.svg", import.meta.url).href,
     dummy_property: new URL("../assets/images/dummy_property.svg", import.meta.url).href,
     scheme: new URL("../assets/images/scheme.svg", import.meta.url).href,
-    upload_image: new URL("../assets/images/upload_image.svg", import.meta.url).href
+    upload_image: new URL("../assets/images/upload_image.svg", import.meta.url).href,
+    loginbackground: new URL("../assets/images/loginbackground.svg", import.meta.url).href
 }
 export default Images

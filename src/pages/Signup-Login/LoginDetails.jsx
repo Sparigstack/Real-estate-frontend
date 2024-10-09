@@ -45,7 +45,7 @@ export default function LoginDetails({ setLoginView, formData, setFormData }) {
             <div className='text-center pt-5'>
                 <h2 className='fw-normal'>Please Enter Details</h2>
                 <div className='mt-2'>
-                    <small className='color-D8DADCE5'>We will send a verification email with a one-time password (OTP) to the address you provide. Please ensure you enter a valid email</small>
+                    <small className='color-D8DADCE5'>We will send a verification email with a one-time password (OTP)<br /> to the address you provide. Please ensure you enter a valid email</small>
                 </div>
             </div>
             <div className='p-3 mt-2'>
@@ -58,7 +58,7 @@ export default function LoginDetails({ setLoginView, formData, setFormData }) {
                         handleGetOtp(values);
                     }}>
                     {() => (
-                        <Form className='w-25 d-inline-block justify-content-center'>
+                        <Form className='w-50 d-inline-block justify-content-center'>
                             <div className='position-relative mb-4'>
                                 <label className='custom-label'>User Name <span className='text-danger'>*</span></label>
                                 <Field type="text" className="customInput" name='username' autoComplete='off' />

@@ -8,7 +8,7 @@ export default function Login() {
     const [loginview, setLoginView] = useState(1);
     const [formData, setFormData] = useState({ email: '', username: '' });
     return (
-        <div>
+        <div className='position-relative'>
             <LoginLayout loginview={loginview} setLoginView={setLoginView}>
                 {loginview == 1 && <LandingPage setLoginView={setLoginView} />}
                 {loginview == 2 && <LoginDetails setLoginView={setLoginView} formData={formData} setFormData={setFormData} />}

@@ -56,25 +56,24 @@ export const AuthProvider = ({ children }) => {
             if (!result) {
                 throw new Error('Something went wrong');
             }
-            console.log("logout")
             const responseRs = JSON.parse(result);
             setShowAlerts(<AlertComp show={true} variant={'success'} message={'Logout Successfully!!'} />);
             if (responseRs.status == 'success') {
                 setTimeout(() => {
                     setShowAlerts(<AlertComp show={false} />);
-                    setloading(false);
                     setAuthToken(null);
                     setUserId(null);
                     setUserDetails({ userName: '', email: '', client_id: '', client_secret_key: '' });
+                    setloading(false);
                     navigate("/");
                 }, 2000);
             }
             else {
                 setShowAlerts(<AlertComp show={false} />);
-                setloading(false);
                 setAuthToken(null);
                 setUserId(null);
                 setUserDetails({ userName: '', email: '', client_id: '', client_secret_key: '' });
+                setloading(false);
                 navigate("/");
 
             }
