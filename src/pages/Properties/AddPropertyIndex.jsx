@@ -1,20 +1,17 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Images from '../../utils/Images'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
-import ShowLoader from '../../components/loader/ShowLoader';
 import useAuth from '../../hooks/useAuth';
 
 export default function AddProperty() {
     const navigate = useNavigate();
-    const [loading, setloading] = useState(false);
     const { logout } = useAuth();
     const location = useLocation();
     const showbackbutton = location.state && location.state.ShowBack;
     return (
         <div className="content-area h-100vh">
-            {loading && <ShowLoader />}
             <div className='text-center text-white'>
 
                 <div className='col-12 justify-content-end align-items-center d-flex cursor-pointer'>
