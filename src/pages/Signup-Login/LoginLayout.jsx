@@ -6,7 +6,7 @@ export default function LoginLayout({ children, loginview, setLoginView }) {
     return (
         <>
             <LazyLoadImage src={Images.loginbackground} alt="" className="BackgroundImageLogin" />
-            <div className="position-absolute top-0" style={{ left: "25%" }}>
+            <div className="position-absolute top-35 start-50 translate-middle text-center text-white" >
                 <div className='text-center text-white pt-5'>
                     <div className="d-flex align-items-center justify-content-center position-relative">
                         {loginview != 1 && (

@@ -189,3 +189,7 @@ select {
   padding: 10px;
   border-radius: 50%;
 }
+
+.top-35 {
+  top: 35% !important;
+}

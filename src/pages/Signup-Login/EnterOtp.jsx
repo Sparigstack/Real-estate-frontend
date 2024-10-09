@@ -1,20 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react'
-import ShowLoader from '../../components/loader/ShowLoader';
 import Cookies from 'js-cookie';
 import AlertComp from '../../components/alerts/AlertComp';
 import useApiService from '../../hooks/useApiService';
 import { useNavigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 
-export default function EnterOtp({ formData }) {
+export default function EnterOtp({ formData, setLoading, setShowAlerts }) {
     const { postAPI } = useApiService();
     const inputRefs = useRef([]);
     const [otp, setOtp] = useState(Array(6).fill(''));
     const [otpError, setOtpError] = useState('');
-    const [loading, setLoading] = useState(false);
     const [timeLeft, setTimeLeft] = useState(180);
     const [timeExpired, setTimeExpired] = useState(false);
-    const [showAlerts, setShowAlerts] = useState(false);
     const navigate = useNavigate();
     const alertTimeoutRef = useRef();
     const { setAuthToken, setUserId } = useAuth();
@@ -165,8 +162,6 @@ export default function EnterOtp({ formData }) {
 
     return (
         <>
-            {showAlerts}
-            {loading && <ShowLoader />}
             <div className='text-center pt-5'>
                 <h2 className='fw-normal'>Please Enter a Code</h2>
                 <div className='mt-2'>

@@ -1,14 +1,12 @@
 import React, { useState } from 'react'
 import { Field, Formik, Form, ErrorMessage } from 'formik';
 import LoginValidationSchema from '../../utils/validations/LoginValidationSchema.jsx';
-import ShowLoader from '../../components/loader/ShowLoader.jsx';
 import AlertComp from '../../components/alerts/AlertComp.jsx';
 import useApiService from '../../hooks/useApiService.jsx';
 
-export default function LoginDetails({ setLoginView, formData, setFormData }) {
+export default function LoginDetails({ setLoginView, formData, setFormData, setLoading, setShowAlerts }) {
     const { postAPI } = useApiService();
-    const [loading, setLoading] = useState(false);
-    const [showAlerts, setShowAlerts] = useState(false);
+
     const handleGetOtp = async (values) => {
         setLoading(true);
         var raw = JSON.stringify({
@@ -40,8 +38,7 @@ export default function LoginDetails({ setLoginView, formData, setFormData }) {
     }
     return (
         <>
-            {showAlerts}
-            {loading && <ShowLoader />}
+
             <div className='text-center pt-5'>
                 <h2 className='fw-normal'>Please Enter Details</h2>
                 <div className='mt-2'>
