@@ -57,6 +57,9 @@ export const AuthProvider = ({ children }) => {
                 throw new Error('Something went wrong');
             }
             setShowAlerts(<AlertComp show={true} variant={'success'} message={'Logout Successfully!!'} />);
+            Cookies.remove('authToken');
+            Cookies.remove('userId');
+            Cookies.remove('propertyId');
             setTimeout(() => {
                 setShowAlerts(<AlertComp show={false} />);
                 setUserDetails({ userName: '', email: '', client_id: '', client_secret_key: '' });

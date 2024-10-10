@@ -175,16 +175,20 @@ export default function AllLeads({ setGridFlag }) {
                 <div className='row align-items-center'>
                     <div className='col-6'><label className='graycolor cursor-pointer' onClick={(e) => setGridFlag(1)}>Recent Leads /</label> All Leads</div>
                     <div className='col-6 font-13 d-flex justify-content-end'>
-                        <div className='fontwhite cursor-pointer px-2' onClick={(e) => {
+                        <div className='fontwhite cursor-pointer px-2 d-flex align-items-center' onClick={(e) => {
                             setLeadPopup(true); setFormData({ ...formData, name: '', email: '', source: 0, budget: '', contactno: '', leadid: 0 });
                             setAddUpdateFlag(1)
                         }}>
-                            <img src={Images.addicon} className='img-fluid pe-2' />
+                            <img src={Images.addicon} className='bigiconsize pe-2' />
                             Add Lead
                         </div>
-                        <div className='fontwhite cursor-pointer px-2' onClick={(e) => navigate('/upload-csv')}>
-                            <FontAwesomeIcon icon={faArrowUpFromBracket} className='pe-2' />
+                        <div className='fontwhite cursor-pointer px-2 d-flex align-items-center' onClick={(e) => setGridFlag(4)}>
+                            <img src={Images.upload} className='iconsize pe-2' />
                             Upload CSV
+                        </div>
+                        <div className='fontwhite cursor-pointer px-2 d-flex align-items-center' onClick={(e) => setGridFlag(3)}>
+                            <img src={Images.leadSetting} className='bigiconsize pe-2' />
+                            Lead Setting
                         </div>
                     </div>
                 </div>
@@ -219,7 +223,7 @@ export default function AllLeads({ setGridFlag }) {
                     <div className='col-md-2  cursor-pointer' title='Sort by Source' onClick={(e) => { getAllLeads(utils.search, 'source'); setUtils((prevdata) => ({ ...prevdata, sortbyvalue: 'source' })) }}>
                         Source<FontAwesomeIcon icon={faArrowUpAZ} className='ps-1' />
                     </div>
-                    <div className='col-md-2 cursor-pointer ' title='Sort by Contact Number' onClick={(e) => { getAllLeads(utils.search, 'contact_num'); setUtils((prevdata) => ({ ...prevdata, sortbyvalue: 'property' })) }}>
+                    <div className='col-md-2 cursor-pointer ' title='Sort by Contact Number' onClick={(e) => { getAllLeads(utils.search, 'contact_no'); setUtils((prevdata) => ({ ...prevdata, sortbyvalue: 'property' })) }}>
                         Contact <FontAwesomeIcon icon={faArrowUpAZ} className='ps-1' />
                     </div>
                     <div className='col-md-1 cursor-pointer ps-0' title='Sort by Budget' onClick={(e) => { getAllLeads(utils.search, 'budget'); setUtils((prevdata) => ({ ...prevdata, sortbyvalue: 'budget' })) }}>

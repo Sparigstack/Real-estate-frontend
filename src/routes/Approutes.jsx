@@ -8,12 +8,10 @@ const Dashboard = lazy(() => import('../pages/Dashboard/Dashboard'));
 const PageNotFound = lazy(() => import('../pages/404-ErrorPage/PageNotFound'));
 const Layout = lazy(() => import('../components/layout/Layout'));
 const LeadManagementIndex = lazy(() => import('../pages/Lead-Management'));
-const LeadSettingIndex = lazy(() => import('../pages/LeadSetting'));
 const RestApi = lazy(() => import('../pages/LeadSetting/RestApi'));
 const WebFormContent = lazy(() => import('../pages/LeadSetting/WebFormContent'));
 const AllProperties = lazy(() => import('../pages/Properties/AllProperties'));
 const AddProperty = lazy(() => import('../pages/Properties/AddPropertyIndex'));
-const UploadCsv = lazy(() => import('../pages/Lead-Management/UploadCsv'));
 
 export default function Approutes() {
   const { authToken } = useAuth();
@@ -34,9 +32,7 @@ export default function Approutes() {
               <Route element={<LayoutWrapper />}>
                 <Route path="dashboard" element={<Dashboard />} />
                 <Route path="lead-management" element={<LeadManagementIndex />} />
-                <Route path="leads-setting" element={<LeadSettingIndex />} />
                 <Route path="rest-api" element={<RestApi />} />
-                <Route path="upload-csv" element={<UploadCsv />} />
                 <Route path="*" element={<PageNotFound />} />
               </Route>
             )}

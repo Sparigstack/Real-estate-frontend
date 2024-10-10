@@ -32,6 +32,7 @@ const Images = {
     scheme: new URL("../assets/images/scheme.svg", import.meta.url).href,
     upload_image: new URL("../assets/images/upload_image.svg", import.meta.url).href,
     loginbackground: new URL("../assets/images/loginbackground.svg", import.meta.url).href,
-    location: new URL("../assets/images/location.svg", import.meta.url).href
+    location: new URL("../assets/images/location.svg", import.meta.url).href,
+    upload: new URL("../assets/images/upload.svg", import.meta.url).href
 }
 export default Images

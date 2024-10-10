@@ -7,7 +7,7 @@ import useApiService from '../../hooks/useApiService';
 import AlertComp from '../../components/alerts/AlertComp';
 import { useNavigate } from 'react-router-dom';
 
-export default function UploadCsv() {
+export default function UploadCsv({ setGridFlag }) {
     const { propertyId } = useProperty();
     const { postAPIAuthKey } = useApiService();
     const [filename, setFilename] = useState('');
@@ -54,7 +54,9 @@ export default function UploadCsv() {
             {showAlerts}
             {loading && <Loader runningcheck={loading} />}
             <div className='PageHeader'>
-                Upload CSV
+                <div className='row align-items-center'>
+                    <div className='col-6'><label className='graycolor cursor-pointer' onClick={(e) => setGridFlag(2)}>All Leads /</label> Upload CSV</div>
+                </div>
             </div>
             <div className='text-center'>
 

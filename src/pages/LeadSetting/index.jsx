@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import WebForm from './WebForm';
 import useAuth from '../../hooks/useAuth';
 
-export default function LeadSettingIndex() {
+export default function LeadSettingIndex({ setGridFlag }) {
     const { userDetails } = useAuth();
     const [showcopymsg, setshowcopymsg] = useState(false)
     const [visiblesecretkey, setvisiblesecretkey] = useState(false)
@@ -25,6 +25,11 @@ export default function LeadSettingIndex() {
     };
     return (
         <>
+            <div className='PageHeader'>
+                <div className='row align-items-center'>
+                    <div className='col-6'><label className='graycolor cursor-pointer' onClick={(e) => setGridFlag(2)}>All Leads /</label> Lead Setting</div>
+                </div>
+            </div>
             <div className='scrollable-content'>
                 <div className='row m-auto justify-content-center'>
                     <div className='d-flex pt-4 justify-content-center'>
