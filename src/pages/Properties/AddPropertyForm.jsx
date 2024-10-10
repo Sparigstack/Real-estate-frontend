@@ -88,9 +88,8 @@ export default function AddPropertyForm({ schemeType, setFormView }) {
                 const responseRs = JSON.parse(result);
                 if (responseRs.status == 'success') {
                     Cookies.set('propertyId', responseRs.propertyId, { expires: 1, secure: true, sameSite: 'Strict' });
-                    Cookies.set('propertyName', responseRs.propertyName, { expires: 1, secure: true, sameSite: 'Strict' });
                     setShowAlerts(<AlertComp show={true} variant="success" message="Property Added Successfully." />);
-                    await switchProperty(responseRs.propertyId, responseRs.propertyName);
+                    await switchProperty(responseRs.propertyId);
                     setTimeout(() => {
                         setLoading(false);
                         setShowAlerts(<AlertComp show={false} />);

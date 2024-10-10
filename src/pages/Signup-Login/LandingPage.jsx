@@ -8,7 +8,7 @@ export default function LandingPage({ setLoginView, setLoading }) {
         setTimeout(() => {
             setLoading(false);
             setLoginView(2);
-        }, 1000);
+        }, 1500);
     }
     return (
         <div className='text-center text-white pt-5'>

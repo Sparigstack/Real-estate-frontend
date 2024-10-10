@@ -18,10 +18,7 @@ const AddUpdateLeadValidationSchema = Yup.object({
 
     source: Yup.string()
         .notOneOf(['0'], 'Please select a valid source')
-        .required('Source is required'),
-    propertyinterest: Yup.string()
-        .notOneOf(['0'], 'Please select a valid property')
-        .required('Property interest is required')
+        .required('Source is required')
 });
 
 export default AddUpdateLeadValidationSchema;

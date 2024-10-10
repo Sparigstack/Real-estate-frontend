@@ -7,9 +7,11 @@ const useApiService = () => {
     const authToken = Cookies.get('authToken');
     const BASE_URL = import.meta.env.VITE_BASE_URL;
 
-    const createHeaders = (useAuthToken) => {
+    const createHeaders = (useAuthToken, csv) => {
         const headers = new Headers();
-        headers.append("Content-Type", "application/json");
+        if (!csv) {
+            headers.append("Content-Type", "application/json");
+        }
         headers.append("Access-Control-Allow-Origin", "*");
         useAuthToken && headers.append("Authorization", `Bearer ${authToken}`);
         return headers;
@@ -32,10 +34,10 @@ const useApiService = () => {
         return error;
     };
 
-    const apiRequest = useCallback(async (method, endpoint, data = null, useAuthToken = false) => {
+    const apiRequest = useCallback(async (method, endpoint, data = null, useAuthToken = false, csv = false) => {
         const requestOptions = {
             method,
-            headers: createHeaders(useAuthToken),
+            headers: createHeaders(useAuthToken, csv),
             redirect: "follow",
             ...(data && { body: data }),
         };
@@ -50,7 +52,7 @@ const useApiService = () => {
 
     const postAPI = useCallback((endpoint, data = null) => apiRequest('POST', endpoint, data), [apiRequest]);
     const getAPI = useCallback((endpoint) => apiRequest('GET', endpoint), [apiRequest]);
-    const postAPIAuthKey = useCallback((endpoint, data = null) => apiRequest('POST', endpoint, data, true), [apiRequest]);
+    const postAPIAuthKey = useCallback((endpoint, data = null, csv) => apiRequest('POST', endpoint, data, true, csv), [apiRequest]);
     const getAPIAuthKey = useCallback((endpoint, data = null) => apiRequest('GET', endpoint, data, true), [apiRequest]);
 
     return {

@@ -9,7 +9,7 @@ import Loader from '../components/loader/Loader';
 const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
-    const { setPropertyName, setPropertyId } = useProperty();
+    const { setPropertyId } = useProperty();
     const [authToken, setAuthToken] = useState(Cookies.get('authToken') || null);
     const [userId, setUserId] = useState(Cookies.get('userId') || null);
     const [loading, setloading] = useState(false);
@@ -64,7 +64,6 @@ export const AuthProvider = ({ children }) => {
                 setAuthToken(null);
                 setUserId(null);
                 setPropertyId(null);
-                setPropertyName(null);
             }, 2000);
 
         }

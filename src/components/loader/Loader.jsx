@@ -8,7 +8,6 @@ export default function Loader({ runningcheck }) {
     const timeoutRef = useRef(null);
     useEffect(() => {
         let startTimeout;
-
         if (runningcheck) {
             startTimeout = setTimeout(() => {
                 start();
@@ -70,17 +69,6 @@ export default function Loader({ runningcheck }) {
 
         timeoutRef.current = setTimeout(pickCrate, 1500);
     };
-
-    // useEffect(() => {
-    //     const startTimeout = setTimeout(() => {
-    //         start();
-    //     }, 10);
-
-    //     return () => {
-    //         clearTimeout(startTimeout);
-    //         stop();
-    //     };
-    // }, []);
     return (
         <div>
             <div className="preloader" id="preloader" ref={preloaderRef}>

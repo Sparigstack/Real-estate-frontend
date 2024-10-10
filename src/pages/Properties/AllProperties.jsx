@@ -94,8 +94,7 @@ export default function AllProperties() {
     const getCardClick = async (item) => {
         setloading(true);
         Cookies.set('propertyId', item.id, { expires: 1, secure: true, sameSite: 'Strict' });
-        Cookies.set('propertyName', item.name, { expires: 1, secure: true, sameSite: 'Strict' });
-        await switchProperty(item.id, item.name);
+        await switchProperty(item.id);
         setTimeout(() => {
             setloading(false);
             navigate("/dashboard");

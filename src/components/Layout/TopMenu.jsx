@@ -10,12 +10,7 @@ export default function TopMenu() {
     const [openProfile, setOpenProfile] = useState(false);
     const { userDetails, logout } = useAuth();
     const profileRef = useRef(null);
-    const propertyName = Cookies.get('propertyName');
-    const { handleSwitchProperty } = useProperty();
-    useEffect(() => {
-        console.log(propertyName)
-    }, [propertyName]);
-
+    const { handleSwitchProperty, propertyDetails } = useProperty();
     useEffect(() => {
         if (openProfile) {
             document.addEventListener('mousedown', handleClickOutside)
@@ -39,9 +34,16 @@ export default function TopMenu() {
         <>
             <div className="topmenu-wrapper">
                 <label>
-                    <h4 className={'fontwhite mb-0'}>
-                        <img src={Images.scheme} className='img-fluid pe-2' />
-                        {propertyName}</h4>
+                    <label className={'fontwhite mb-0 d-flex align-items-center'}>
+                        <label className='fw-semibold font-22'>
+                            <img src={Images.scheme} className='img-fluid pe-2' />
+                            {propertyDetails.name}
+                        </label>
+                        <label className='ps-2 mt-1 font-13 d-flex align-items-center'>
+                            <img src={Images.location} className='img-fluid' style={{ height: "15px" }} />
+                            {propertyDetails.city_name}
+                        </label>
+                    </label>
                 </label>
                 <div>
                     <label className='fontwhite pe-3 cursor-pointer' onClick={handleSwitchProperty}><FontAwesomeIcon icon={faBuilding} className='pe-2' />Switch Scheme</label>

@@ -106,7 +106,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  background: #f4b800;
+  background: #b1b2c3;
 }
 
 .wrapper .box .front {
@@ -119,22 +119,22 @@
 
 .wrapper .box .right {
   transform: rotateY(-90deg) translateZ(0.5em);
-  background: #dba500;
+  background: #8b8ca6;
 }
 
 .wrapper .box .left {
   transform: rotateY(90deg) translateZ(0.5em);
-  background: #dba500;
+  background: #8b8ca6;
 }
 
 .wrapper .box .top {
   transform: translateZ(0.5em);
-  background: #ffd042;
+  background: #e6e6ec;
 }
 
 .wrapper .box .bottom {
   transform: translateZ(-0.49em);
-  background: #ffca28;
+  background: #e6e6ec;
 }
 
 .wrapper .box .hook {
@@ -143,7 +143,7 @@
   left: 30%;
   width: 40%;
   height: 40%;
-  border: 0.1em solid #755800;
+  border: 0.1em solid #03053d;
   border-radius: 30%;
   box-sizing: border-box;
   transform: translateZ(0.5em) rotateY(90deg);
@@ -237,13 +237,13 @@
 }
 
 .wrapper .base .box .top {
-  background: #06aefb;
+  background: #56587D;
 }
 
 .wrapper .base .box .front,
 .wrapper .base .box .back {
   height: 1em;
-  background: #049de3;
+  background: #56587D;
 }
 
 .wrapper .base .box .back {
@@ -253,7 +253,7 @@
 .wrapper .base .box .left,
 .wrapper .base .box .right {
   width: 1em;
-  background: #037ab1;
+  background: #353764;
 }
 
 .wrapper .base .box .left {
@@ -283,7 +283,7 @@
 }
 
 .wrapper .mast .face {
-  color: #ba1236;
+  color: #353764;
   width: 100%;
   height: 100%;
   position: absolute;
@@ -318,7 +318,7 @@
 
 .wrapper .mast .front,
 .wrapper .mast .back {
-  color: #8b0d29;
+  color: #353764;
 }
 
 .wrapper .mast .front {
@@ -349,8 +349,8 @@
 
 .wrapper .cap {
   transform-style: preserve-3d;
-  background: #da1540;
-  border: 0.075em solid #a2102f;
+  background: #353764;
+  border: 0.075em solid #03053d;
   width: 1em;
   height: 1em;
   position: absolute;
@@ -478,7 +478,7 @@
 }
 
 .wrapper .cap .tower>.face {
-  color: #ba1236;
+  color: #353764;
   width: 100%;
   height: 100%;
   position: absolute;
@@ -505,7 +505,7 @@
 
 .wrapper .cap .tower>.face.front,
 .wrapper .cap .tower>.face.back {
-  color: #8b0d29;
+  color: #353764;
 }
 
 .wrapper .cap .tower>.face .support {
@@ -550,7 +550,7 @@
 }
 
 .wrapper .arm {
-  color: #D1143D;
+  color: #353764;
   position: absolute;
   border: 0.075em solid;
   width: 0.7em;
@@ -630,13 +630,13 @@
 .wrapper .arm .segment .face.left {
   transform: rotateY(-60deg);
   transform-origin: 0 0;
-  color: #8b0d29;
+  color: #353764;
 }
 
 .wrapper .arm .segment .face.right {
   transform: rotateY(60deg);
   transform-origin: 100% 0;
-  color: #b01133;
+  color: #56587d;
 }
 
 .wrapper .arm .segment .face.right:before {
@@ -653,7 +653,7 @@
   width: 0.85em;
   height: 0.7em;
   position: absolute;
-  background: #5d091b;
+  background: #030538;
   top: 0.8em;
   left: -0.15em;
   transform: translateZ(-0.02em);
@@ -666,7 +666,7 @@
   position: absolute;
   width: 0.15em;
   height: 100%;
-  background: #2e040d;
+  background: #030538;
 }
 
 .wrapper .trolley:before {

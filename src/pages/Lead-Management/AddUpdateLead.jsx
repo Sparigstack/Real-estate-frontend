@@ -3,18 +3,17 @@ import React, { useEffect, useState } from 'react'
 import AddUpdateLeadValidationSchema from '../../utils/validations/AddUpdateLeadValidationSchema';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faIndianRupeeSign } from '@fortawesome/free-solid-svg-icons';
-import Cookies from 'js-cookie';
-import useApiService from '../../hooks/useApiService';
 import useCommonApiService from '../../hooks/useCommonApiService';
 
 export default function AddUpdateLead({ formData, setFormData, handleAddLead, handleHide }) {
     const { getSources } = useCommonApiService();
-    const userId = Cookies.get('userId');
     const [sourcesData, setsourcesData] = useState([]);
-    const [propertiesData, setpropertiesData] = useState([]);
     useEffect(() => {
-        const sources = getSources();
-        setsourcesData(sources)
+        const fetchSources = async () => {
+            const sources = await getSources();
+            setsourcesData(sources)
+        }
+        fetchSources();
     }, []);
     return (
         <Formik initialValues={formData}
@@ -52,7 +51,7 @@ export default function AddUpdateLead({ formData, setFormData, handleAddLead, ha
                         </div>
                         <ErrorMessage name='budget' component="div" className="text-start errorText" />
                     </div>
-                    <div className='col-md-4 py-2'>
+                    <div className='col-md-4 pt-2 pb-4'>
                         <label className='font-13'>Source <span className='text-danger'>*</span></label>
                         <Field as="select" className="form-control" name='source'>
                             <option value="0" label="Select source" />
@@ -61,16 +60,6 @@ export default function AddUpdateLead({ formData, setFormData, handleAddLead, ha
                             })}
                         </Field>
                         <ErrorMessage name='source' component="div" className="text-start errorText" />
-                    </div>
-                    <div className='col-md-4 py-2 pb-4'>
-                        <label className='font-13'>Property Interest <span className='text-danger'>*</span></label>
-                        <Field as="select" className="form-control" name='propertyinterest'>
-                            <option value="0" label="Select Property" />
-                            {propertiesData?.map((item, index) => {
-                                return <option value={item.id} label={item.name} key={index} />
-                            })}
-                        </Field>
-                        <ErrorMessage name='propertyinterest' component="div" className="text-start errorText" />
                     </div>
                     <div className='col-12 pt-2 text-end' style={{ borderTop: "1px solid #dee2e6" }}>
                         <button type='button' className="CancelBtn me-2" onClick={handleHide}>

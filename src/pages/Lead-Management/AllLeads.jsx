@@ -1,6 +1,6 @@
-import { faArrowUpAZ, faArrowUpFromBracket, faIndianRupeeSign, faSort } from '@fortawesome/free-solid-svg-icons'
+import { faArrowUpAZ, faArrowUpFromBracket, faIndianRupeeSign } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import Images from '../../utils/Images'
 import { formatCurrency } from '../../utils/js/Common'
 import CustomModal from '../../utils/CustomModal'
@@ -10,11 +10,14 @@ import AlertComp from '../../components/alerts/AlertComp'
 import CustomPagination from '../../components/pagination/CustomPagination'
 import { debounce } from 'lodash';
 import useApiService from '../../hooks/useApiService'
+import useProperty from '../../hooks/useProperty'
 import Loader from '../../components/loader/Loader'
+import { useNavigate } from 'react-router-dom'
 
-export default function AllLeads() {
+export default function AllLeads({ setGridFlag }) {
     const { postAPIAuthKey, getAPIAuthKey } = useApiService();
-    const fileInputRef = useRef(null);
+    const { propertyId } = useProperty();
+    const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [showAlerts, setShowAlerts] = useState(false);
     const [LeadPopup, setLeadPopup] = useState(false);
@@ -26,7 +29,6 @@ export default function AllLeads() {
         name: '',
         email: '',
         source: 0,
-        propertyinterest: 0,
         budget: '',
         contactno: '',
         leadid: 0
@@ -74,7 +76,7 @@ export default function AllLeads() {
     const handleAddLead = async (values) => {
         setLoading(true);
         try {
-            const raw = JSON.stringify({ ...values, leadid: formData.leadid });
+            const raw = JSON.stringify({ ...values, propertyinterest: propertyId, leadid: formData.leadid });
             const result = await postAPIAuthKey('/add-edit-leads', raw);
 
             if (!result) {
@@ -106,36 +108,6 @@ export default function AllLeads() {
         setShowAlerts(<AlertComp show={true} variant="danger" message={message} />);
         setTimeout(() => setShowAlerts(<AlertComp show={false} />), 2000);
     };
-
-    const handleFileChange = async (event) => {
-        const file = event.target.files[0];
-        if (!file) return;
-        setLoading(true);
-        try {
-            var formdata = new FormData();
-            formdata.append("file", file);
-            const result = await postAPIAuthKey('/add-leads-csv', formdata);
-            if (!result) {
-                throw new Error('Something went wrong');
-            }
-            const responseRs = JSON.parse(result);
-            if (responseRs.status == "success") {
-                setShowAlerts(<AlertComp show={true} variant="success" message={'CSV imported Successfully'} />);
-                fileInputRef.current.value = '';
-                setTimeout(() => {
-                    setShowAlerts(<AlertComp show={false} />);
-                    getAllLeads(utils.search, utils.sortbyvalue);
-                }, 1500);
-            } else {
-                showErrorAlert(responseRs.message);
-            }
-        } catch (error) {
-            setLoading(false);
-            console.log('error', error);
-        }
-    };
-
-    const handleButtonClick = () => fileInputRef.current?.click();
 
     const getLeadById = async (leadid) => {
         if (!leadid) return;
@@ -199,8 +171,26 @@ export default function AllLeads() {
         <div>
             {showAlerts}
             {loading && <Loader runningcheck={loading} />}
-            <div className='row align-items-center'>
-                <div className='col-md-4'>
+            <div className='PageHeader'>
+                <div className='row align-items-center'>
+                    <div className='col-6'><label className='graycolor cursor-pointer' onClick={(e) => setGridFlag(1)}>Recent Leads /</label> All Leads</div>
+                    <div className='col-6 font-13 d-flex justify-content-end'>
+                        <div className='fontwhite cursor-pointer px-2' onClick={(e) => {
+                            setLeadPopup(true); setFormData({ ...formData, name: '', email: '', source: 0, budget: '', contactno: '', leadid: 0 });
+                            setAddUpdateFlag(1)
+                        }}>
+                            <img src={Images.addicon} className='img-fluid pe-2' />
+                            Add Lead
+                        </div>
+                        <div className='fontwhite cursor-pointer px-2' onClick={(e) => navigate('/upload-csv')}>
+                            <FontAwesomeIcon icon={faArrowUpFromBracket} className='pe-2' />
+                            Upload CSV
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className='row py-2 align-items-center'>
+                <div className='col-md-4 offset-md-8'>
                     <div className="position-relative">
                         <img src={Images.searchIcon} alt="search-icon" className="search-icon" />
                         <input
@@ -214,61 +204,32 @@ export default function AllLeads() {
                         />
                     </div>
                 </div>
-                <div className='col-md-8 font-13 d-flex justify-content-end align-items-center'>
-                    <div className='fontwhite d-flex cursor-pointer px-2' onClick={(e) => {
-                        setLeadPopup(true); setFormData({ ...formData, name: '', email: '', source: 0, propertyinterest: 0, budget: '', contactno: '', leadid: 0 });
-                        setAddUpdateFlag(1)
-                    }}>
-                        <img src={Images.addicon} className='img-fluid pe-2' />
-                        Add Lead
-                    </div>
-                    <div className='fontwhite d-flex align-items-center cursor-pointer px-2'>
-                        <img src={Images.emailicon} className='img-fluid pe-2' />
-                        Mass Email
-                    </div>
-                    <a className='fontwhite  d-flex cursor-pointer px-2 text-decoration-none' href="/csv/lead_csv.csv" download="Lead.csv">
-                        <img src={Images.template_csv} className='img-fluid pe-2' />
-                        Template CSV
-                    </a>
-                    <div className='fontwhite  d-flex cursor-pointer px-2'>
-                        <FontAwesomeIcon icon={faArrowUpFromBracket} className='pe-2' onClick={handleButtonClick} />
-                        <input
-                            type="file"
-                            accept=".csv"
-                            onChange={handleFileChange}
-                            className="ms-3 cursor-pointer"
-                            style={{ display: 'none' }}
-                            ref={fileInputRef}
-                        />
-                        Upload CSV
-                    </div>
-                </div>
             </div>
-            <div className='GridHeader mt-2'>
+            <div className='GridHeader'>
                 <div className='row'>
                     <div className='col-md-1'>
                         Status
                     </div>
                     <div className='col-md-2 cursor-pointer' title='Sort by Name' onClick={(e) => { getAllLeads(utils.search, 'name'); setUtils((prevdata) => ({ ...prevdata, sortbyvalue: 'name' })) }}>
-                        Name<FontAwesomeIcon icon={faArrowUpAZ} className='ps-2' />
+                        Name<FontAwesomeIcon icon={faArrowUpAZ} className='ps-1' />
                     </div>
                     <div className='col-md-2 cursor-pointer ps-1' title='Sort by Email' onClick={(e) => { getAllLeads(utils.search, 'email'); setUtils((prevdata) => ({ ...prevdata, sortbyvalue: 'email' })) }}>
-                        Email<FontAwesomeIcon icon={faArrowUpAZ} className='ps-2' />
+                        Email<FontAwesomeIcon icon={faArrowUpAZ} className='ps-1' />
                     </div>
-                    <div className='col-md-2 ps-2 cursor-pointer' title='Sort by Source' onClick={(e) => { getAllLeads(utils.search, 'source'); setUtils((prevdata) => ({ ...prevdata, sortbyvalue: 'source' })) }}>
-                        Source<FontAwesomeIcon icon={faArrowUpAZ} className='ps-2' />
+                    <div className='col-md-2  cursor-pointer' title='Sort by Source' onClick={(e) => { getAllLeads(utils.search, 'source'); setUtils((prevdata) => ({ ...prevdata, sortbyvalue: 'source' })) }}>
+                        Source<FontAwesomeIcon icon={faArrowUpAZ} className='ps-1' />
                     </div>
-                    <div className='col-md-2 cursor-pointer ps-1' title='Sort by Property' onClick={(e) => { getAllLeads(utils.search, 'property'); setUtils((prevdata) => ({ ...prevdata, sortbyvalue: 'property' })) }}>
-                        Property <FontAwesomeIcon icon={faArrowUpAZ} className='ps-2' />
+                    <div className='col-md-2 cursor-pointer ' title='Sort by Contact Number' onClick={(e) => { getAllLeads(utils.search, 'contact_num'); setUtils((prevdata) => ({ ...prevdata, sortbyvalue: 'property' })) }}>
+                        Contact <FontAwesomeIcon icon={faArrowUpAZ} className='ps-1' />
                     </div>
                     <div className='col-md-1 cursor-pointer ps-0' title='Sort by Budget' onClick={(e) => { getAllLeads(utils.search, 'budget'); setUtils((prevdata) => ({ ...prevdata, sortbyvalue: 'budget' })) }}>
-                        Budget<FontAwesomeIcon icon={faArrowUpAZ} className='ps-2' />
+                        Budget<FontAwesomeIcon icon={faArrowUpAZ} className='ps-1' />
                     </div>
                     <div className='col-md-2 text-center'>Action</div>
                 </div>
             </div>
             <div className="parent-container">
-                <div className='hide-scrollbar'>
+                <div className=''>
                     {LeadData.length ? LeadData.map((item, index) => {
                         var statuscolor = "";
                         var statusname = "";
@@ -293,11 +254,11 @@ export default function AllLeads() {
                                 <label style={{ color: `${statuscolor}` }} className={`me-2 font-12`}>{statusname}</label>
                             </div>
                             <div className='col-md-2 ps-3'>
-                                {item.name}<br />({item.contact_no})
+                                {item.name}
                             </div>
                             <div className='col-md-2'>{item.email}</div>
                             <div className='col-md-2 '>{item?.lead_source?.name}</div>
-                            <div className='col-md-2'>{item?.userproperty?.name}</div>
+                            <div className='col-md-2'>{item.contact_no}</div>
                             <div className='col-md-1'>
                                 <FontAwesomeIcon icon={faIndianRupeeSign} className='pe-1' />
                                 {formatCurrency(item.budget)}
