@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Field, Formik, Form, ErrorMessage } from 'formik';
 import AddUpdateLeadValidationSchema from '../../utils/validations/AddUpdateLeadValidationSchema';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -7,29 +7,39 @@ import { useParams } from 'react-router-dom';
 import AlertComp from '../../components/alerts/AlertComp';
 import useApiService from '../../hooks/useApiService';
 import useCommonApiService from '../../hooks/useCommonApiService';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 export default function WebFormContent() {
+    const recaptcharef = useRef();
+    const captchasitekey = import.meta.env.VITE_CAPTCHA_SITEKEY;
     const { postAPI } = useApiService();
     const { getSources } = useCommonApiService();
-    const { userId } = useParams();
+    const { propertyId } = useParams();
+    const [recaptchaToken, setRecaptchaToken] = useState('');
     const [formData, setFormData] = useState({
         name: '',
         email: '',
         source: 0,
-        propertyinterest: 0,
         budget: '',
         contactno: ''
     });
     const [sourcesData, setsourcesData] = useState([]);
-    const [propertiesData, setpropertiesData] = useState([]);
     const [alerts, setShowAlerts] = useState('');
     useEffect(() => {
-        const sources = getSources();
-        setsourcesData(sources)
+        const fetchSources = async () => {
+            const sources = await getSources();
+            setsourcesData(sources)
+        }
+        fetchSources();
     }, []);
     const handleAddLead = async (values) => {
         try {
-            const raw = JSON.stringify({ ...values, leadid: formData.leadid });
+            const raw = JSON.stringify({
+                ...values,
+                propertyinterest: propertyId,
+                leadid: formData.leadid,
+                captcha: recaptchaToken
+            });
             const result = await postAPI('/web-form-lead', raw);
 
             if (!result) {
@@ -45,14 +55,14 @@ export default function WebFormContent() {
                         ...formData, name: '',
                         email: '',
                         source: 0,
-                        propertyinterest: 0,
                         budget: '',
                         contactno: ''
                     })
                 }, 2000);
             }
             else {
-                setShowAlerts(<AlertComp show={true} variant="success" message={responseRs.msg} />);
+                recaptcharef.current.reset();
+                setShowAlerts(<AlertComp show={true} variant="danger" message={responseRs.msg} />);
                 setTimeout(() => {
                     setShowAlerts(<AlertComp show={false} />);
                 }, 2000);
@@ -63,6 +73,9 @@ export default function WebFormContent() {
             console.error(error);
         }
     }
+    const handleRecaptcha = (token) => {
+        setRecaptchaToken(token);
+    };
     return (
         <div className='col-12'>
             {alerts}
@@ -112,16 +125,6 @@ export default function WebFormContent() {
                             </Field>
                             <ErrorMessage name='source' component="div" className="text-start errorText" />
                         </div>
-                        <div className='col-md-4 py-2 pb-4'>
-                            <label className='font-13'>Property Interest <span className='text-danger'>*</span></label>
-                            <Field as="select" className="form-control" name='propertyinterest'>
-                                <option value="0" label="Select Property" />
-                                {propertiesData?.map((item, index) => {
-                                    return <option value={item.id} label={item.name} key={index} />
-                                })}
-                            </Field>
-                            <ErrorMessage name='propertyinterest' component="div" className="text-start errorText" />
-                        </div>
                         <div className='col-12 pt-2 text-end' style={{ borderTop: "1px solid #dee2e6" }}>
                             <button type='button' className="CancelBtn me-2" onClick={() => resetForm()}>
                                 Reset
@@ -130,6 +133,10 @@ export default function WebFormContent() {
                                 Confirm
                             </button>
 
+                        </div>
+                        <div className="d-flex justify-content-center mt-3">
+                            <ReCAPTCHA ref={recaptcharef} sitekey={captchasitekey}
+                                size="invisible" onChange={handleRecaptcha} />
                         </div>
                     </Form>
                 )}

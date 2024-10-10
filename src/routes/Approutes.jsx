@@ -21,7 +21,7 @@ export default function Approutes() {
       <Routes>
         <Route path="/" element={<NavigateToDashboardOrLogin />} />
         <Route path="login" element={<Login />} />
-        <Route path="webform/:userId" element={<WebFormContent />} />
+        <Route path="webform/:propertyId" element={<WebFormContent />} />
 
         {authToken ? (
           <>

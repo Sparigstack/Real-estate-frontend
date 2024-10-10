@@ -1,19 +1,10 @@
-/* Custom scrollbar for WebKit browsers (Chrome, Safari) */
-
-.hide-scrollbar {
-    scrollbar-width: thin;
-    scrollbar-color: #888 #f1f1f1;
-    flex: 1;
-    overflow-y: auto;
-    overflow-x: hidden;
-}
-
 /*lead setting */
 .square-boxes {
     border: 1px solid white;
     border-radius: 7px;
     padding: 15px 10px;
-    color: white;
+    color: black;
+    background-color: white;
 
 }
 

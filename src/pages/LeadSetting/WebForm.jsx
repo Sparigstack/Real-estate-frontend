@@ -2,9 +2,11 @@ import { faCopy, faShareNodes } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useState } from 'react'
 import Cookies from 'js-cookie';
+import useProperty from '../../hooks/useProperty';
 
 export default function WebForm() {
     const userId = Cookies.get('userId');
+    const { propertyId } = useProperty();
     const frontendurl = import.meta.env.VITE_REDIRECT_URL;
     const [showcopymsg, setshowcopymsg] = useState(false)
     const handleCopyClick = (labelValue) => {
@@ -25,10 +27,10 @@ export default function WebForm() {
             alert('Web Share API is not supported in your browser.');
         }
     };
-    const iframeCode = `<iframe src="${frontendurl}/webform/${userId}" width="100%" height="300px"></iframe>`;
+    const iframeCode = `<iframe src="${frontendurl}/webform/${propertyId}" width="100%" height="300px"></iframe>`;
     return (
         <div>
-            <label>You can copy the link and share it as a webform. If you send the webform link to someone and they place it on their website or any other platform, they will be able to collect leads through that webform.</label>
+            <label style={{ textAlign: "justify" }}>You can copy the link and share it as a webform. If you send the webform link to someone and they place it on their website or any other platform, they will be able to collect leads through that webform.</label>
             <div className='col-12 py-2'>
                 <b className='text-decoration-underline'>Webform iFrame</b>
                 <FontAwesomeIcon className='cursor-pointer ps-2' icon={faCopy} onClick={() => handleCopyClick(iframeCode)} />
@@ -37,7 +39,7 @@ export default function WebForm() {
                     {showcopymsg && <label className="pt-2">Copied!</label>}
                 </label>
             </div>
-            <pre>{iframeCode}</pre>
+            <label>{iframeCode}</label>
         </div>
     )
 }

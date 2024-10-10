@@ -30,58 +30,62 @@ export default function LeadSettingIndex({ setGridFlag }) {
                     <div className='col-6'><label className='graycolor cursor-pointer' onClick={(e) => setGridFlag(2)}>All Leads /</label> Lead Setting</div>
                 </div>
             </div>
-            <div className='scrollable-content'>
-                <div className='row m-auto justify-content-center'>
-                    <div className='d-flex pt-4 justify-content-center'>
-                        <div className='col-md-4 square-boxes'>
-                            <b>Client ID</b>
-                            <div className='row align-items-center pt-2'>
-                                <label className='col-md-10 font-13'>{userDetails.client_id}</label>
-                                <label className='col-md-2'><FontAwesomeIcon className='cursor-pointer' icon={faCopy} onClick={(e) => handleCopyClick(userDetails.client_id)} /></label>
+            <div className='row mt-3'>
+                <div className='col-md-6' >
+                    <div className='square-boxes' style={{ height: "100%" }}>
+                        <div className='col-12 fw-semibold'>
+                            Web Form
+                        </div>
+                        <hr />
+                        <WebForm />
+                    </div>
+                </div>
+                <div className='col-md-6 ' >
+                    <div className='square-boxes' style={{ height: "100%" }}>
+                        <div className='col-12 fw-semibold'>
+                            Upload CSV
+                        </div>
+                        <hr />
+                        <Csv />
+                    </div>
+                </div>
+                <div className='col-12 my-3' >
+                    <div className='square-boxes' style={{ height: "100%" }}>
+                        <div className='col-12 fw-semibold'>
+                            Rest API
+                        </div>
+                        <hr />
+                        <div className='row align-items-center'>
+                            <div className='col-md-3 pe-0'>
+                                <b>Client ID : </b>
+                            </div>
+                            <div className='col-md-7'>
+                                <label className='font-13'>&nbsp;{userDetails.client_id}</label>
+                            </div>
+                            <div className='col-md-2 text-end'>
+                                <label className='text-end ps-5'><FontAwesomeIcon className='cursor-pointer' icon={faCopy} onClick={(e) => handleCopyClick(userDetails.client_id)} /></label>
                             </div>
                         </div>
-                        <div className='col-md-4 ms-4 square-boxes'>
-                            <b>Client Secret</b>
-                            <div className='row align-items-center pt-2'>
-                                <label className='col-md-10 font-13'>
-                                    {visiblesecretkey ? userDetails.client_secret_key : getMaskedSecretKey(userDetails.client_secret_key)}
-                                </label>
-                                <label className='col-md-2 d-flex ps-0 justify-content-between'>
-                                    <span className="cursor-pointer" onClick={togglePasswordVisibility}>
-                                        {visiblesecretkey ? <FontAwesomeIcon icon={faEye} /> : <FontAwesomeIcon icon={faEyeSlash} />}
-                                    </span>
-                                    <label ><FontAwesomeIcon className='cursor-pointer' icon={faCopy} onClick={(e) => handleCopyClick(userDetails.client_secret_key)} /></label>
-                                </label>
+                        <div className='row pt-2 align-items-center'>
+                            <div className='col-md-3 pe-0'>
+                                <b>Client Secret : </b>
+                            </div>
+                            <div className='col-md-7'>
+                                <label className='font-13'>&nbsp; {visiblesecretkey ? userDetails.client_secret_key : getMaskedSecretKey(userDetails.client_secret_key)}</label>
+                            </div>
+                            <div className='col-md-2 text-end'>
+                                <span className="cursor-pointer" onClick={togglePasswordVisibility}>
+                                    {visiblesecretkey ? <FontAwesomeIcon icon={faEye} /> : <FontAwesomeIcon icon={faEyeSlash} />}
+                                </span>
+                                <label className='ps-2'><FontAwesomeIcon className='cursor-pointer' icon={faCopy} onClick={(e) => handleCopyClick(userDetails.client_secret_key)} /></label>
                             </div>
                         </div>
-                    </div>
-                    <div className='text-center'>
-                        {showcopymsg && <label className="pt-2 fontwhite">Copied!</label>}
-                    </div>
-                    <div className='col-12 fontwhite font-22 text-center pt-5'>
-                        You may choose any option to add leads.
-                    </div>
-                    <div className='col-md-9 mt-2'>
-                        <Accordion className='leadaccordian'>
-                            <Accordion.Item eventKey="0" className='my-3'>
-                                <Accordion.Header className='font-weight-bold'>Rest API</Accordion.Header>
-                                <Accordion.Body>
-                                    Click on the <label className='fw-bold cursor-pointer' onClick={(e) => navigate("/rest-api")}>REST API</label> link for more information.
-                                </Accordion.Body>
-                            </Accordion.Item>
-                            <Accordion.Item eventKey="1" className='my-3'>
-                                <Accordion.Header>Web Form</Accordion.Header>
-                                <Accordion.Body>
-                                    <WebForm />
-                                </Accordion.Body>
-                            </Accordion.Item>
-                            <Accordion.Item eventKey="2" className='my-3'>
-                                <Accordion.Header>CSV</Accordion.Header>
-                                <Accordion.Body>
-                                    <Csv />
-                                </Accordion.Body>
-                            </Accordion.Item>
-                        </Accordion>
+                        <div className='text-center'>
+                            {showcopymsg && <label className="pt-2 fontwhite">Copied!</label>}
+                        </div>
+                        <div className='pt-2'>
+                            Click on the <label className='fw-bold cursor-pointer' onClick={(e) => navigate("/rest-api")}>REST API</label> link for more information.
+                        </div>
                     </div>
                 </div>
             </div>

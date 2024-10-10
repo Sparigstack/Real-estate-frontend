@@ -12,7 +12,7 @@ export default function RestApi() {
     };
     return (
         <>
-            <div className='scrollable-content' style={{ height: "85vh" }}>
+            <div >
                 <div className='card m-2 p-3 '>
                     <div className='col-12'>
                         <h5>Overview :</h5>
