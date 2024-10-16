@@ -100,7 +100,7 @@ export default function AllProperties() {
         await switchProperty(item.id);
         setTimeout(() => {
             setloading(false);
-            navigate("/dashboard");
+            navigate("/sales");
         }, 2000);
 
     }

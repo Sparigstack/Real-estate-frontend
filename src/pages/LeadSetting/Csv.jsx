@@ -7,7 +7,7 @@ import LoadingBar from 'react-top-loading-bar';
 import useProperty from '../../hooks/useProperty';
 import Images from '../../utils/Images';
 
-export default function Csv({ setGridFlag }) {
+export default function Csv() {
     const { postAPIAuthKey } = useApiService();
     const { schemeId } = useProperty();
     const fileInputRef = useRef(null);
@@ -42,7 +42,7 @@ export default function Csv({ setGridFlag }) {
                 setShowAlerts(<AlertComp show={true} variant="success" message={'CSV imported Successfully'} />);
                 setTimeout(() => {
                     setShowAlerts(<AlertComp show={false} />);
-                    setGridFlag(2);
+                    navigate('/all-leads')
                 }, 1500);
             } else {
                 setShowAlerts(<AlertComp show={true} variant="danger" message={responseRs.message} />);

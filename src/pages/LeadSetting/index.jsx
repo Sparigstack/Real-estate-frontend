@@ -5,7 +5,7 @@ import WebForm from './WebForm';
 import useAuth from '../../hooks/useAuth';
 import Images from '../../utils/Images';
 
-export default function LeadSettingIndex({ setGridFlag }) {
+export default function LeadSettingIndex() {
     const { userDetails } = useAuth();
     const [showcopymsg, setshowcopymsg] = useState(false)
     const [visiblesecretkey, setvisiblesecretkey] = useState(false)
@@ -25,7 +25,7 @@ export default function LeadSettingIndex({ setGridFlag }) {
         <div>
             <div className='PageHeader'>
                 <div className='row align-items-center'>
-                    <div className='col-6'><label className='graycolor cursor-pointer' onClick={(e) => setGridFlag(2)}>All Leads /</label> Lead Setting</div>
+                    <div className='col-6'><label className='graycolor cursor-pointer' onClick={(e) => navigate('/all-leads')}>All Leads /</label> Lead Setting</div>
                 </div>
             </div>
             <div className='row mt-3'>
@@ -45,7 +45,7 @@ export default function LeadSettingIndex({ setGridFlag }) {
                             Upload CSV
                         </div>
                         <div className='square-boxes-body'>
-                            <Csv setGridFlag={setGridFlag} />
+                            <Csv />
                         </div>
                     </div>
                 </div>

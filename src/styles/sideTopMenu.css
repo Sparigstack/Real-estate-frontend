@@ -49,6 +49,7 @@
     background-color: #03053d;
     overflow-y: scroll;
     overflow-x: hidden;
+    height: 100%;
 }
 
 .side-menu-logo {

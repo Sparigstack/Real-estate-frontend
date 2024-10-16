@@ -5,8 +5,10 @@ import useApiService from '../../hooks/useApiService';
 import AlertComp from '../../components/alerts/AlertComp';
 import LoadingBar from 'react-top-loading-bar';
 import Images from '../../utils/Images';
+import { useNavigate } from 'react-router-dom';
 
-export default function UploadCsv({ setGridFlag }) {
+export default function UploadCsv() {
+    const navigate = useNavigate();
     const { schemeId } = useProperty();
     const { postAPIAuthKey } = useApiService();
     const [filename, setFilename] = useState('');
@@ -40,7 +42,7 @@ export default function UploadCsv({ setGridFlag }) {
                 setShowAlerts(<AlertComp show={true} variant="success" message={'CSV imported Successfully'} />);
                 setTimeout(() => {
                     setShowAlerts(null);
-                    setGridFlag(2);
+                    navigate('/all-leads');
                 }, 2000);
             } else {
                 setShowAlerts(<AlertComp show={true} variant="danger" message={responseRs.message} />);
@@ -61,7 +63,7 @@ export default function UploadCsv({ setGridFlag }) {
             {loading && <Loader runningcheck={loading} />}
             <div className='PageHeader'>
                 <div className='row align-items-center'>
-                    <div className='col-6'><label className='graycolor cursor-pointer' onClick={(e) => setGridFlag(2)}>All Leads /</label> Upload CSV</div>
+                    <div className='col-6'><label className='graycolor cursor-pointer' onClick={(e) => navigate('/all-leads')}>All Leads /</label> Upload CSV</div>
                 </div>
             </div>
             <div style={{ textAlign: "justify", border: "1px solid #484155" }} className='px-5 m-3'>

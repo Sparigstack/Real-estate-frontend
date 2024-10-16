@@ -35,6 +35,8 @@ const Images = {
     reracomplianceIcon: new URL('../assets/images/sidemenu/rera_compliance.svg', import.meta.url).href,
     filesIcon: new URL('../assets/images/sidemenu/files.svg', import.meta.url).href,
     timelineIcon: new URL('../assets/images/sidemenu/timeline.svg', import.meta.url).href,
-    customersIcon: new URL('../assets/images/sidemenu/customers.svg', import.meta.url).href
+    customersIcon: new URL('../assets/images/sidemenu/customers.svg', import.meta.url).href,
+    investorIcon: new URL('../assets/images/sidemenu/investor.svg', import.meta.url).href,
+    crmIcon: new URL('../assets/images/sidemenu/crm.svg', import.meta.url).href
 }
 export default Images

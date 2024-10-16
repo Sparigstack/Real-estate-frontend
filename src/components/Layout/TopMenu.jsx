@@ -53,14 +53,14 @@ export default function TopMenu() {
                     {openProfile && (
                         <div className="profile-menu" ref={profileRef}>
                             <ul>
-                                <li>
+                                <li className='py-1 px-0'>
                                     <a className="dropdown-item" href="#">
                                         <div className="d-flex align-items-center">
                                             <div className="profileOpen">
                                                 <span>{userDetails?.userName?.charAt(0).toUpperCase()}</span>
                                             </div>
                                             <div className="ms-3">
-                                                <h5 className="mb-0 dropdown-user-name" style={{ color: "black" }}>{userDetails?.userName}</h5>
+                                                <h6 className="mb-0 dropdown-user-name" style={{ color: "black" }}>{userDetails?.userName}</h6>
                                                 <small className="mb-0 dropdown-user-designation text-secondary" style={{ fontSize: '12px' }}>{userDetails?.email}</small>
                                             </div>
                                         </div>
@@ -68,9 +68,9 @@ export default function TopMenu() {
                                 </li>
                                 <hr className='m-0 p-0' />
 
-                                <li><FontAwesomeIcon icon={faUser} className='pe-2' />Profile</li>
-                                <li><FontAwesomeIcon icon={faGauge} className='pe-2' />Dashboard</li>
-                                <li onClick={logout}><FontAwesomeIcon icon={faSignOutAlt} className='pe-2' />Logout</li>
+                                <li className='font-14 p-1'><FontAwesomeIcon icon={faUser} className='pe-2' />Profile</li>
+                                <li className='font-14 p-1'><FontAwesomeIcon icon={faGauge} className='pe-2' />Dashboard</li>
+                                <li className='font-14 p-1' onClick={logout}><FontAwesomeIcon icon={faSignOutAlt} className='pe-2' />Logout</li>
                             </ul>
                         </div>
                     )}

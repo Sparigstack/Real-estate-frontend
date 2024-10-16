@@ -11,27 +11,39 @@
         "imageKey": "salesIcon",
         "altText": "Sales",
         "label": "Sales",
+        "submenu": []
+    },
+    {
+        "path": "/customers",
+        "imageKey": "customersIcon",
+        "altText": "Customers",
+        "label": "Customers",
         "submenu": [
             {
-                "path": "/testing",
-                "imageKey": "customersIcon",
-                "altText": "Testing",
-                "label": "Testing"
+                "path": "/investor",
+                "imageKey": "investorIcon",
+                "altText": "Investor",
+                "label": "Investor"
+            },
+            {
+                "path": "/crm",
+                "imageKey": "crmIcon",
+                "label": "CRM"
             }
         ]
+    },
+    {
+        "path": "/recent-leads",
+        "imageKey": "leadIcon",
+        "altText": "Lead Management",
+        "label": "Lead Management",
+        "submenu": []
     },
     {
         "path": "/inventory",
         "imageKey": "inventoryIcon",
         "altText": "Inventory",
         "label": "Inventory",
-        "submenu": []
-    },
-    {
-        "path": "/lead-management",
-        "imageKey": "leadIcon",
-        "altText": "Lead Management",
-        "label": "Lead Management",
         "submenu": []
     },
     {
@@ -42,13 +54,6 @@
         "submenu": []
     },
     {
-        "path": "/rera-compliance",
-        "imageKey": "reracomplianceIcon",
-        "altText": "Rera Compliance",
-        "label": "Rera Compliance",
-        "submenu": []
-    },
-    {
         "path": "/files",
         "imageKey": "filesIcon",
         "altText": "Files",
@@ -56,17 +61,17 @@
         "submenu": []
     },
     {
+        "path": "/rera-compliance",
+        "imageKey": "reracomplianceIcon",
+        "altText": "Rera Compliance",
+        "label": "Rera Compliance",
+        "submenu": []
+    },
+    {
         "path": "/timeline",
         "imageKey": "timelineIcon",
         "altText": "Timeline",
         "label": "Timeline",
-        "submenu": []
-    },
-    {
-        "path": "/customers",
-        "imageKey": "customersIcon",
-        "altText": "Customers",
-        "label": "Customers",
         "submenu": []
     }
 ]

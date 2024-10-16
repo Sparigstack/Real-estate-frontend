@@ -17,7 +17,7 @@ export default function RestApi() {
         <>
             <div className='PageHeader'>
                 <div className='row align-items-center'>
-                    <div className='col-6'><label className='graycolor cursor-pointer' onClick={(e) => navigate('/lead-management')}>Lead Setting /</label> Rest API</div>
+                    <div className='col-6'><label className='graycolor cursor-pointer' onClick={(e) => navigate('/recent-leads')}>Lead Setting /</label> Rest API</div>
                 </div>
             </div>
             <div className='row mt-3 px-3'>

@@ -14,7 +14,7 @@ import useProperty from '../../hooks/useProperty'
 import Loader from '../../components/loader/Loader'
 import { useNavigate } from 'react-router-dom'
 
-export default function AllLeads({ setGridFlag }) {
+export default function AllLeads() {
     const { postAPIAuthKey, getAPIAuthKey } = useApiService();
     const { schemeId } = useProperty();
     const [loading, setLoading] = useState(false);
@@ -40,6 +40,7 @@ export default function AllLeads({ setGridFlag }) {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalItems, setTotalItems] = useState('');
     var itemsPerPage = 5;
+    const navigate = useNavigate();
 
     const debouncedSearch = useCallback(debounce((searchValue) => {
         getAllLeads(searchValue, utils.sortbyvalue);
@@ -171,7 +172,7 @@ export default function AllLeads({ setGridFlag }) {
             {loading && <Loader runningcheck={loading} />}
             <div className='PageHeader'>
                 <div className='row align-items-center'>
-                    <div className='col-6'><label className='graycolor cursor-pointer' onClick={(e) => setGridFlag(1)}>Recent Leads /</label> All Leads</div>
+                    <div className='col-6'><label className='graycolor cursor-pointer' onClick={(e) => navigate('/recent-leads')}>Recent Leads /</label> All Leads</div>
                     <div className='col-6 font-13 d-flex justify-content-end'>
                         <div className='fontwhite cursor-pointer px-2 d-flex align-items-center' onClick={(e) => {
                             setLeadPopup(true); setFormData({ ...formData, name: '', email: '', source: 0, budget: '', contactno: '', leadid: 0 });
@@ -180,11 +181,11 @@ export default function AllLeads({ setGridFlag }) {
                             <img src={Images.addicon} className='bigiconsize pe-2' />
                             Add Lead
                         </div>
-                        <div className='fontwhite cursor-pointer px-2 d-flex align-items-center' onClick={(e) => setGridFlag(4)}>
+                        <div className='fontwhite cursor-pointer px-2 d-flex align-items-center' onClick={(e) => navigate('/upload-csv')}>
                             <img src={Images.upload} className='iconsize pe-2' />
                             Upload CSV
                         </div>
-                        <div className='fontwhite cursor-pointer px-2 d-flex align-items-center' onClick={(e) => setGridFlag(3)}>
+                        <div className='fontwhite cursor-pointer px-2 d-flex align-items-center' onClick={(e) => navigate('/lead-setting')}>
                             <img src={Images.leadSetting} className='bigiconsize pe-2' />
                             Lead Setting
                         </div>

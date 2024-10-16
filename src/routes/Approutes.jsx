@@ -7,11 +7,14 @@ const Login = lazy(() => import('../pages/Signup-Login/Login'));
 const Dashboard = lazy(() => import('../pages/Dashboard/Dashboard'));
 const PageNotFound = lazy(() => import('../pages/404-ErrorPage/PageNotFound'));
 const Layout = lazy(() => import('../components/layout/Layout'));
-const LeadManagementIndex = lazy(() => import('../pages/Lead-Management'));
 const RestApi = lazy(() => import('../pages/LeadSetting/RestApi'));
 const WebFormContent = lazy(() => import('../pages/LeadSetting/WebFormContent'));
 const AllProperties = lazy(() => import('../pages/Properties/AllProperties'));
 const AddProperty = lazy(() => import('../pages/Properties/AddPropertyIndex'));
+const AllLeads = lazy(() => import('../pages/Lead-Management/AllLeads'));
+const LeadSettingIndex = lazy(() => import('../pages/LeadSetting'));
+const UploadCsv = lazy(() => import('../pages/Lead-Management/UploadCsv'));
+const RecentLeads = lazy(() => import('../pages/Lead-Management/RecentLeads'));
 
 export default function Approutes() {
   const { authToken } = useAuth();
@@ -32,7 +35,10 @@ export default function Approutes() {
               <Route element={<LayoutWrapper />}>
                 <Route path="/" element={<Dashboard />} />
                 <Route path="dashboard" element={<Dashboard />} />
-                <Route path="lead-management" element={<LeadManagementIndex />} />
+                <Route path="recent-leads" element={<RecentLeads />} />
+                <Route path="all-leads" element={<AllLeads />} />
+                <Route path="lead-setting" element={<LeadSettingIndex />} />
+                <Route path="upload-csv" element={<UploadCsv />} />
                 <Route path="rest-api" element={<RestApi />} />
                 <Route path="*" element={<PageNotFound />} />
               </Route>
