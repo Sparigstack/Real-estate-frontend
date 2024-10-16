@@ -1,0 +1,129 @@
+.propertiesOptions {
+    background: #46486f6b;
+    border-radius: 8px;
+    text-align: center;
+    color: white;
+    padding: 30px 65px;
+}
+
+.propertiesOptions:hover {
+    background: #46486F;
+    border: 2px solid white;
+    opacity: 100%;
+}
+
+.subPropertyTypesBtn {
+    border: 1px solid #ffffff33;
+    background: transparent;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 8px;
+    padding: 12px 15px;
+}
+
+.subPropertyTypesBtn:hover {
+    background: #aab8ff;
+    color: black;
+}
+
+.subPropertyTypeActive {
+    background: #aab8ff;
+    color: black;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 8px;
+    padding: 12px 15px;
+    border: none;
+}
+
+.property-card {
+    background: #303260;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-radius: 7px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    /* Adjust this width as per the design */
+}
+
+.img-container {
+    height: 200px;
+    /* Ensure the same height for all images */
+    overflow: hidden;
+    border-radius: 7px 7px 0 0;
+}
+
+.img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.property-card .content-container {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    flex-grow: 1;
+    /* Ensure this section takes remaining space */
+}
+
+.property-card .fontwhite {
+    color: white;
+    font-size: 14px;
+}
+
+.property-card .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.property-card .row label {
+    color: white;
+    font-weight: bold;
+}
+
+.property-container {
+    display: flex;
+    gap: 20px;
+    /* Spacing between property cards */
+}
+
+.upload-image-box {
+    padding: 10px 27px;
+    border-radius: 5px;
+    border: 1px dashed #C4C4C4
+}
+
+.back-prev-icon {
+    border: 1px solid #CCCCCC99;
+    border-radius: 50%;
+    padding: 7px 9px;
+    font-size: 10px;
+    color: #CCCCCC99;
+    cursor: pointer;
+}
+
+.activeIcon {
+    background-color: rgb(48, 50, 96);
+    border: 1px solid rgb(48, 50, 96);
+}
+
+.scroll-container {
+    overflow-x: auto;
+    scroll-behavior: smooth;
+}
+
+.back-prev-icon.activeIcon,
+.back-prev-icon.disabled {
+    cursor: pointer;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.back-prev-icon.disabled {
+    opacity: 0.3;
+    pointer-events: none;
+}

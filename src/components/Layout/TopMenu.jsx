@@ -1,22 +1,16 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
-import '../../styles/sideTopMenu.css'
-import Images from '../../utils/Images'
+import React, { useEffect, useRef, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGauge, faSignOutAlt, faUser } from '@fortawesome/free-solid-svg-icons';
-import useApiService from '../../services/ApiService';
-import ShowLoader from '../loader/ShowLoader';
-import HideLoader from '../loader/HideLoader';
-import AlertComp from '../AlertComp';
-import { UserContext } from '../../context/UserContext';
-import { Logout } from '../../utils/js/Common';
+import { faBuilding, faGauge, faSignOutAlt, faUser } from '@fortawesome/free-solid-svg-icons';
+import Images from '../../utils/Images';
+import useAuth from '../../hooks/useAuth';
+import useProperty from '../../hooks/useProperty';
+import Cookies from 'js-cookie';
 
 export default function TopMenu() {
     const [openProfile, setOpenProfile] = useState(false);
-    const [loading, setLoading] = useState(false);
-    const [showAlerts, setShowAlerts] = useState(false);
-    const { postAPI } = useApiService();
-    const { userDetails } = useContext(UserContext);
+    const { userDetails, logout } = useAuth();
     const profileRef = useRef(null);
+    const { handleSwitchProperty, propertyDetails } = useProperty();
     useEffect(() => {
         if (openProfile) {
             document.addEventListener('mousedown', handleClickOutside)
@@ -36,46 +30,23 @@ export default function TopMenu() {
     const toggleProfile = () => {
         setOpenProfile(!openProfile);
     }
-    const handleLogout = async () => {
-        setLoading(true);
-        try {
-            const result = await postAPI('/logout');
-            if (!result || result == "") {
-                alert('Something went wrong');
-            } else {
-                const responseRs = JSON.parse(result);
-                if (responseRs.status == 'success') {
-                    setShowAlerts(<AlertComp show={true} variant="success" message="User logged out successfully" />);
-                    setTimeout(() => {
-                        setLoading(false);
-                        setShowAlerts(<AlertComp show={false} />);
-                        Logout();
-                    }, 2000);
-                }
-                else {
-                    Logout();
-                }
-            }
-        }
-        catch (error) {
-            console.error(error);
-        }
-    }
-
     return (
         <>
-            {showAlerts}
-            {loading ? <ShowLoader /> : <HideLoader />}
             <div className="topmenu-wrapper">
-                <div className="position-relative" style={{ width: "40%" }}>
-                    <img src={Images.searchIcon} alt="search-icon" className="search-icon" />
-                    <input
-                        type="text"
-                        className="form-control searchInput"
-                        placeholder="Search"
-                    />
-                </div>
+                <label>
+                    <label className={'fontwhite mb-0 d-flex align-items-center'}>
+                        <label className='fw-semibold font-22'>
+                            <img src={Images.scheme} className='img-fluid pe-2' />
+                            {propertyDetails.name}
+                        </label>
+                        <label className='ps-2 mt-1 font-13 d-flex align-items-center'>
+                            <img src={Images.location} className='img-fluid' style={{ height: "15px" }} />
+                            {propertyDetails.city_name}
+                        </label>
+                    </label>
+                </label>
                 <div>
+                    <label className='fontwhite pe-3 cursor-pointer' onClick={handleSwitchProperty}><FontAwesomeIcon icon={faBuilding} className='pe-2' />Switch Scheme</label>
                     <button className="profileOpen" onClick={toggleProfile}>
                         {userDetails?.userName?.charAt(0).toUpperCase()}
                     </button>
@@ -96,9 +67,10 @@ export default function TopMenu() {
                                     </a>
                                 </li>
                                 <hr className='m-0 p-0' />
+
                                 <li><FontAwesomeIcon icon={faUser} className='pe-2' />Profile</li>
                                 <li><FontAwesomeIcon icon={faGauge} className='pe-2' />Dashboard</li>
-                                <li onClick={handleLogout}><FontAwesomeIcon icon={faSignOutAlt} className='pe-2' />Logout</li>
+                                <li onClick={logout}><FontAwesomeIcon icon={faSignOutAlt} className='pe-2' />Logout</li>
                             </ul>
                         </div>
                     )}

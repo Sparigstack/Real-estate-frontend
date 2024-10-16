@@ -33,9 +33,19 @@
 
 .otpBtn {
   border: none;
-  font-size: 16px;
+  font-size: 14px;
   color: black;
   background: white;
+  border-radius: 8px;
+  padding: 10px 30px 10px 30px;
+  font-weight: 600;
+}
+
+.cancelBtn {
+  border: 1px solid #40416C;
+  font-size: 14px;
+  color: #CFD0DA;
+  background: transparent;
   border-radius: 8px;
   padding: 10px 30px 10px 30px;
   font-weight: 600;
@@ -87,6 +97,7 @@
   transition: border 0.15s ease-in-out;
 }
 
+
 .otpInput:focus {
   outline: none;
 }
@@ -99,4 +110,5 @@
   background-attachment: fixed;
   height: 100vh;
   width: 100%;
+  overflow-y: scroll;
 }

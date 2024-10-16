@@ -8,18 +8,48 @@
   position: absolute;
 }
 
-.font-30 {
-  font-size: 30px;
+/*Font Size css start*/
+.font-12 {
+  font-size: 12px;
+}
+
+.font-13 {
+  font-size: 13px;
+}
+
+.font-14 {
+  font-size: 14px;
+}
+
+.font-15 {
+  font-size: 15px;
 }
 
 .font-16 {
   font-size: 16px;
 }
 
+.font-18 {
+  font-size: 18px;
+}
+
+.font-20 {
+  font-size: 20px;
+}
+
+.font-22 {
+  font-size: 22px;
+}
+
+.font-30 {
+  font-size: 30px;
+}
+
+/*Font Size css end*/
 .custom-label {
   background: #03053d;
   color: white;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   left: 25px;
   padding: 0 3px;
@@ -45,99 +75,10 @@
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
-.countrycode {
-  position: absolute;
-  top: 31%;
-  padding-left: 12px;
-  pointer-events: none;
-  color: white;
-  font-size: 14px;
-}
-
-.close-icon {
-  position: absolute;
-  top: -7px;
-  left: 22%;
-  cursor: pointer;
-  color: #a12c2c;
-  border-radius: 50px;
-  background: white;
-  padding: 1px;
-}
-
-.contact-form .input-group {
-  border-radius: 8px;
-}
-
-.contact-form .input-group> :not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback) {
-  border-top-left-radius: 8px;
-  border-bottom-left-radius: 8px;
-}
-
-.contact-form .input-group-text {
-  border-bottom-left-radius: 8px !important;
-  border-bottom-right-radius: 8px !important;
-  border-top-left-radius: 8px !important;
-  border-top-right-radius: 8px !important;
-}
-
-.commercial-form-input .input-group {
-  border-radius: 8px;
-}
-
-.commercial-form-input .input-group> :not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback) {
-  border-top-left-radius: 8px;
-  border-bottom-left-radius: 8px;
-}
-
-.commercial-form-input .input-group-text {
-  border-bottom-left-radius: 8px !important;
-  border-bottom-right-radius: 8px !important;
-  border-top-left-radius: 8px !important;
-  border-top-right-radius: 8px !important;
-}
-
 .heading {
   font-size: 32px;
   font-weight: 700;
   color: white;
-}
-
-.propertiesOptions {
-  background: #46486f;
-  border-radius: 8px;
-  text-align: center;
-  color: white;
-  padding: 30px 40px;
-  opacity: 50%;
-}
-
-.propertiesOptions:hover {
-  border: 2px solid white;
-  opacity: 100%;
-}
-
-.helpAndChatbot {
-  position: fixed;
-  bottom: 10px;
-  left: 94%;
-}
-
-.help-image {
-  position: absolute;
-  right: 35px;
-  top: 0;
-  opacity: 0;
-  height: 55px;
-}
-
-.chatbot-container:hover .help-image {
-  opacity: 1;
-}
-
-.contact-form .custom-form-control::placeholder {
-  color: white;
-  opacity: 50%;
 }
 
 .customInput::placeholder {
@@ -145,50 +86,164 @@
   opacity: 50%;
 }
 
-.subPropertyTypesBtn {
-  border: 1px solid #ffffff33;
-  background: transparent;
-  color: white;
-  font-size: 14px;
-  font-weight: 600;
-  border-radius: 8px;
-  padding: 12px 15px;
-}
-
-.subPropertyTypesBtn:hover {
-  background: #aab8ff;
-  color: black;
-}
-
-.subPropertyTypeActive {
-  background: #aab8ff;
-  color: black;
-  font-size: 14px;
-  font-weight: 600;
-  border-radius: 8px;
-  padding: 12px 15px;
+.WhiteBtn {
   border: none;
-}
-
-.custom-accordian .accordion {
-  --bs-accordion-bg: none;
-}
-
-.custom-accordian .accordion-button:not(.collapsed) {
+  font-size: 13px;
   color: black;
-  background-color: white;
+  background: white;
+  border-radius: 5px;
+  padding: 8px 10px;
+  font-weight: 600;
 }
 
-.custom-accordian .accordion-button.collapsed {
+.borderBtn {
+  font-size: 13px;
   color: white;
-  background-color: none;
+  background: transparent;
+  border-radius: 5px;
+  padding: 8px 10px;
+  font-weight: 600;
+  border: 1px solid white;
 }
 
-.custom-accordian .accordion-button.collapsed::after {
-  filter: brightness(0) invert(1);
+.overflowXHidden {
+  overflow-x: hidden;
 }
 
-.unit-container {
-  flex: 0 0 115px;
+
+.GridHeader {
+  background: #050854;
+  color: white;
+  font-size: 15px;
+  padding: 11px 5px;
+  font-weight: 600;
+  border-radius: 5px;
+}
+
+.GridData {
+  color: #E0E0E0;
+  font-size: 14px;
+  border-bottom: 1px solid #484155;
+  padding-top: 13px;
+  padding-bottom: 13px;
+  word-wrap: break-word;
+}
+
+.iconsize {
+  height: 20px;
+  width: 20px;
+}
+
+.bigiconsize {
+  height: 23px;
+  width: 23px;
+}
+
+select {
+  font-size: 13px !important;
+}
+
+.norecorddiv {
+  color: white;
+  font-size: 20px;
+  border-bottom: 1px solid #484155;
+  padding: 10px;
+}
+
+
+.fontwhite {
+  color: white;
+}
+
+.parent-container {
   display: flex;
+  flex-direction: column;
+  height: 70vh;
+}
+
+::-webkit-scrollbar {
+  width: 2px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
+
+.graycolor {
+  color: #BBBABA;
+}
+
+.h-100vh {
+  height: 100vh !important;
+}
+
+/*custom input group */
+.property-form .input-group-text {
+  border-bottom-left-radius: 0px !important;
+  border-bottom-right-radius: 8px !important;
+  border-top-left-radius: 0px !important;
+  border-top-right-radius: 8px !important;
+}
+
+.PageHeader {
+  color: white;
+  font-size: 17px;
+  background-color: #303260;
+  padding: 10px;
+  border-radius: 5px;
+  font-weight: 600;
+}
+
+.logout-icon {
+  border: 1px solid white;
+  padding: 10px;
+  border-radius: 50%;
+}
+
+.top-35 {
+  top: 35% !important;
+}
+
+/* loadingbar css */
+.progressbarClass.CustomProgressbar>div {
+  background: repeating-linear-gradient(-45deg, #303260, #303260 10px, #8B98B1 10px, #8B98B1 20px) !important;
+  animation: progressAnimation 3s linear infinite;
+}
+
+@keyframes progressAnimation {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 20px 0;
+  }
+}
+
+.progressbarClass {
+  position: unset !important;
+  height: 11px !important;
+  background: transparent !important;
+  z-index: 2147483647 !important;
+  width: 100%;
+  border-radius: 6px !important;
+  box-shadow: none !important;
+}
+
+.progressbarClass>div>div {
+  box-shadow: none !important;
+  width: 0 !important;
+}
+
+.grecaptcha-badge {
+  bottom: 0px !important;
 }

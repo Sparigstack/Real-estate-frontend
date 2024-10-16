@@ -7,92 +7,66 @@
         "submenu": []
     },
     {
-        "path": "/property",
-        "imageKey": "propertyIcon",
-        "altText": "property",
-        "label": "Property",
+        "path": "/sales",
+        "imageKey": "salesIcon",
+        "altText": "Sales",
+        "label": "Sales",
         "submenu": [
             {
-                "path": "/add-property",
-                "imageKey": "addproperties",
-                "altText": "Add Property",
-                "label": "Add Property"
-            },
-            {
-                "path": "/commercial-view",
-                "imageKey": "commercial",
-                "altText": "Commercial",
-                "label": "Commercial"
-            },
-            {
-                "path": "/residential",
-                "imageKey": "residential",
-                "altText": "Residential",
-                "label": "Residential"
+                "path": "/testing",
+                "imageKey": "customersIcon",
+                "altText": "Testing",
+                "label": "Testing"
             }
         ]
     },
     {
-        "path": "/living-style",
-        "imageKey": "livingStyle",
-        "altText": "living-style",
-        "label": "Living Style",
+        "path": "/inventory",
+        "imageKey": "inventoryIcon",
+        "altText": "Inventory",
+        "label": "Inventory",
         "submenu": []
     },
     {
         "path": "/lead-management",
-        "imageKey": "leadManagement",
-        "altText": "lead-management",
+        "imageKey": "leadIcon",
+        "altText": "Lead Management",
         "label": "Lead Management",
         "submenu": []
     },
     {
-        "path": "/educational-guideline",
-        "imageKey": "educationalGuideline",
-        "altText": "educational-guideline",
-        "label": "Educational Guideline",
+        "path": "/labour",
+        "imageKey": "labourIcon",
+        "altText": "Labour",
+        "label": "Labour",
         "submenu": []
     },
     {
-        "path": "/architectural-sketches",
-        "imageKey": "architecturalSketches",
-        "altText": "architectural-sketches",
-        "label": "Architectural Sketches",
-        "submenu": []
-    },
-    {
-        "path": "/task",
-        "imageKey": "task",
-        "altText": "task",
-        "label": "Task",
+        "path": "/rera-compliance",
+        "imageKey": "reracomplianceIcon",
+        "altText": "Rera Compliance",
+        "label": "Rera Compliance",
         "submenu": []
     },
     {
         "path": "/files",
-        "imageKey": "files",
-        "altText": "files",
+        "imageKey": "filesIcon",
+        "altText": "Files",
         "label": "Files",
         "submenu": []
     },
     {
-        "path": "/financial-insights",
-        "imageKey": "financialInsights",
-        "altText": "financial-insights",
-        "label": "Financial Insights",
+        "path": "/timeline",
+        "imageKey": "timelineIcon",
+        "altText": "Timeline",
+        "label": "Timeline",
         "submenu": []
     },
     {
-        "path": "/settings",
-        "imageKey": "settings",
-        "altText": "settings",
-        "label": "Settings",
-        "submenu": []
-    },
-    {
-        "path": "/account",
-        "imageKey": "account",
-        "altText": "account",
-        "label": "Account",
+        "path": "/customers",
+        "imageKey": "customersIcon",
+        "altText": "Customers",
+        "label": "Customers",
         "submenu": []
     }
 ]
