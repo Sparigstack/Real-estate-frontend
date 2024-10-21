@@ -1,0 +1,27 @@
+.welcomediv {
+    position: absolute;
+    transform: translate(40%, 70%);
+    text-align: center;
+    color: white;
+}
+
+.greyBox {
+    background: rgba(255, 255, 255, 0.85);
+    color: black;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    flex-wrap: wrap;
+    border-radius: 4px;
+}
+
+.addwingsBox {
+    background: #03053D;
+    border-radius: 5px;
+}
+
+.sales-legends {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}

@@ -15,6 +15,9 @@ const AllLeads = lazy(() => import('../pages/Lead-Management/AllLeads'));
 const LeadSettingIndex = lazy(() => import('../pages/LeadSetting'));
 const UploadCsv = lazy(() => import('../pages/Lead-Management/UploadCsv'));
 const RecentLeads = lazy(() => import('../pages/Lead-Management/RecentLeads'));
+const SalesIndex = lazy(() => import('../pages/Sales'));
+const AllWings = lazy(() => import('../pages/Sales/AllWings'));
+const Welcome = lazy(() => import('../pages/Sales/Welcome'));
 
 export default function Approutes() {
   const { authToken } = useAuth();
@@ -35,11 +38,19 @@ export default function Approutes() {
               <Route element={<LayoutWrapper />}>
                 <Route path="/" element={<Dashboard />} />
                 <Route path="dashboard" element={<Dashboard />} />
+
+                {/* leads pages */}
                 <Route path="recent-leads" element={<RecentLeads />} />
                 <Route path="all-leads" element={<AllLeads />} />
                 <Route path="lead-setting" element={<LeadSettingIndex />} />
                 <Route path="upload-csv" element={<UploadCsv />} />
                 <Route path="rest-api" element={<RestApi />} />
+
+                {/* sales pages */}
+                <Route path="sales" element={<SalesIndex />} />
+                <Route path="add-wings" element={<Welcome />} />
+                <Route path="all-wings" element={<AllWings />} />
+
                 <Route path="*" element={<PageNotFound />} />
               </Route>
             )}
