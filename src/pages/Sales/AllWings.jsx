@@ -4,6 +4,8 @@ import useProperty from '../../hooks/useProperty';
 import Images from '../../utils/Images';
 import { useNavigate } from 'react-router-dom';
 import Loader from '../../components/loader/Loader';
+import AddFloorsUnits from './AddFloorsUnits';
+import AllFloorsUnits from './AllFloorsUnits';
 
 export default function AllWings() {
     const [loading, setLoading] = useState(false);
@@ -33,6 +35,7 @@ export default function AllWings() {
                         wingsArray: responseRs?.wings
                     })
                     setActiveWingId(responseRs?.wings[0]?.wing_id);
+                    getFloorsUnits(responseRs?.wings[0]?.wing_id);
                 }
             }
             catch (error) {
@@ -43,27 +46,24 @@ export default function AllWings() {
         getAllWings();
 
     }, []);
-    // useEffect(() => {
-    //     const getFloorsUnits = async () => {
-    //         try {
-    //             setLoading(true);
-    //             const result = await getAPIAuthKey(`/get-property-wings-basic-details/${schemeId}&${activeWingId}`);
-    //             if (!result || result == "") {
-    //                 alert('Something went wrong');
-    //             }
-    //             else {
-    //                 const responseRs = JSON.parse(result);
-    //                 setFloorUnitDetails(responseRs)
-    //                 setLoading(false);
-    //             }
-    //         }
-    //         catch (error) {
-    //             setLoading(false);
-    //             console.error(error);
-    //         }
-    //     }
-    //     getFloorsUnits();
-    // }, [activeWingId]);
+    const getFloorsUnits = async (wingid) => {
+        try {
+            setLoading(true);
+            const result = await getAPIAuthKey(`/get-wings-basic-details/${wingid}`);
+            if (!result || result == "") {
+                alert('Something went wrong');
+            }
+            else {
+                const responseRs = JSON.parse(result);
+                setFloorUnitDetails(responseRs)
+                setLoading(false);
+            }
+        }
+        catch (error) {
+            setLoading(false);
+            console.error(error);
+        }
+    }
     return (
         <div>
             {loading && <Loader runningcheck={loading} />}
@@ -81,20 +81,20 @@ export default function AllWings() {
                         </label>
                     </div>
                     <div className='col-md-8 d-flex fw-normal align-items-center justify-content-end font-12'>
-                        <div className='d-flex align-items-center'>
-                            <div className="sales-legends me-2" style={{ background: "white" }}></div>
+                        <div className='d-flex align-items-center pe-3'>
+                            <div className="sales-legends me-1" style={{ background: "white" }}></div>
                             <label>Available</label>
                         </div>
-                        <div className='d-flex align-items-center px-1'>
-                            <div className="sales-legends me-2" style={{ background: "#E3F6EC", border: "1.5px solid #08A95C" }}></div>
+                        <div className='d-flex align-items-center pe-3'>
+                            <div className="sales-legends me-1" style={{ background: "#E3F6EC", border: "1.5px solid #08A95C" }}></div>
                             <label>Booked(Allotted)</label>
                         </div>
-                        <div className='d-flex align-items-center px-1'>
-                            <div className="sales-legends me-2" style={{ background: "#E4EAF6", border: "1.5px solid #0055FF" }}></div>
+                        <div className='d-flex align-items-center pe-3'>
+                            <div className="sales-legends me-1" style={{ background: "#E4EAF6", border: "1.5px solid #0055FF" }}></div>
                             <label>Interested Leads</label>
                         </div>
-                        <div className='d-flex align-items-center px-1'>
-                            <div className="sales-legends me-2" style={{ background: "#FFF8E1", border: "1.5px solid #FF8C01" }}></div>
+                        <div className='d-flex align-items-center'>
+                            <div className="sales-legends me-1" style={{ background: "#FFF8E1", border: "1.5px solid #FF8C01" }}></div>
                             <label>Booked(Payment inprogress)</label>
                         </div>
                     </div>
@@ -102,10 +102,11 @@ export default function AllWings() {
                 <div className='row pt-3'>
                     {WingDetails?.wingsArray?.map((item, index) => {
                         return <div className='col-md-2' key={index} >
-                            <div className={`${activeWingId == item.wing_id ? 'subPropertyTypeActive' : 'subPropertyTypesBtn'} cursor-pointer text-center`} style={{ height: "100%" }} onClick={(e) => setActiveWingId(item.wing_id)}>
+                            <div className={`${activeWingId == item.wing_id ? 'subPropertyTypeActive' : 'subPropertyTypesBtn'} cursor-pointer text-center`}
+                                style={{ height: "100%" }} onClick={(e) => { setActiveWingId(item.wing_id); getFloorsUnits(item.wing_id) }}>
                                 <b>{item.wing_name}</b>
-                                <div className='fw-normal pt-1'>Total Floors : {item.total_floors}</div>
-                                <div className='fw-normal'>Total Units : {item.total_units}</div>
+                                <div className='fw-normal font-13 pt-1'>Total Floors : {item.total_floors}</div>
+                                <div className='fw-normal font-13'>Total Units : {item.total_units}</div>
                             </div>
                         </div>
                     })}
@@ -118,11 +119,12 @@ export default function AllWings() {
                     </div>
                 </div>
             </div>
-            {FloorUnitDetails?.length > 0 ?
-                <div className='fontwhite'>Hello</div>
-                :
-                <></>
-                // <AddFloorsUnits />
+            {FloorUnitDetails?.floor_details_count > 0 ?
+                <AllFloorsUnits FloorUnitDetails={FloorUnitDetails} activeWingId={activeWingId} />
+                : FloorUnitDetails?.floor_details_count == 0 ?
+                    <AddFloorsUnits activeWingId={activeWingId} setLoading={setLoading} getFloorsUnits={getFloorsUnits} />
+                    :
+                    null
             }
         </div>
     )

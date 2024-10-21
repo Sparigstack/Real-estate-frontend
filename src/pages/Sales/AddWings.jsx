@@ -98,7 +98,7 @@ export default function AddWings({ setloading }) {
                         <Form className='pt-4 mt-2 property-form' >
                             <div className="row">
                                 <div className='col-md-6 position-relative mb-4'>
-                                    <label className='custom-label'>How many wings in this scheme?*<span className='text-danger'>*</span></label>
+                                    <label className='custom-label'>How many wings in this scheme?<span className='text-danger'>*</span></label>
                                     <Field type="number" className="customInput" name='totalWings' autoComplete='off'
                                         onChange={(e) => {
                                             const value = e.target.value;
@@ -112,7 +112,7 @@ export default function AddWings({ setloading }) {
                                 {values.wingsArray?.map((item, index) => (
                                     <div key={index} className='col-md-3 position-relative mb-4'>
                                         <label className='custom-label'>
-                                            Wing {index + 1} Name*<span className='text-danger'>*</span>
+                                            Wing {index + 1} Name<span className='text-danger'>*</span>
                                         </label>
                                         <Field
                                             type="text"

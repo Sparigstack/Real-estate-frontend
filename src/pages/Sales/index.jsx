@@ -12,6 +12,6 @@ export default function SalesIndex() {
             navigate('/add-wings')
         }
 
-    }, []);
+    }, [navigate]);
     return null;
 }

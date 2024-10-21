@@ -26,6 +26,11 @@ const Images = {
     eye_slash: new URL('../assets/images/eye_slash.svg', import.meta.url).href,
     eye: new URL('../assets/images/eye.svg', import.meta.url).href,
     share: new URL('../assets/images/share.svg', import.meta.url).href,
+    bulk_edit: new URL('../assets/images/bulk_edit.svg', import.meta.url).href,
+    delete_icon: new URL('../assets/images/delete_icon.svg', import.meta.url).href,
+    grey_edit: new URL('../assets/images/grey_edit.svg', import.meta.url).href,
+    grey_delete: new URL('../assets/images/grey_delete.svg', import.meta.url).href,
+    grey_info: new URL('../assets/images/grey_info.svg', import.meta.url).href,
 
     dashboardIcon: new URL('../assets/images/sidemenu/dashboard-icon.svg', import.meta.url).href,
     salesIcon: new URL('../assets/images/sidemenu/sales.svg', import.meta.url).href,

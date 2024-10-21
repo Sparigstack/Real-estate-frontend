@@ -35,18 +35,19 @@ export default function TopMenu() {
             <div className="topmenu-wrapper">
                 <label>
                     <label className={'fontwhite mb-0 d-flex align-items-center'}>
-                        <label className='fw-semibold font-22'>
-                            <img src={Images.scheme} className='img-fluid pe-2' />
+                        <label className='fw-semibold font-16'>
+                            <img src={Images.scheme} className='img-fluid bigiconsize pe-2' />
                             {propertyDetails.name}
                         </label>
                         <label className='ps-2 mt-1 font-13 d-flex align-items-center'>
                             <img src={Images.location} className='img-fluid' style={{ height: "15px" }} />
-                            {propertyDetails.city_name}
+                            <label className='graycolor'>{propertyDetails.city_name}</label>
                         </label>
                     </label>
                 </label>
                 <div>
-                    <label className='fontwhite pe-3 cursor-pointer' onClick={handleSwitchProperty}><FontAwesomeIcon icon={faBuilding} className='pe-2' />Switch Scheme</label>
+                    <label className='fontwhite fw-semibold font-12 pe-3 cursor-pointer' onClick={handleSwitchProperty}>
+                        <img src={Images.scheme} className='img-fluid iconsize pe-2' />My Schemes</label>
                     <button className="profileOpen" onClick={toggleProfile}>
                         {userDetails?.userName?.charAt(0).toUpperCase()}
                     </button>
