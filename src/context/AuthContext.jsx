@@ -5,11 +5,12 @@ import useApiService from '../hooks/useApiService';
 import AlertComp from '../components/alerts/AlertComp';
 import useProperty from '../hooks/useProperty';
 import Loader from '../components/loader/Loader';
+import { useNavigate } from 'react-router-dom';
 
 const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
-    const { setSchemeId } = useProperty();
+    const navigate = useNavigate();
     const [authToken, setAuthToken] = useState(Cookies.get('authToken') || null);
     const [userId, setUserId] = useState(Cookies.get('userId') || null);
     const [loading, setloading] = useState(false);
@@ -66,7 +67,7 @@ export const AuthProvider = ({ children }) => {
                 setloading(false);
                 setAuthToken(null);
                 setUserId(null);
-                setSchemeId(null);
+                navigate("/");
             }, 2000);
 
         }

@@ -247,3 +247,7 @@ select {
 .grecaptcha-badge {
   bottom: 0px !important;
 }
+
+.light-grey-color {
+  color: #E4E4E4;
+}

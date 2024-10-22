@@ -15,9 +15,8 @@ const AllLeads = lazy(() => import('../pages/Lead-Management/AllLeads'));
 const LeadSettingIndex = lazy(() => import('../pages/LeadSetting'));
 const UploadCsv = lazy(() => import('../pages/Lead-Management/UploadCsv'));
 const RecentLeads = lazy(() => import('../pages/Lead-Management/RecentLeads'));
-const SalesIndex = lazy(() => import('../pages/Sales'));
-const AllWings = lazy(() => import('../pages/Sales/AllWings'));
-const Welcome = lazy(() => import('../pages/Sales/Welcome'));
+const Sales = lazy(() => import('../pages/Sales/Sales'));
+const AddWings = lazy(() => import('../pages/Sales/AddWings'));
 
 export default function Approutes() {
   const { authToken } = useAuth();
@@ -47,9 +46,8 @@ export default function Approutes() {
                 <Route path="rest-api" element={<RestApi />} />
 
                 {/* sales pages */}
-                <Route path="sales" element={<SalesIndex />} />
-                <Route path="add-wings" element={<Welcome />} />
-                <Route path="all-wings" element={<AllWings />} />
+                <Route path="sales" element={<Sales />} />
+                <Route path="add-wings" element={<AddWings />} />
 
                 <Route path="*" element={<PageNotFound />} />
               </Route>

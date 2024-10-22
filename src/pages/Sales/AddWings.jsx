@@ -6,8 +6,10 @@ import useProperty from '../../hooks/useProperty';
 import useApiService from '../../hooks/useApiService';
 import AlertComp from '../../components/alerts/AlertComp';
 import { useNavigate } from 'react-router-dom';
+import Loader from '../../components/loader/Loader';
 
-export default function AddWings({ setloading }) {
+export default function AddWings() {
+    const [loading, setloading] = useState(false);
     const navigate = useNavigate();
     const { schemeId } = useProperty();
     const { postAPIAuthKey } = useApiService();
@@ -35,7 +37,7 @@ export default function AddWings({ setloading }) {
                     setTimeout(() => {
                         setloading(false);
                         setShowAlerts(<AlertComp show={false} />);
-                        navigate("/all-wings");
+                        navigate("/sales");
                     }, 2500);
                 }
                 else {
@@ -80,7 +82,14 @@ export default function AddWings({ setloading }) {
     return (
         <div>
             {showAlerts}
-            <div className='p-5 pt-3'>
+            {loading && <Loader runningcheck={loading} />}
+            <div className='PageHeader'>
+                <div className='align-items-center'>
+                    <label className='graycolor cursor-pointer' onClick={(e) => navigate('/sales')}>
+                        Sales /</label> Add Wings
+                </div>
+            </div>
+            <div className='p-5  text-center m-auto'>
                 <div className='row align-items-center'>
                     <h4 className='heading mb-0'>Add Wings Details!</h4>
                     <p className='font-16 text-white fw-normal'>Heyy, please fill all the informations to proceed further.</p>
@@ -95,9 +104,9 @@ export default function AddWings({ setloading }) {
                         submitWingsDetails(values);
                     }}>
                     {({ values, setFieldValue }) => (
-                        <Form className='pt-4 mt-2 property-form' >
+                        <Form className='pt-4 mt-2 property-form col-md-6 offset-md-3' >
                             <div className="row">
-                                <div className='col-md-6 position-relative mb-4'>
+                                <div className='col-md-12 position-relative mb-4'>
                                     <label className='custom-label'>How many wings in this scheme?<span className='text-danger'>*</span></label>
                                     <Field type="number" className="customInput" name='totalWings' autoComplete='off'
                                         onChange={(e) => {
@@ -110,7 +119,7 @@ export default function AddWings({ setloading }) {
                             </div>
                             <div className='row'>
                                 {values.wingsArray?.map((item, index) => (
-                                    <div key={index} className='col-md-3 position-relative mb-4'>
+                                    <div key={index} className='col-md-4 position-relative mb-4'>
                                         <label className='custom-label'>
                                             Wing {index + 1} Name<span className='text-danger'>*</span>
                                         </label>

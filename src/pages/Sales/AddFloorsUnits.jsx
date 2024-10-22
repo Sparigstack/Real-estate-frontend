@@ -5,8 +5,10 @@ import { FloorUnitsValidationSchema } from '../../utils/validations/FloorUnitsVa
 import useProperty from '../../hooks/useProperty';
 import useApiService from '../../hooks/useApiService';
 import AlertComp from '../../components/alerts/AlertComp';
+import Loader from '../../components/loader/Loader';
 
-export default function AddFloorsUnits({ activeWingId, setLoading, getFloorsUnits }) {
+export default function AddFloorsUnits({ activeWingId, getAllWings }) {
+    const [loading, setLoading] = useState(false);
     const { schemeId } = useProperty();
     const [showAlerts, setShowAlerts] = useState(false);
     const { postAPIAuthKey } = useApiService();
@@ -38,7 +40,7 @@ export default function AddFloorsUnits({ activeWingId, setLoading, getFloorsUnit
                     setTimeout(() => {
                         setLoading(false);
                         setShowAlerts(<AlertComp show={false} />);
-                        getFloorsUnits(activeWingId)
+                        getAllWings()
                     }, 2500);
                 }
                 else {
@@ -56,6 +58,7 @@ export default function AddFloorsUnits({ activeWingId, setLoading, getFloorsUnit
     }
     return (
         <>
+            {loading && <Loader runningcheck={loading} />}
             {showAlerts}
             <div className='col-md-8 offset-md-2 p-5 pt-3'>
                 <div className='row align-items-center'>
@@ -73,8 +76,8 @@ export default function AddFloorsUnits({ activeWingId, setLoading, getFloorsUnit
                     {({ values, setFieldValue, handleSubmit }) => (
                         <Form className='pt-2 mt-2 property-form' onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
                             <div className="row">
-                                <div className='col-md-6 position-relative mb-4'>
-                                    <label className='custom-label'>How many floors in A wing?<span className='text-danger'>*</span></label>
+                                <div className='col-md-7 position-relative mb-4'>
+                                    <label className='custom-label'>How many floors would you like to add?<span className='text-danger'>*</span></label>
                                     <Field type="number" className="customInput" name='totalFloors' autoComplete='off'
                                         onChange={(e) => {
                                             const totalFloors = parseInt(e.target.value || 0, 10);
@@ -162,7 +165,7 @@ export default function AddFloorsUnits({ activeWingId, setLoading, getFloorsUnit
                                     </div>
                                 )}
                             </div>
-                            <div className='pt-3 text-center'>
+                            <div className='pt-3'>
                                 <button type="submit" className='otpBtn'>Save</button>
                             </div>
                         </Form>

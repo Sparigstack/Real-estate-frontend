@@ -16,8 +16,10 @@ export const PropertyProvider = ({ children }) => {
             getPropertyDetails();
         } else {
             Cookies.remove('schemeId');
+            setSchemeId(null);
         }
     }, [schemeId]);
+
 
     const getPropertyDetails = async () => {
         try {
@@ -38,6 +40,7 @@ export const PropertyProvider = ({ children }) => {
         Cookies.remove('schemeId');
         navigate('/schemes');
     };
+
     return (
         <PropertyContext.Provider value={{ schemeId, switchProperty, handleSwitchProperty, propertyDetails }}>
             {children}

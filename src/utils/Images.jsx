@@ -31,6 +31,7 @@ const Images = {
     grey_edit: new URL('../assets/images/grey_edit.svg', import.meta.url).href,
     grey_delete: new URL('../assets/images/grey_delete.svg', import.meta.url).href,
     grey_info: new URL('../assets/images/grey_info.svg', import.meta.url).href,
+    redInfo: new URL('../assets/images/redInfo.svg', import.meta.url).href,
 
     dashboardIcon: new URL('../assets/images/sidemenu/dashboard-icon.svg', import.meta.url).href,
     salesIcon: new URL('../assets/images/sidemenu/sales.svg', import.meta.url).href,

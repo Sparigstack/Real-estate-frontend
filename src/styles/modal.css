@@ -20,5 +20,14 @@
 .modal-header {
     padding: 10px 20px !important;
     background: #F7F7F7;
+}
 
+.RedSuccessBtn {
+    border: none;
+    font-size: 14px;
+    color: white;
+    background: #ff7076;
+    border-radius: 5px;
+    padding: 7px 30px;
+    border: 1px solid #ff7076
 }
