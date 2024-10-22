@@ -361,9 +361,9 @@ export default function AllFloorsUnits({ FloorUnitDetails, activeWingId, getAllW
                             <button className='SuccessBtn'>{FloorUnitDetails.name} Wing</button>
                         </div>
                     </div>
-                    <div className='col-md-4 buildingbase mb-5' ></div>
-                    <div className='col-md-4' style={{ borderTop: "8px solid #303260" }}></div>
-                    <div className='col-md-4 buildingbase mb-5'></div>
+                    <div className='col-md-3 buildingbase mb-5' ></div>
+                    <div className='col-md-6' style={{ borderTop: "8px solid #303260" }}></div>
+                    <div className='col-md-3 buildingbase mb-5'></div>
                 </div>
             </div>
 
