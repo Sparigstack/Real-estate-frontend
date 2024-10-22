@@ -24,10 +24,22 @@
 
 .RedSuccessBtn {
     border: none;
-    font-size: 14px;
+    font-size: 13px;
     color: white;
-    background: #ff7076;
+    background: #EA4040;
     border-radius: 5px;
     padding: 7px 30px;
-    border: 1px solid #ff7076
+    border: 1px solid #EA4040;
+    font-weight: 600;
+}
+
+.dangerCancelBtn {
+    background: #E8E8E8;
+    border: none;
+    font-size: 14px;
+    color: black;
+    font-weight: 600;
+    border-radius: 5px;
+    padding: 7px 30px;
+    border: 1px solid #E8E8E8
 }

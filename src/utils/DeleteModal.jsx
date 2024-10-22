@@ -6,11 +6,11 @@ export default function DeleteModal(props) {
     return (
         <Modal show={props.isShow} size="md">
             <div className='p-5 text-center'>
-                <img src={Images.redInfo} className='pb-3' />
-                <h4>{props.title}</h4>
-                <div className='col-12 text-center py-3'>
-                    <button className="CancelBtn me-3" onClick={(e) => props.Cancel()}>Cancel</button>
-                    <button className="RedSuccessBtn" onClick={props.handleSuccess}>Confirm</button>
+                <img src={Images.red_info} className='pb-3' style={{ height: "80px" }} />
+                <h4 className='fw-semibold'>{props.title}</h4>
+                <div className='col-12 text-center pt-3'>
+                    <button className="dangerCancelBtn me-3" onClick={(e) => props.Cancel()}>{props.canceltext}</button>
+                    <button className="RedSuccessBtn" onClick={props.handleSuccess}>{props.successtext}</button>
                 </div>
             </div>
         </Modal>

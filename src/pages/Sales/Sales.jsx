@@ -9,6 +9,7 @@ import AllFloorsUnits from './AllFloorsUnits';
 
 export default function Sales() {
     const [ShowAddFloordiv, setShowAddFloordiv] = useState(false);
+    const [bulkEditFlag, setbulkEditFlag] = useState(0);
     const [loading, setLoading] = useState(false);
     const { getAPIAuthKey } = useApiService();
     const { schemeId } = useProperty();
@@ -73,46 +74,67 @@ export default function Sales() {
             }
         }
     }
+
+    const handleBulkEdit = () => {
+        setbulkEditFlag(1);
+        const updatedFloors = FloorUnitDetails.floor_details.map(floor => {
+            const updatedUnits = floor.unit_details.map(unit => ({
+                ...unit,
+                flag: 1
+            }));
+            return {
+                ...floor,
+                unit_details: updatedUnits
+            };
+        });
+
+        setFloorUnitDetails(prevDetails => ({
+            ...prevDetails,
+            floor_details: updatedFloors
+        }));
+    };
     return (
         <div>
             {loading && <Loader runningcheck={loading} />}
             <div className='PageHeader'>
                 Sales
             </div>
-            <div className='PageHeader mt-3'>
-                <div className='row align-items-center'>
-                    <div className='col-md-12 font-15'>
-                        <label className='ps-2 light-grey-color'>
-                            Total Wings : <b>{WingDetails.totalWings}</b>
-                        </label>
-                        <label className='ps-5 light-grey-color'>
-                            Total Units : <b>{WingDetails.totalUnits}</b>
-                        </label>
-                    </div>
+            {WingDetails.totalWings > 0 && (
+                <div className='PageHeader mt-3'>
+                    <div className='row align-items-center'>
+                        <div className='col-md-12 font-15'>
+                            <label className='ps-2 light-grey-color'>
+                                Total Wings : <b>{WingDetails.totalWings}</b>
+                            </label>
+                            <label className='ps-5 light-grey-color'>
+                                Total Units : <b>{WingDetails.totalUnits}</b>
+                            </label>
+                        </div>
 
-                </div>
-                <div className='row pt-2'>
-                    {WingDetails?.wingsArray?.map((item, index) => {
-                        return <div className='col-md-2' key={index} >
-                            <div className={`${activeWingId == item.wing_id ? 'subPropertyTypeActive' : 'subPropertyTypesBtn'} cursor-pointer text-center`}
-                                style={{ height: "100%" }} onClick={(e) => { setActiveWingId(item.wing_id); getFloorsUnits(item.wing_id) }}>
-                                <b>{item.wing_name}</b>
-                                <div className='fw-normal  font-13 pt-1'>Total Floors : {item.total_floors}</div>
-                                <div className='fw-normal font-13'>Total Units : {item.total_units}</div>
+                    </div>
+                    <div className='row pt-2'>
+                        {WingDetails?.wingsArray?.map((item, index) => {
+                            return <div className='col-md-2' key={index} >
+                                <div className={`${activeWingId == item.wing_id ? 'subPropertyTypeActive' : 'subPropertyTypesBtn'} cursor-pointer text-center`}
+                                    style={{ height: "100%" }} onClick={(e) => { setActiveWingId(item.wing_id); getFloorsUnits(item.wing_id) }}>
+                                    <b>{item.wing_name}</b>
+                                    <div className='fw-normal  font-13 pt-1'>Total Floors : {item.total_floors}</div>
+                                    <div className='fw-normal font-13'>Total Units : {item.total_units}</div>
+                                </div>
+                            </div>
+                        })}
+                        <div className='col-md-2' >
+                            <div className='addwingsBox text-center p-3 font-13 cursor-pointer' style={{ height: "100%" }} onClick={(e) => navigate('/add-wings')}>
+                                <img src={Images.addicon} alt="commercial" className='py-2' />
+                                <br />
+                                Add New Wing
                             </div>
                         </div>
-                    })}
-                    <div className='col-md-2' >
-                        <div className='addwingsBox text-center p-3 font-13 cursor-pointer' style={{ height: "100%" }} onClick={(e) => navigate('/add-wings')}>
-                            <img src={Images.addicon} alt="commercial" className='py-2' />
-                            <br />
-                            Add New Wing
-                        </div>
                     </div>
                 </div>
-            </div>
+            )}
             {ShowAddFloordiv ?
-                <AddFloorsUnits activeWingId={activeWingId} getAllWings={getAllWings} />
+                <AddFloorsUnits activeWingId={activeWingId} getAllWings={getAllWings} setShowAddFloordiv={setShowAddFloordiv} />
                 :
                 <>
                     {FloorUnitDetails?.floor_details_count > 0 ?
@@ -143,7 +165,8 @@ export default function Sales() {
                                             <img src={Images.addicon} className='pe-2 iconsize' />
                                             <label className='cursor-pointer'>Add Floors</label>
                                         </div>
-                                        <div className='d-flex cursor-pointer align-items-center  ps-3' title='Bulk Edit Units'>
+                                        <div className='d-flex cursor-pointer align-items-center  ps-3' title='Bulk Edit Units'
+                                            onClick={handleBulkEdit}>
                                             <img src={Images.bulk_edit} className='pe-2 iconsize' />
                                             <label className='cursor-pointer'>Bulk Edit</label>
                                         </div>
@@ -153,10 +176,12 @@ export default function Sales() {
 
                             </div>
                             <AllFloorsUnits FloorUnitDetails={FloorUnitDetails} activeWingId={activeWingId}
-                                getAllWings={getAllWings} />
+                                getAllWings={getAllWings} setFloorUnitDetails={setFloorUnitDetails} bulkEditFlag={bulkEditFlag}
+                                setbulkEditFlag={setbulkEditFlag} />
                         </>
                         : FloorUnitDetails?.floor_details_count == 0 ?
-                            <AddFloorsUnits activeWingId={activeWingId} getAllWings={getAllWings} />
+                            <AddFloorsUnits activeWingId={activeWingId} getAllWings={getAllWings} setShowAddFloordiv={setShowAddFloordiv}
+                            />
                             :
                             <div className='fontwhite text-center pt-5'>
                                 <h1 className='fw-bold'>Welcome, to the RealEstate..!!</h1>

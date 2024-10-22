@@ -7,7 +7,7 @@ import useApiService from '../../hooks/useApiService';
 import AlertComp from '../../components/alerts/AlertComp';
 import Loader from '../../components/loader/Loader';
 
-export default function AddFloorsUnits({ activeWingId, getAllWings }) {
+export default function AddFloorsUnits({ activeWingId, getAllWings, setShowAddFloordiv }) {
     const [loading, setLoading] = useState(false);
     const { schemeId } = useProperty();
     const [showAlerts, setShowAlerts] = useState(false);
@@ -166,6 +166,7 @@ export default function AddFloorsUnits({ activeWingId, getAllWings }) {
                                 )}
                             </div>
                             <div className='pt-3'>
+                                <button type="btn" className='cancelBtn me-2' onClick={(e) => setShowAddFloordiv(false)}>Cancel</button>
                                 <button type="submit" className='otpBtn'>Save</button>
                             </div>
                         </Form>
