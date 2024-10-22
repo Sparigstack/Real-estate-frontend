@@ -142,11 +142,17 @@ export default function AllFloorsUnits({ FloorUnitDetails, activeWingId, getAllW
     };
 
     const handleInputChange = (floorId, unitId, field, value) => {
+        var firstindex = FloorUnitDetails.floor_details[totalFloors - 1].unit_details[0];
         const updatedFloors = FloorUnitDetails.floor_details.map(floor => {
             const updatedUnits = floor.unit_details.map(unit => {
-                if (unit.id === unitId) {
+                if (unitId == firstindex.id) {
                     return { ...unit, [field]: value };
+                } else {
+                    if (unit.id === unitId) {
+                        return { ...unit, [field]: value };
+                    }
                 }
+
                 return unit;
             });
             return { ...floor, unit_details: updatedUnits };
