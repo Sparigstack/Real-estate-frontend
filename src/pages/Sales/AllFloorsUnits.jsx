@@ -69,6 +69,7 @@ export default function AllFloorsUnits({ FloorUnitDetails, activeWingId, getAllW
                     setShowAlerts(<AlertComp show={true} variant="success" message={msg} />);
                     setFloorDeleteModal(false);
                     setUnitDeleteModal(false);
+                    setbulkEditFlag(0)
                     setTimeout(() => {
                         setloading(false);
                         setShowAlerts(<AlertComp show={false} />);
@@ -145,13 +146,16 @@ export default function AllFloorsUnits({ FloorUnitDetails, activeWingId, getAllW
         var firstindex = FloorUnitDetails.floor_details[totalFloors - 1].unit_details[0];
         const updatedFloors = FloorUnitDetails.floor_details.map(floor => {
             const updatedUnits = floor.unit_details.map(unit => {
-                if (unitId == firstindex.id) {
-                    return { ...unit, [field]: value };
+                if (bulkEditFlag == 1) {
+                    if (unitId == firstindex.id) {
+                        return { ...unit, [field]: value };
+                    }
                 } else {
                     if (unit.id === unitId) {
                         return { ...unit, [field]: value };
                     }
                 }
+
 
                 return unit;
             });
@@ -237,6 +241,7 @@ export default function AllFloorsUnits({ FloorUnitDetails, activeWingId, getAllW
                 const responseRs = JSON.parse(result);
                 if (responseRs.status == 'success') {
                     setShowAlerts(<AlertComp show={true} variant="success" message={"Unit Added Successfully"} />);
+                    setbulkEditFlag(0)
                     setTimeout(() => {
                         setloading(false);
                         setShowAlerts(<AlertComp show={false} />);
@@ -263,7 +268,7 @@ export default function AllFloorsUnits({ FloorUnitDetails, activeWingId, getAllW
             {loading && <Loader runningcheck={loading} />}
             <div className='container px-4'>
                 <div className='row'>
-                    <div className='buildingimage pb-5 pt-4 px-3 h-100'>
+                    <div className='buildingimage py-4 px-3 h-100'>
                         {bulkEditFlag == 1 &&
                             <div className='col-12 text-center '>
                                 <button className='greyCancelbtn me-2'
@@ -272,12 +277,12 @@ export default function AllFloorsUnits({ FloorUnitDetails, activeWingId, getAllW
                             </div>
                         }
                         <div className='row align-items-center py-2'>
-                            <div className='col-9 offset-md-1'>
-                                <div className="progress" style={{ height: "10px" }}>
+                            <div className='col-11'>
+                                <div className="progress" style={{ height: "7px" }}>
                                     <div className="progress-bar" role="progressbar" style={{ width: `${progressPercentage}%` }} aria-valuemin="0" aria-valuemax="100"></div>
                                 </div>
                             </div>
-                            <div className='col-2 pe-5 d-flex justify-content-end'>
+                            <div className='col-1 d-flex justify-content-end'>
                                 <FontAwesomeIcon icon={faChevronLeft} onClick={handlePrev}
                                     className={`scroll-icon me-3 ${currentIndex > 0 ? 'activescrollicon' : 'disabledscrollicon'}`} />
                                 <FontAwesomeIcon icon={faChevronRight} onClick={handleNext}
@@ -289,13 +294,13 @@ export default function AllFloorsUnits({ FloorUnitDetails, activeWingId, getAllW
                                 const endUnit = item.unit_details.length - 1;
                                 const floorNumber = totalFloors - index;
                                 return <div className='row' key={index}>
-                                    <div className='col-md-2 row align-items-center'>
+                                    <div className='col-md-2 pe-0 row align-items-center'>
                                         <div className='col-2'>
                                             <img src={Images.add_unit} className='cursor-pointer iconsize' title='Add Unit in this floor' onClick={(e) => handleAddUnit(item.id)} />
-                                            <img src={Images.delete_icon} className='cursor-pointer iconsize'
-                                                title='Delete floor' onClick={(e) => { setFloorDeleteModal(true); setActionDetails({ ...ActionDetails, floorid: item.id, actionId: 3 }) }} />
+                                            {/* <img src={Images.delete_icon} className='cursor-pointer iconsize'
+                                                title='Delete floor' onClick={(e) => { setFloorDeleteModal(true); setActionDetails({ ...ActionDetails, floorid: item.id, actionId: 3 }) }} /> */}
                                         </div>
-                                        <div className='col-9 ps-4'>
+                                        <div className='col-9 ps-3'>
                                             <div className='fw-bold'>Floor {floorNumber}</div>
                                             <div className='greyColor font-12'>({item.unit_details[0]?.name} to {item.unit_details[endUnit]?.name})</div>
                                         </div>
@@ -305,14 +310,14 @@ export default function AllFloorsUnits({ FloorUnitDetails, activeWingId, getAllW
                                             <div className="d-flex flex-wrap">
                                                 {item.unit_details?.slice(currentIndex, currentIndex + itemsPerPage).map((units, unitindex) => {
                                                     return <div className='col-md-3' key={unitindex}>
-                                                        <div className='units_box row p-2 m-2'>
+                                                        <div className='units_box row p-1 m-2'>
                                                             <div className='col-md-10'>
                                                                 <div className='font-14 '>{units.name}</div>
                                                                 <div className='font-12 pt-2 greyColor'>Unit Size :
                                                                     {units?.flag == 1 ?
                                                                         <div className="input-group">
                                                                             <input type="number" min={0} className="form-control p-0 px-1 font-13" name='sqft' autoComplete='off'
-                                                                                value={units.square_feet || 0} onChange={(e) => handleInputChange(item.id, units.id, 'square_feet', e.target.value)} />
+                                                                                value={units.square_feet} onChange={(e) => handleInputChange(item.id, units.id, 'square_feet', e.target.value)} />
                                                                             <span className="input-group-text p-1">
                                                                                 <label className='font-12'>sqft</label>
                                                                             </span>
@@ -325,7 +330,7 @@ export default function AllFloorsUnits({ FloorUnitDetails, activeWingId, getAllW
                                                                     {units?.flag == 1 ?
                                                                         <div className="input-group">
                                                                             <input type="number" min={0} className="form-control p-0 px-1 font-13" name='price'
-                                                                                autoComplete='off' value={units.price || 0} onChange={(e) => handleInputChange(item.id, units.id, 'price', e.target.value)} />
+                                                                                autoComplete='off' value={units.price} onChange={(e) => handleInputChange(item.id, units.id, 'price', e.target.value)} />
                                                                             <span className="input-group-text">
                                                                                 <FontAwesomeIcon icon={faIndianRupeeSign} className='font-12' />
                                                                             </span>
@@ -342,9 +347,10 @@ export default function AllFloorsUnits({ FloorUnitDetails, activeWingId, getAllW
                                                                 <img src={units?.flag == 1 ? Images.white_edit : Images.grey_edit} className={`cursor-pointer ${units?.flag == 1 ? 'active_units_box' : 'units_box'} bigiconsize p-1`}
                                                                     title="Edit Unit"
                                                                     onClick={() => handleSingleUnitEdit(units.id, item.id, 1, units.price, units.square_feet)} />
-                                                                <img src={Images.grey_delete} className='cursor-pointer units_box bigiconsize p-1 my-1' title='Delete Unit'
+
+                                                                {/* <img src={Images.grey_delete} className='cursor-pointer units_box bigiconsize p-1 my-1' title='Delete Unit'
                                                                     onClick={(e) => { setUnitDeleteModal(true); setActionDetails({ ...ActionDetails, unitId: units.id, actionId: 2, floorid: item.id }) }} />
-                                                                <img src={Images.grey_info} className='cursor-pointer units_box bigiconsize p-1' title='View Info' />
+                                                                <img src={Images.grey_info} className='cursor-pointer units_box bigiconsize p-1' title='View Info' /> */}
                                                             </div>
                                                             {units?.flag == 1 && bulkEditFlag == 0 && (
                                                                 <div className='col-12 d-flex pt-2 justify-content-end'>
@@ -363,7 +369,7 @@ export default function AllFloorsUnits({ FloorUnitDetails, activeWingId, getAllW
                                 </div>
                             })}
                         </div>
-                        <div className='col-12 text-center pt-5'>
+                        <div className='col-12 text-center pt-3'>
                             <button className='SuccessBtn'>{FloorUnitDetails.name} Wing</button>
                         </div>
                     </div>

@@ -37,11 +37,11 @@ export default function TopMenu() {
                     <label className={'fontwhite mb-0 d-flex align-items-center'}>
                         <label className='fw-semibold font-16'>
                             <img src={Images.scheme} className='img-fluid bigiconsize pe-2' />
-                            {propertyDetails.name}
+                            <label>{propertyDetails.name}</label>
                         </label>
                         <label className='ps-2 mt-1 font-13 d-flex align-items-center'>
                             <img src={Images.location} className='img-fluid' style={{ height: "15px" }} />
-                            <label className='graycolor'>{propertyDetails.city_name}</label>
+                            <label className='graycolor ps-1'>{propertyDetails.city_name}</label>
                         </label>
                     </label>
                 </label>

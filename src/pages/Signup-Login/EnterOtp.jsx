@@ -185,7 +185,7 @@ export default function EnterOtp({ formData, setLoading, setShowAlerts }) {
                 </div>
             )}
             {!timeExpired && (
-                <div className='text-center mt-3 mb-4'>
+                <div className='text-center mt-3 mb-5'>
                     <span className='fw-light font-16'>Don't received code yet? <a className='fw-bold text-decoration-none cursor-pointer' onClick={handleResendOtp}>Resend Code</a></span>
                 </div>
             )}

@@ -33,7 +33,7 @@
         ]
     },
     {
-        "path": "/recent-leads",
+        "path": "/all-leads",
         "imageKey": "leadIcon",
         "altText": "Lead Management",
         "label": "Lead Management",

@@ -172,7 +172,7 @@ export default function AllLeads() {
             {loading && <Loader runningcheck={loading} />}
             <div className='PageHeader'>
                 <div className='row align-items-center'>
-                    <div className='col-6'><label className='graycolor cursor-pointer' onClick={(e) => navigate('/recent-leads')}>Recent Leads /</label> All Leads</div>
+                    <div className='col-6'> All Leads</div>
                     <div className='col-6 font-13 d-flex justify-content-end'>
                         <div className='fontwhite cursor-pointer px-2 d-flex align-items-center' onClick={(e) => {
                             setLeadPopup(true); setFormData({ ...formData, name: '', email: '', source: 0, budget: '', contactno: '', leadid: 0 });

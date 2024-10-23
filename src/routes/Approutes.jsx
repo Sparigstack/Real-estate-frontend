@@ -14,7 +14,6 @@ const AddProperty = lazy(() => import('../pages/Properties/AddPropertyIndex'));
 const AllLeads = lazy(() => import('../pages/Lead-Management/AllLeads'));
 const LeadSettingIndex = lazy(() => import('../pages/LeadSetting'));
 const UploadCsv = lazy(() => import('../pages/Lead-Management/UploadCsv'));
-const RecentLeads = lazy(() => import('../pages/Lead-Management/RecentLeads'));
 const Sales = lazy(() => import('../pages/Sales/Sales'));
 const AddWings = lazy(() => import('../pages/Sales/AddWings'));
 
@@ -39,7 +38,6 @@ export default function Approutes() {
                 <Route path="dashboard" element={<Dashboard />} />
 
                 {/* leads pages */}
-                <Route path="recent-leads" element={<RecentLeads />} />
                 <Route path="all-leads" element={<AllLeads />} />
                 <Route path="lead-setting" element={<LeadSettingIndex />} />
                 <Route path="upload-csv" element={<UploadCsv />} />

@@ -60,10 +60,10 @@ export default function AddFloorsUnits({ activeWingId, getAllWings, setShowAddFl
         <>
             {loading && <Loader runningcheck={loading} />}
             {showAlerts}
-            <div className='col-md-8 offset-md-2 p-5 pt-3'>
-                <div className='row align-items-center'>
-                    <h3 className='fontwhite fw-bolder mb-0'>Add Floors Details !</h3>
-                    <p className='font-16 pt-1 text-white fw-normal'>Heyy, please fill all the informations to proceed further.</p>
+            <div className='col-md-6 offset-md-2 p-5 pt-3'>
+                <div className='row ps-0 align-items-center'>
+                    <h4 className='fontwhite ps-0 fw-bolder mb-0'>Add Floors Details !</h4>
+                    <p className='font-14 ps-0 pt-1 color-D8DADCE5 fw-normal'>Heyy, please fill all the informations to proceed further.</p>
                 </div>
                 <Formik initialValues={allData}
                     validateOnBlur={false}
@@ -76,7 +76,7 @@ export default function AddFloorsUnits({ activeWingId, getAllWings, setShowAddFl
                     {({ values, setFieldValue, handleSubmit }) => (
                         <Form className='pt-2 mt-2 property-form' onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
                             <div className="row">
-                                <div className='col-md-7 position-relative mb-4'>
+                                <div className='col-12 ps-0 position-relative'>
                                     <label className='custom-label'>How many floors would you like to add?<span className='text-danger'>*</span></label>
                                     <Field type="number" className="customInput" name='totalFloors' autoComplete='off'
                                         onChange={(e) => {
@@ -89,10 +89,10 @@ export default function AddFloorsUnits({ activeWingId, getAllWings, setShowAddFl
                                         }} />
                                     <ErrorMessage name='totalFloors' component="div" className="text-start errorText" />
                                 </div>
-                                <div className='col-12 position-relative mb-4'>
-                                    <div className="d-flex flex-wrap align-items-center" style={{ gap: '10px' }}>
-                                        <label className='fw-semibold text-white' style={{ fontSize: '14px' }}>Is there same numbers of unit on Each floor?<span className='text-danger'>*</span></label>
-                                        <div className={`${values.unitFlag == 1 ? 'subPropertyTypeActive' : 'subPropertyTypesBtn'} cursor-pointer`}
+                                <div className='col-12 ps-0 position-relative my-4'>
+                                    <div className="d-flex flex-wrap align-items-center">
+                                        <label className='text-white font-14'>Is there same numbers of unit on Each floor?<span className='text-danger'>*</span></label>
+                                        <div className={`ms-2 py-2 px-3 ${values.unitFlag == 1 ? 'subPropertyTypeActive' : 'subPropertyTypesBtn'} cursor-pointer`}
                                             onClick={() => {
                                                 setFieldValue('unitFlag', 1);
                                                 setTotalUnits(0);
@@ -102,7 +102,7 @@ export default function AddFloorsUnits({ activeWingId, getAllWings, setShowAddFl
                                             }}>
                                             Yes
                                         </div>
-                                        <div className={`${values.unitFlag == 0 ? 'subPropertyTypeActive' : 'subPropertyTypesBtn'} cursor-pointer`}
+                                        <div className={`ms-2 py-2 px-3 ${values.unitFlag == 0 ? 'subPropertyTypeActive' : 'subPropertyTypesBtn'} cursor-pointer`}
                                             onClick={() => {
                                                 setFieldValue('unitFlag', 0);
                                                 setTotalUnits(0);
@@ -119,7 +119,7 @@ export default function AddFloorsUnits({ activeWingId, getAllWings, setShowAddFl
                             </div>
                             <div className='row'>
                                 {values.unitFlag == 1 ?
-                                    <div className='col-md-6 position-relative mb-4'>
+                                    <div className='col-md-9 ps-0 position-relative mb-4'>
                                         <label className='custom-label'>How many units on Each floor?<span className='text-danger'>*</span></label>
                                         <Field type="number" className="customInput" name='unitsFloorWise' autoComplete='off'
                                             onChange={(e) => {
@@ -130,13 +130,13 @@ export default function AddFloorsUnits({ activeWingId, getAllWings, setShowAddFl
                                         <ErrorMessage name='unitsFloorWise' component="div" className="text-start errorText" />
                                     </div>
                                     : values.unitFlag == 0 ?
-                                        <div className='col-12'>
-                                            <div className='fontwhite'>Write number of units Floor wise.</div>
+                                        <div className='col-12 mb-3'>
+                                            <div className='text-white font-14 ps-0'>Write number of units Floor wise.</div>
                                             <div className='row pt-3'>
                                                 {Array.from({ length: values.totalFloors }).map((_, index) => (
-                                                    <div key={index} className='col-md-2 position-relative mb-4 pe-0'>
+                                                    <div key={index} className='col-md-3 me-2 ps-0 position-relative mb-4 pe-0'>
                                                         <label className='custom-label'>
-                                                            Floor {index + 1}
+                                                            Floor {index + 1}<label className='text-danger'>*</label>
                                                         </label>
                                                         <Field
                                                             type="number"
@@ -159,14 +159,14 @@ export default function AddFloorsUnits({ activeWingId, getAllWings, setShowAddFl
                                         : null
                                 }
                                 {values.unitFlag != 2 && (
-                                    <div className='col-md-3 position-relative mb-4'>
+                                    <div className='col-md-3 ps-0 position-relative mb-4'>
                                         <label className='custom-label'>Total Units</label>
                                         <Field type="number" className="customInput" autoComplete='off' disabled value={totalUnits} />
                                     </div>
                                 )}
                             </div>
-                            <div className='pt-3'>
-                                <button type="btn" className='cancelBtn me-2' onClick={(e) => setShowAddFloordiv(false)}>Cancel</button>
+                            <div className='pt-3 text-center'>
+                                <button type="btn" className='px-4 cancelBtn me-2' onClick={(e) => setShowAddFloordiv(false)}>Cancel</button>
                                 <button type="submit" className='otpBtn'>Save</button>
                             </div>
                         </Form>

@@ -50,8 +50,8 @@
   background: #03053d;
   color: white;
   font-size: 13px;
-  font-weight: 600;
-  left: 25px;
+  font-weight: 500;
+  left: 15px;
   padding: 0 3px;
   position: absolute;
   top: -6px;
@@ -66,7 +66,7 @@
   font-size: 14px;
   line-height: 1.5;
   outline: none;
-  padding: 0.8rem 1.1rem;
+  padding: 0.7rem 1.1rem;
   width: 100%;
 }
 
@@ -250,4 +250,8 @@ select {
 
 .light-grey-color {
   color: #E4E4E4;
+}
+
+.text-danger {
+  color: #F04349 !important;
 }

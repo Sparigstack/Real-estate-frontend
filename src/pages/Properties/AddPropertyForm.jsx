@@ -129,15 +129,15 @@ export default function AddPropertyForm({ schemeType, setFormView }) {
         <div className='h-100vh content-area'>
             {showAlerts}
             {loading && <Loader runningcheck={loading} />}
-            <div className='col-md-10 offset-md-1 p-2'>
+            <div className='col-md-10 ps-0 offset-md-1 p-2'>
                 <div className='row align-items-center'>
-                    <div className='col-1'>
+                    <div className='col-1 ps-0'>
                         <img src={Images.backArrow} alt="back-arrow" style={{ height: "40px" }}
                             className='cursor-pointer' onClick={() => setFormView(1)} />
                     </div>
-                    <div className='col-11'>
+                    <div className='col-11 ps-0'>
                         <h4 className='heading mb-0'>{schemeType == 1 ? 'Commercial!' : 'Residentials!'}</h4>
-                        <p className='font-16 text-white fw-normal'>Heyy, please fill all the informations to proceed further.</p>
+                        <p className='font-16 text-white mb-0 fw-normal'>Heyy, please fill all the informations to proceed further.</p>
                     </div>
                 </div>
                 <Formik initialValues={commercialDetails}
@@ -151,20 +151,20 @@ export default function AddPropertyForm({ schemeType, setFormView }) {
                     {({ setFieldValue }) => (
                         <Form className='pt-4 mt-2 property-form' >
                             <div className="row">
-                                <div className='col-md-6 position-relative mb-4'>
+                                <div className='col-md-6 ps-0 position-relative mb-4'>
                                     <label className='custom-label'>Name on Scheme <span className='text-danger'>*</span></label>
                                     <Field type="text" className="customInput" name='propertyname' autoComplete='off' />
                                     <ErrorMessage name='propertyname' component="div" className="text-start errorText" />
                                 </div>
-                                <div className='col-md-3 position-relative mb-4'>
+                                <div className='col-md-3 ps-0 position-relative mb-4'>
                                     <label className='custom-label'>Rera registered number</label>
                                     <Field type="text" className="customInput" name='reraregisterednumber' autoComplete='off' />
                                 </div>
-                                <div className='col-md-3 position-relative mb-4'>
+                                <div className='col-md-3 ps-0 position-relative mb-4'>
                                     <label className='custom-label'>Country</label>
                                     <Field type="text" className="customInput" name='country' autoComplete='off' disabled value="India" />
                                 </div>
-                                <div className='col-md-3 position-relative mb-4'>
+                                <div className='col-md-3 ps-0 position-relative mb-4'>
                                     <label className='custom-label font-13'>State <span className='text-danger'>*</span></label>
                                     <Field as="select" className="customInput p-3" name='state' style={{ background: "#03053d" }}
                                         onChange={(e) => { GetCities(e.target.value); setFieldValue('state', e.target.value) }}>
@@ -175,7 +175,7 @@ export default function AddPropertyForm({ schemeType, setFormView }) {
                                     </Field>
                                     <ErrorMessage name='state' component="div" className="text-start errorText" />
                                 </div>
-                                <div className='col-md-3 position-relative mb-4'>
+                                <div className='col-md-3 ps-0 position-relative mb-4'>
                                     <label className='custom-label font-13'>City <span className='text-danger'>*</span></label>
                                     <Field as="select" className="customInput p-3" name='city' style={{ background: "#03053d" }}>
                                         <option value="0" label="Select" />
@@ -185,17 +185,17 @@ export default function AddPropertyForm({ schemeType, setFormView }) {
                                     </Field>
                                     <ErrorMessage name='city' component="div" className="text-start errorText" />
                                 </div>
-                                <div className='col-md-3 position-relative mb-4'>
+                                <div className='col-md-3 ps-0 position-relative mb-4'>
                                     <label className='custom-label'>Area <span className='text-danger'>*</span></label>
                                     <Field type="text" className="customInput" name='area' autoComplete='off' />
                                     <ErrorMessage name='area' component="div" className="text-start errorText" />
                                 </div>
-                                <div className='col-md-3 position-relative mb-4'>
+                                <div className='col-md-3 ps-0 position-relative mb-4'>
                                     <label className='custom-label'>Pincode <span className='text-danger'>*</span></label>
                                     <Field type="text" className="customInput" name='pincode' autoComplete='off' />
                                     <ErrorMessage name='pincode' component="div" className="text-start errorText" />
                                 </div>
-                                <div className='position-relative mb-4'>
+                                <div className='position-relative ps-0 mb-4'>
                                     <div className="d-flex flex-wrap align-items-center" style={{ gap: '10px' }}>
                                         <label className='fw-semibold text-white' style={{ fontSize: '14px' }}>Scheme Type <span className='text-danger'>*</span></label>
                                         {propertyTypeArray?.map((subProperty) => (
@@ -211,26 +211,26 @@ export default function AddPropertyForm({ schemeType, setFormView }) {
                             </div>
 
                             <div className="row">
-                                <div className='col-md-4 position-relative mb-4'>
+                                <div className='col-md-4 ps-0 position-relative mb-4'>
                                     <label className='custom-label'>Upload Scheme Image</label>
                                     <div style={{ height: "100%" }} className="customInput text-center" name='companyLogo' autoComplete='off' readOnly aria-describedby="logo-upload" value={filedetails.uploadedFileName} onClick={handleLogoUpload}>
                                         {filedetails.uploadedFileName ? (
                                             <img src={filedetails.uploadedFileBase64} className='pt-3' style={{ height: "80px" }} alt="Upload" />
 
                                         ) : (
-                                            <img src={Images.upload_image} className='img-fluid mt-3 upload-image-box' alt="Upload" />
+                                            <img src={Images.upload_image} className='img-fluid mt-3 upload-image-box cursor-pointer' alt="Upload" />
                                         )}
                                     </div>
                                     <Field type="hidden" name="companyLogo" value={filedetails.uploadedFileBase64} />
                                     <input type="file" ref={logoUploadRef} className='d-none' onChange={handleFileChange} accept="image/*"
                                     />
                                 </div>
-                                <div className='col-md-4 position-relative mb-3'>
+                                <div className='col-md-4 ps-0 position-relative mb-3'>
                                     <label className='custom-label'>Address <span className='text-danger'>*</span></label>
                                     <Field as="textarea" className="customInput" name='address' autoComplete='off' rows="4" />
                                     <ErrorMessage name='address' component="div" className="text-start errorText" />
                                 </div>
-                                <div className='col-md-4 position-relative mb-3'>
+                                <div className='col-md-4 ps-0 position-relative mb-3'>
                                     <label className='custom-label'>Scheme Description</label>
                                     <Field as="textarea" className="customInput" name='description' autoComplete='off' rows="4" />
                                 </div>

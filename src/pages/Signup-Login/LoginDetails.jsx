@@ -39,10 +39,10 @@ export default function LoginDetails({ setLoginView, formData, setFormData, setL
     return (
         <>
 
-            <div className='text-center pt-5'>
+            <div className='text-center pt-4'>
                 <h2 className='fw-normal'>Please Enter Details</h2>
                 <div className='mt-2'>
-                    <small className='color-D8DADCE5'>We will send a verification email with a one-time password (OTP) to the address you provide. Please ensure you enter a valid email</small>
+                    <small className='color-D8DADCE5'>We will send a verification email with a one-time password (OTP)<br /> to the address you provide. Please ensure you enter a valid email</small>
                 </div>
             </div>
             <div className='p-3 mt-2'>
@@ -66,7 +66,7 @@ export default function LoginDetails({ setLoginView, formData, setFormData, setL
                                 <Field type="email" className="customInput" name='email' autoComplete='off' />
                                 <ErrorMessage name='email' component="div" className="text-start errorText" />
                             </div>
-                            <div className='mt-4 p-2'>
+                            <div className='mt-4 mb-4 p-2'>
                                 <button type="submit" className='otpBtn'>GET OTP</button>
                             </div>
                         </Form>

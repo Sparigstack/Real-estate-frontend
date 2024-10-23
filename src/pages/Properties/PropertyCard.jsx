@@ -8,8 +8,8 @@ export default function PropertyCard(props) {
                 <div className='col-12 img-container' >
                     <img src={props.img} className='img-fluid' style={{ borderTopLeftRadius: "7px", borderBottomLeftRadius: "7px" }} />
                 </div>
-                <div className='row fontwhite px-2 pt-2 align-items-baseline'>
-                    <h5 className='col-8 fw-bold'>{props.name}</h5>
+                <div className='row fontwhite mt-1 px-2 pt-2 align-items-baseline'>
+                    <h5 className='col-8 mb-1 fw-bold'>{props.name}</h5>
                 </div>
                 <div className='row fontwhite px-2 pb-2 align-items-baseline'>
                     <label className='col-8 font-13'>{props?.area}, {props?.city}</label>

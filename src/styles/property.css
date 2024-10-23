@@ -13,7 +13,7 @@
 }
 
 .subPropertyTypesBtn {
-    border: 1px solid #ffffff33;
+    border: 1px solid white;
     background: transparent;
     color: #E4E4E4;
     font-size: 14px;
@@ -103,7 +103,7 @@
     border-radius: 50%;
     padding: 7px 9px;
     font-size: 10px;
-    color: #CCCCCC99;
+    color: white;
     cursor: pointer;
 }
 
@@ -124,6 +124,6 @@
 }
 
 .back-prev-icon.disabled {
-    opacity: 0.3;
+    opacity: 0.6;
     pointer-events: none;
 }
