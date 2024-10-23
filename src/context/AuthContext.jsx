@@ -3,7 +3,6 @@ import Cookies from 'js-cookie';
 import Login from '../pages/Signup-Login/Login';
 import useApiService from '../hooks/useApiService';
 import AlertComp from '../components/alerts/AlertComp';
-import useProperty from '../hooks/useProperty';
 import Loader from '../components/loader/Loader';
 import { useNavigate } from 'react-router-dom';
 

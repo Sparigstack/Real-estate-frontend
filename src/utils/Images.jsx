@@ -34,6 +34,8 @@ const Images = {
     red_info: new URL('../assets/images/red_info.svg', import.meta.url).href,
     white_edit: new URL('../assets/images/white_edit.svg', import.meta.url).href,
     add_unit: new URL('../assets/images/add_unit.svg', import.meta.url).href,
+    alert_success: new URL('../assets/images/alert_success.svg', import.meta.url).href,
+    alert_danger: new URL('../assets/images/alert_danger.svg', import.meta.url).href,
 
     dashboardIcon: new URL('../assets/images/sidemenu/dashboard-icon.svg', import.meta.url).href,
     salesIcon: new URL('../assets/images/sidemenu/sales.svg', import.meta.url).href,
