@@ -37,6 +37,8 @@ const Images = {
     timelineIcon: new URL('../assets/images/sidemenu/timeline.svg', import.meta.url).href,
     customersIcon: new URL('../assets/images/sidemenu/customers.svg', import.meta.url).href,
     investorIcon: new URL('../assets/images/sidemenu/investor.svg', import.meta.url).href,
-    crmIcon: new URL('../assets/images/sidemenu/crm.svg', import.meta.url).href
+    crmIcon: new URL('../assets/images/sidemenu/crm.svg', import.meta.url).href,
+    vendorIcon: new URL('../assets/images/sidemenu/vendor.svg', import.meta.url).href,
+    
 }
 export default Images

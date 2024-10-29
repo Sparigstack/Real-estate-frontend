@@ -12,6 +12,8 @@ const WebFormContent = lazy(() => import('../pages/LeadSetting/WebFormContent'))
 const AllProperties = lazy(() => import('../pages/Properties/AllProperties'));
 const AddProperty = lazy(() => import('../pages/Properties/AddPropertyIndex'));
 const AllLeads = lazy(() => import('../pages/Lead-Management/AllLeads'));
+const AllInventories = lazy(() => import('../pages/Inventory-Management/AllInventories'));
+const AllVendors = lazy(() => import('../pages/Vendor/AllVendor'));
 const LeadSettingIndex = lazy(() => import('../pages/LeadSetting'));
 const UploadCsv = lazy(() => import('../pages/Lead-Management/UploadCsv'));
 const RecentLeads = lazy(() => import('../pages/Lead-Management/RecentLeads'));
@@ -22,7 +24,7 @@ export default function Approutes() {
   return (
     <Suspense fallback={<div>Loading..</div>}>
       <Routes>
-        <Route path="/" element={<NavigateToDashboardOrLogin />} />
+        <Route path="/" element={<NavigateToDashboardOrLogin/>} />
         <Route path="login" element={<Login />} />
         <Route path="webform/:schemeId" element={<WebFormContent />} />
 
@@ -41,6 +43,8 @@ export default function Approutes() {
                 <Route path="upload-csv" element={<UploadCsv />} />
                 <Route path="rest-api" element={<RestApi />} />
                 <Route path="*" element={<PageNotFound />} />
+                <Route path="all-inventory" element={<AllInventories />} />
+                <Route path="all-vendors" element={<AllVendors />} />
               </Route>
             )}
           </>

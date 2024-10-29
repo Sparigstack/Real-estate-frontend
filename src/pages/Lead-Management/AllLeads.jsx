@@ -60,6 +60,7 @@ export default function AllLeads() {
                 throw new Error('Something went wrong');
             }
             const responseRs = JSON.parse(result);
+            console.log(responseRs);
             setLeadData(responseRs.data);
             setTotalItems(responseRs.total);
             setUtils((prev) => ({ ...prev, sortbykey: sortby }));

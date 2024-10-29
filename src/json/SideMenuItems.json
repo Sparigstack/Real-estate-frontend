@@ -40,10 +40,10 @@
         "submenu": []
     },
     {
-        "path": "/inventory",
+        "path": "/all-inventory",
         "imageKey": "inventoryIcon",
         "altText": "Inventory",
-        "label": "Inventory",
+        "label": "Inventory Management",
         "submenu": []
     },
     {
@@ -60,6 +60,14 @@
         "label": "Files",
         "submenu": []
     },
+    {
+        "path": "/all-vendors",
+        "imageKey": "vendorIcon",
+        "altText": "Vendors",
+        "label": "Vendor",
+        "submenu": []
+    },
+
     {
         "path": "/rera-compliance",
         "imageKey": "reracomplianceIcon",
