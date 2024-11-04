@@ -5,7 +5,7 @@ import { faIndianRupeeSign } from '@fortawesome/free-solid-svg-icons';
 import AddUpdateInventoryValidationSchema from '../../utils/validations/AddUpdateInventoryValidationSchema';
 import useApiService from '../../hooks/useApiService';
 
-export default function AddUpdateInventory({ formData, setFormData, handleAddInventory, handleHide }) {
+export default function AddUpdateInventory({formData, setFormData, handleAddInventory, handleHide }) {
   const { getAPIAuthKey } = useApiService();
   const [vendors, setVendors] = useState([]);
   useEffect(() => {
