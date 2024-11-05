@@ -47,6 +47,13 @@
         "submenu": []
     },
     {
+        "path": "/all-purchase",
+        "imageKey": "purchaseOrderIcon",
+        "altText": "Purchase",
+        "label": "Purchase Orders",
+        "submenu": []
+    },
+    {
         "path": "/labour",
         "imageKey": "labourIcon",
         "altText": "Labour",

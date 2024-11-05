@@ -9,6 +9,7 @@ function App() {
       <AuthProvider>
         <PropertyProvider>
           <Approutes />
+        
         </PropertyProvider>
       </AuthProvider>
     </BrowserRouter>

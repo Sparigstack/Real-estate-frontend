@@ -26,6 +26,7 @@ const Images = {
     eye_slash: new URL('../assets/images/eye_slash.svg', import.meta.url).href,
     eye: new URL('../assets/images/eye.svg', import.meta.url).href,
     share: new URL('../assets/images/share.svg', import.meta.url).href,
+    purchaseOrderIcon:new URL('../assets/images/purchase-order.svg', import.meta.url).href,
 
     dashboardIcon: new URL('../assets/images/sidemenu/dashboard-icon.svg', import.meta.url).href,
     salesIcon: new URL('../assets/images/sidemenu/sales.svg', import.meta.url).href,
@@ -39,6 +40,5 @@ const Images = {
     investorIcon: new URL('../assets/images/sidemenu/investor.svg', import.meta.url).href,
     crmIcon: new URL('../assets/images/sidemenu/crm.svg', import.meta.url).href,
     vendorIcon: new URL('../assets/images/sidemenu/vendor.svg', import.meta.url).href,
-    
 }
 export default Images

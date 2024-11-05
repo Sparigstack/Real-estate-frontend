@@ -1,13 +1,13 @@
-// AllInventories.js
 import React, { useCallback, useEffect, useState } from 'react';
 import AddUpdateInventory from './AddUpdateInventory';
 import AddInventoryUsage from './AddInventoryUsage';
+import AddPurchaseOrder from '../../pages/Purchase-Order/AddPurchaseOrder';
 import CustomModal from '../../utils/CustomModal';
 import Images from '../../utils/Images';
 import useApiService from '../../hooks/useApiService'
 import AlertComp from '../../components/AlertComp';
-import useProperty from '../../hooks/useProperty'
-import CustomPagination from '../../components/pagination/CustomPagination'
+import useProperty from '../../hooks/useProperty';
+import CustomPagination from '../../components/pagination/CustomPagination';
 import { useNavigate } from 'react-router-dom';
 import { debounce } from 'lodash';
 import { faArrowUpAZ, faArrowUpFromBracket, faIndianRupeeSign } from '@fortawesome/free-solid-svg-icons'
@@ -17,8 +17,10 @@ export default function AllInventories() {
   const { schemeId } = useProperty();
   const [inventoryPopup, setInventoryPopup] = useState(false);
   const [inventoryUsagePopup, setInventoryUsagePopup] = useState(false);
+  const [purchaseOrderPopup, setpurchaseOrderPopup] = useState(false);
   const [formData, setFormData] = useState({ name: '', currentStock: '', minStock: '', unitPrice: '' });
   const [usageformData, setUsageFormData] = useState({ utilizationQty: '', date: '', note: '' });
+  const [poformData, setPoFormData] = useState({});
   const [loading, setLoading] = useState(false);
   const [showAlerts, setShowAlerts] = useState(null);
   const [addUpdateFlag, setAddUpdateFlag] = useState(0);
@@ -29,6 +31,7 @@ export default function AllInventories() {
   const itemsPerPage = 5;
   const navigate = useNavigate();
   const [inventoryData, setInventoryData] = useState([]);
+  const [inventoryDetails, setInventoryDatails] = useState({});
   const showErrorAlert = (message) => {
     setErrorAlert(<AlertComp show={true} variant="danger" message={message} />);
     setTimeout(() => setErrorAlert(null), 2000);
@@ -51,7 +54,7 @@ export default function AllInventories() {
     const searchstring = search == '' ? null : search;
     setLoading(true);
 
-    const result = await getAPIAuthKey(`/all-inventories/${searchstring}&${sortby}&${sortbyvalue}&${currentPage}&${itemsPerPage}`);
+    const result = await getAPIAuthKey(`/all-inventories/${searchstring}&${sortby}&${sortbyvalue}&${currentPage}&${itemsPerPage}&${schemeId}`);
     const responseRs = JSON.parse(result);
 
     setInventoryData(responseRs.data);
@@ -61,7 +64,7 @@ export default function AllInventories() {
   };
   const handleAddInventory = async (values) => {
     setLoading(true);
-    try {
+    // try {
       const payload = {
         name: values.name,
         unitPrice: values.unitPrice,
@@ -87,22 +90,32 @@ export default function AllInventories() {
 
       setTimeout(() => setShowAlerts(<AlertComp show={false} />), 2000);
       setLoading(false);
-    }
-    catch (error) {
-      setLoading(false);
-      console.error(error);
-    }
+    // }
+    // catch (error) {
+    //   setLoading(false);
+    //   console.error(error);
+    // }
   }
-  const getInventoryById = async (Inventoryid) => {
+  const getInventoryById = async (Inventoryid,Flag) => {
     if (!Inventoryid) return;
     setLoading(true);
-    try {
+    // try {
       const result = await getAPIAuthKey(`/get-inventory-details/${Inventoryid}`);
       if (!result) {
         throw new Error('Something went wrong');
       }
       const responseRs = JSON.parse(result);
-      setInventoryPopup(true);
+      const poFormData = {
+        inventoryDetails: responseRs, // Pass the entire inventory object
+      };
+
+      if (Flag == 1) {
+        setInventoryPopup(true);
+      } else {
+        setPoFormData({ inventoryDetails: responseRs });
+        setpurchaseOrderPopup(true);
+      }
+   
       setLoading(false);
       setFormData({
         ...formData,
@@ -115,19 +128,20 @@ export default function AllInventories() {
         vendorId: responseRs.inventory_log_details?.vendor.id || '',
         addUpdateFlag
       });
-      setAddUpdateFlag(1)
-    }
-    catch (error) {
-      setLoading(false);
-      console.error(error);
-    }
+      setAddUpdateFlag(1);
+    
+    // }
+    // catch (error) {
+    //   setLoading(false);
+    //   console.error(error);
+    // }
   }
 
 
   const handleHide = () => setInventoryPopup(false);
   const handleHideForUsage = () => setInventoryUsagePopup(false);
+  const handleHideForPo = () => setpurchaseOrderPopup(false);
 
-  ////
   const AddInventoryUsageData = async (values) => {
     setLoading(true);
     const payload = {
@@ -138,7 +152,7 @@ export default function AllInventories() {
     };
     const raw = JSON.stringify(payload);
 
-    try {
+    // try {
       const result = await postAPIAuthKey('/add-usage-log', raw);
       const responseRs = JSON.parse(result);
 
@@ -151,13 +165,40 @@ export default function AllInventories() {
       }
       setTimeout(() => setShowAlerts(<AlertComp show={false} />), 2000);
       setLoading(false);
-    } catch (error) {
-      console.error('API call error: ', error);
-      showErrorAlert('An error occurred while processing your request.');
-    }
+    // } catch (error) {
+    //   console.error('API call error: ', error);
+    //   showErrorAlert('An error occurred while processing your request.');
+    // }
   };
 
 
+  const GeneratePo = async (rowData) => {
+    setLoading(true);
+    const raw = JSON.stringify(rowData);
+    // try {
+      const result = await postAPIAuthKey('/generate-po', raw);
+      const responseRs = JSON.parse(result);
+
+      if (responseRs.status == 'success') {
+        setpurchaseOrderPopup(false);
+        setShowAlerts(<AlertComp show={true} variant="success" message={responseRs.message} />);
+        getAllInventories(utils.search, utils.sortbyvalue);
+      } else {
+        showErrorAlert(responseRs.message);
+      }
+      setTimeout(() => setShowAlerts(<AlertComp show={false} />), 2000);
+      setLoading(false);
+    // } catch (error) {
+    //   console.error('API call error: ', error);
+    //   showErrorAlert('An error occurred while processing your request.');
+    // }
+  };
+
+  const handlePurchaseOrderClick = (inventoryId) => {
+    getInventoryById(inventoryId,2)
+      .then(() => setpurchaseOrderPopup(true)) // Open Purchase Order popup after fetching details
+      .catch((error) => console.error('Error fetching inventory details:', error));
+  };
 
   return (
     <div>
@@ -226,19 +267,39 @@ export default function AllInventories() {
             <div className="col-md-2">{inventory.price_per_quantity}</div>
             <div className="col-md-3">{inventory.current_quantity}</div>
             <div className="col-md-2">{inventory.inventory_log_details?.vendor.name}</div>
-            <div className="col-md-2 text-center">
-              <img src={Images.gridEdit} className='cursor-pointer' title='Edit Inventory'
-                onClick={(e) => getInventoryById(inventory.id)} />
-              <label className='cursor-pointer'
+            <div className="col-md-2 d-flex justify-content-center align-items-center gap-2">
+              <img
+                src={Images.gridEdit}
+                className='cursor-pointer'
+                title='Edit Inventory'
+                onClick={(e) => getInventoryById(inventory.id,1)}
+                style={{ width: '22px', height: '22px' }}
+              />
+
+              <label
+                className='cursor-pointer m-0'
                 title="Add Usage"
-                 onClick={() => {
+                onClick={() => {
                   setInventoryUsagePopup(true);
-                  setUsageFormData({  ...usageformData, maxQuantity: inventory.current_quantity, inventoryId: inventory.id }); // Pass available quantity
+                  setUsageFormData({ ...usageformData, maxQuantity: inventory.current_quantity, inventoryId: inventory.id });
                 }}
+                style={{ display: 'flex', alignItems: 'center' }}
               >
-                <i className="bi bi-clock-history"></i>
+                <i className="bi bi-clock-history" style={{ fontSize: '18px' }}></i>
               </label>
+
+              <img
+                src={Images.purchaseOrderIcon}
+                className='cursor-pointer'
+                title='Purchase Order'
+                onClick={() => {
+                  setPoFormData({ ...poformData, inventoryDetails: inventoryDetails });
+                  handlePurchaseOrderClick(inventory.id);
+                }}
+                style={{ width: '20px', height: '20px' }}
+              />
             </div>
+
           </div>
         ))}
         <CustomPagination currentPage={currentPage} totalItems={totalItems} itemsPerPage={itemsPerPage} handlePageChange={handlePageChange} />
@@ -270,6 +331,20 @@ export default function AllInventories() {
             handleHide={handleHideForUsage}
           />
         } closePopup={handleHideForUsage}
+      />
+      <CustomModal
+        isShow={purchaseOrderPopup}
+        size="lg"
+        title="Add Purchase Order"
+        bodyContent={
+          <AddPurchaseOrder
+            formData={poformData} // Pass the prepared inventory details
+            setFormData={setPoFormData}
+            GeneratePo={GeneratePo}
+            handleHide={handleHideForPo}
+          />
+        }
+        closePopup={handleHideForPo}
       />
     </div>
   )

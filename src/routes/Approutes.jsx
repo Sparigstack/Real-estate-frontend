@@ -3,6 +3,7 @@ import { Route, Routes, Navigate } from "react-router-dom";
 import useAuth from '../hooks/useAuth';
 import useProperty from '../hooks/useProperty';
 
+
 const Login = lazy(() => import('../pages/Signup-Login/Login'));
 const Dashboard = lazy(() => import('../pages/Dashboard/Dashboard'));
 const PageNotFound = lazy(() => import('../pages/404-ErrorPage/PageNotFound'));
@@ -14,9 +15,11 @@ const AddProperty = lazy(() => import('../pages/Properties/AddPropertyIndex'));
 const AllLeads = lazy(() => import('../pages/Lead-Management/AllLeads'));
 const AllInventories = lazy(() => import('../pages/Inventory-Management/AllInventories'));
 const AllVendors = lazy(() => import('../pages/Vendor/AllVendor'));
+const AllPurchases = lazy(() => import('../pages/Purchase-Order/AllPurchases'));
 const LeadSettingIndex = lazy(() => import('../pages/LeadSetting'));
 const UploadCsv = lazy(() => import('../pages/Lead-Management/UploadCsv'));
 const RecentLeads = lazy(() => import('../pages/Lead-Management/RecentLeads'));
+const PurchaseOrderPreview = lazy(() => import('../pages/Purchase-Order/PreviewPurchaseOrder'));
 
 export default function Approutes() {
   const { authToken } = useAuth();
@@ -45,8 +48,11 @@ export default function Approutes() {
                 <Route path="*" element={<PageNotFound />} />
                 <Route path="all-inventory" element={<AllInventories />} />
                 <Route path="all-vendors" element={<AllVendors />} />
+                <Route path="all-purchase" element={<AllPurchases />} />
               </Route>
+             
             )}
+              <Route path="/preview-po" element={<PurchaseOrderPreview />} />
           </>
         ) : (
           <Route path="*" element={<Navigate to="/" />} />
