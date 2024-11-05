@@ -64,7 +64,7 @@ export default function AllInventories() {
   };
   const handleAddInventory = async (values) => {
     setLoading(true);
-    // try {
+    try {
       const payload = {
         name: values.name,
         unitPrice: values.unitPrice,
@@ -90,16 +90,16 @@ export default function AllInventories() {
 
       setTimeout(() => setShowAlerts(<AlertComp show={false} />), 2000);
       setLoading(false);
-    // }
-    // catch (error) {
-    //   setLoading(false);
-    //   console.error(error);
-    // }
+    }
+    catch (error) {
+      setLoading(false);
+      console.error(error);
+    }
   }
   const getInventoryById = async (Inventoryid,Flag) => {
     if (!Inventoryid) return;
     setLoading(true);
-    // try {
+    try {
       const result = await getAPIAuthKey(`/get-inventory-details/${Inventoryid}`);
       if (!result) {
         throw new Error('Something went wrong');
@@ -130,11 +130,11 @@ export default function AllInventories() {
       });
       setAddUpdateFlag(1);
     
-    // }
-    // catch (error) {
-    //   setLoading(false);
-    //   console.error(error);
-    // }
+    }
+    catch (error) {
+      setLoading(false);
+      console.error(error);
+    }
   }
 
 
@@ -152,7 +152,7 @@ export default function AllInventories() {
     };
     const raw = JSON.stringify(payload);
 
-    // try {
+    try {
       const result = await postAPIAuthKey('/add-usage-log', raw);
       const responseRs = JSON.parse(result);
 
@@ -165,17 +165,17 @@ export default function AllInventories() {
       }
       setTimeout(() => setShowAlerts(<AlertComp show={false} />), 2000);
       setLoading(false);
-    // } catch (error) {
-    //   console.error('API call error: ', error);
-    //   showErrorAlert('An error occurred while processing your request.');
-    // }
+    } catch (error) {
+      console.error('API call error: ', error);
+      showErrorAlert('An error occurred while processing your request.');
+    }
   };
 
 
   const GeneratePo = async (rowData) => {
     setLoading(true);
     const raw = JSON.stringify(rowData);
-    // try {
+    try {
       const result = await postAPIAuthKey('/generate-po', raw);
       const responseRs = JSON.parse(result);
 
@@ -188,10 +188,10 @@ export default function AllInventories() {
       }
       setTimeout(() => setShowAlerts(<AlertComp show={false} />), 2000);
       setLoading(false);
-    // } catch (error) {
-    //   console.error('API call error: ', error);
-    //   showErrorAlert('An error occurred while processing your request.');
-    // }
+    } catch (error) {
+      console.error('API call error: ', error);
+      showErrorAlert('An error occurred while processing your request.');
+    }
   };
 
   const handlePurchaseOrderClick = (inventoryId) => {
