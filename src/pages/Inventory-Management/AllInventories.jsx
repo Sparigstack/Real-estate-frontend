@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import AddUpdateInventory from './AddUpdateInventory';
 import AddInventoryUsage from './AddInventoryUsage';
 import AddPurchaseOrder from '../../pages/Purchase-Order/AddPurchaseOrder';
+import UsageHistoryPopup from '../../pages/Inventory-Management/InventoryUsageHistory';
 import CustomModal from '../../utils/CustomModal';
 import Images from '../../utils/Images';
 import useApiService from '../../hooks/useApiService'
@@ -18,6 +19,7 @@ export default function AllInventories() {
   const [inventoryPopup, setInventoryPopup] = useState(false);
   const [inventoryUsagePopup, setInventoryUsagePopup] = useState(false);
   const [purchaseOrderPopup, setpurchaseOrderPopup] = useState(false);
+  const [usageHistory, setusageHistoryPopup] = useState(false);
   const [formData, setFormData] = useState({ name: '', currentStock: '', minStock: '', unitPrice: '' });
   const [usageformData, setUsageFormData] = useState({ utilizationQty: '', date: '', note: '' });
   const [poformData, setPoFormData] = useState({});
@@ -32,6 +34,8 @@ export default function AllInventories() {
   const navigate = useNavigate();
   const [inventoryData, setInventoryData] = useState([]);
   const [inventoryDetails, setInventoryDatails] = useState({});
+  const [selectedInventoryId, setSelectedInventoryId] = useState(null);
+
   const showErrorAlert = (message) => {
     setErrorAlert(<AlertComp show={true} variant="danger" message={message} />);
     setTimeout(() => setErrorAlert(null), 2000);
@@ -96,7 +100,7 @@ export default function AllInventories() {
       console.error(error);
     }
   }
-  const getInventoryById = async (Inventoryid,Flag) => {
+  const getInventoryById = async (Inventoryid, Flag) => {
     if (!Inventoryid) return;
     setLoading(true);
     try {
@@ -115,7 +119,7 @@ export default function AllInventories() {
         setPoFormData({ inventoryDetails: responseRs });
         setpurchaseOrderPopup(true);
       }
-   
+
       setLoading(false);
       setFormData({
         ...formData,
@@ -129,7 +133,7 @@ export default function AllInventories() {
         addUpdateFlag
       });
       setAddUpdateFlag(1);
-    
+
     }
     catch (error) {
       setLoading(false);
@@ -141,6 +145,11 @@ export default function AllInventories() {
   const handleHide = () => setInventoryPopup(false);
   const handleHideForUsage = () => setInventoryUsagePopup(false);
   const handleHideForPo = () => setpurchaseOrderPopup(false);
+
+  const handleHideForUsageHistory = () => {
+    setusageHistoryPopup(false);
+    setSelectedInventoryId(null);
+  };
 
   const AddInventoryUsageData = async (values) => {
     setLoading(true);
@@ -195,7 +204,7 @@ export default function AllInventories() {
   };
 
   const handlePurchaseOrderClick = (inventoryId) => {
-    getInventoryById(inventoryId,2)
+    getInventoryById(inventoryId, 2)
       .then(() => setpurchaseOrderPopup(true)) // Open Purchase Order popup after fetching details
       .catch((error) => console.error('Error fetching inventory details:', error));
   };
@@ -250,14 +259,13 @@ export default function AllInventories() {
             <div className="col-md-2 cursor-pointer ps-1" title="Sort by Price" onClick={() => handleSort('price_per_quantity')}>
               Price/quantity<FontAwesomeIcon icon={faArrowUpAZ} className="ps-1" />
             </div>
-            <div className="col-md-3 cursor-pointer" title="Sort by Quantity" onClick={() => handleSort('current_quantity')}>
-              Available Quanity<FontAwesomeIcon icon={faArrowUpAZ} className="ps-1" />
+            <div className="col-md-3 cursor-pointer" title="Sort by Quantity">
+              Available Quanity
             </div>
-            <div className="col-md-2 cursor-pointer" title="Sort by Vendor">
-              Vendor
+            <div className="col-md-2 cursor-pointer" title="Sort by Vendor" onClick={() => handleSort('vendor_name')}>
+              Vendor<FontAwesomeIcon icon={faArrowUpAZ} className="ps-1" />
             </div>
             <div className="col-md-2 text-center">Action</div>
-
           </div>
         </div>
 
@@ -272,7 +280,7 @@ export default function AllInventories() {
                 src={Images.gridEdit}
                 className='cursor-pointer'
                 title='Edit Inventory'
-                onClick={(e) => getInventoryById(inventory.id,1)}
+                onClick={(e) => getInventoryById(inventory.id, 1)}
                 style={{ width: '22px', height: '22px' }}
               />
 
@@ -298,8 +306,19 @@ export default function AllInventories() {
                 }}
                 style={{ width: '20px', height: '20px' }}
               />
-            </div>
 
+              <img
+                src={Images.purchaseOrderIcon}
+                className='cursor-pointer'
+                title='Inventory Usage'
+                onClick={() => {
+                  setusageHistoryPopup(true);
+                  setSelectedInventoryId(inventory.id); // Set the inventory ID
+                }}
+                style={{ width: '20px', height: '20px' }}
+              />
+
+            </div>
           </div>
         ))}
         <CustomPagination currentPage={currentPage} totalItems={totalItems} itemsPerPage={itemsPerPage} handlePageChange={handlePageChange} />
@@ -346,6 +365,20 @@ export default function AllInventories() {
         }
         closePopup={handleHideForPo}
       />
+      <CustomModal
+        isShow={usageHistory}
+        size="lg"
+        title="Inventory Usage History"
+        bodyContent={
+          <UsageHistoryPopup
+            inventoryId={selectedInventoryId} // Pass the inventory ID here
+            setFormData={setusageHistoryPopup}
+            handleHide={handleHideForUsageHistory}
+          />
+        }
+        closePopup={handleHideForUsageHistory}
+      />
+
     </div>
   )
 }

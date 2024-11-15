@@ -25,13 +25,6 @@ export default function AddUpdateVendor({ formData, setFormData, handleAddVendor
                     </div>
                     <div className="col-md-6">
                         <label className="form-label font-13">
-                            Company Name <span className="text-danger">*</span>
-                        </label>
-                        <Field type="text" className="form-control" name="companyName" autoComplete="off" placeholder="Enter your company name" />
-                        <ErrorMessage name="companyName" component="div" className="error-text text-danger mt-1" />
-                    </div>
-                    <div className="col-md-6">
-                        <label className="form-label font-13">
                             Email <span className="text-danger">*</span>
                         </label>
                         <Field type="email" className="form-control" name="email" autoComplete="off" placeholder="Enter your email" />
@@ -39,7 +32,15 @@ export default function AddUpdateVendor({ formData, setFormData, handleAddVendor
                     </div>
                     <div className="col-md-6">
                         <label className="form-label font-13">
-                            Contact Number <span className="text-danger">*</span>
+                            Company Name 
+                        </label>
+                        <Field type="text" className="form-control" name="companyName" autoComplete="off" placeholder="Enter your company name" />
+                        <ErrorMessage name="companyName" component="div" className="error-text text-danger mt-1" />
+                    </div>
+                  
+                    <div className="col-md-6">
+                        <label className="form-label font-13">
+                            Contact Number
                         </label>
                         <Field type="tel" className="form-control" name="contactNum" autoComplete="off" placeholder="Enter your contact number" />
                         <ErrorMessage name="contactNum" component="div" className="error-text text-danger mt-1" />
