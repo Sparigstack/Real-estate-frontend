@@ -35,25 +35,26 @@ export default function TopMenu() {
             <div className="topmenu-wrapper">
                 <label>
                     <label className={'fontwhite mb-0 d-flex align-items-center'}>
-                        <label className='fw-semibold font-22'>
-                            <img src={Images.scheme} className='img-fluid pe-2' />
-                            {propertyDetails.name}
+                        <label className='fw-semibold font-16'>
+                            <img src={Images.scheme} className='img-fluid bigiconsize pe-2' />
+                            <label>{propertyDetails.name}</label>
                         </label>
                         <label className='ps-2 mt-1 font-13 d-flex align-items-center'>
                             <img src={Images.location} className='img-fluid' style={{ height: "15px" }} />
-                            {propertyDetails.city_name}
+                            <label className='graycolor ps-1'>{propertyDetails.city_name}</label>
                         </label>
                     </label>
                 </label>
                 <div>
-                    <label className='fontwhite pe-3 cursor-pointer' onClick={handleSwitchProperty}><FontAwesomeIcon icon={faBuilding} className='pe-2' />Switch Scheme</label>
+                    <label className='fontwhite fw-semibold font-12 pe-3 cursor-pointer' onClick={handleSwitchProperty}>
+                        <img src={Images.scheme} className='img-fluid iconsize pe-2' />My Schemes</label>
                     <button className="profileOpen" onClick={toggleProfile}>
                         {userDetails?.userName?.charAt(0).toUpperCase()}
                     </button>
                     {openProfile && (
                         <div className="profile-menu" ref={profileRef}>
                             <ul>
-                                <li className='py-1 px-0'>
+                                <li className='py-1 px-0 pb-3'>
                                     <a className="dropdown-item" href="#">
                                         <div className="d-flex align-items-center">
                                             <div className="profileOpen">
@@ -61,16 +62,18 @@ export default function TopMenu() {
                                             </div>
                                             <div className="ms-3">
                                                 <h6 className="mb-0 dropdown-user-name" style={{ color: "black" }}>{userDetails?.userName}</h6>
-                                                <small className="mb-0 dropdown-user-designation text-secondary" style={{ fontSize: '12px' }}>{userDetails?.email}</small>
+                                                <small className="mb-0 dropdown-user-designation text-secondary" style={{ fontSize: '12px' }}>{userDetails?.companyname}</small>
                                             </div>
                                         </div>
                                     </a>
                                 </li>
-                                <hr className='m-0 p-0' />
 
-                                <li className='font-14 p-1'><FontAwesomeIcon icon={faUser} className='pe-2' />Profile</li>
-                                <li className='font-14 p-1'><FontAwesomeIcon icon={faGauge} className='pe-2' />Dashboard</li>
-                                <li className='font-14 p-1' onClick={logout}><FontAwesomeIcon icon={faSignOutAlt} className='pe-2' />Logout</li>
+                                <li className='font-14 p-1'><img src={Images.profile_icon} className='ps-1 pe-3' />
+                                    My Profile</li>
+                                <li className='font-14 p-1' onClick={logout}>
+                                    <img src={Images.logout_icon} className='ps-1 pe-3' />
+                                    Logout
+                                </li>
                             </ul>
                         </div>
                     )}

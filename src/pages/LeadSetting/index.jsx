@@ -11,9 +11,33 @@ export default function LeadSettingIndex() {
     const [visiblesecretkey, setvisiblesecretkey] = useState(false)
     const navigate = useNavigate();
     const handleCopyClick = (labelValue) => {
-        navigator.clipboard.writeText(labelValue);
-        setshowcopymsg(true);
-        setTimeout(() => setshowcopymsg(false), 2000);
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(labelValue)
+                .then(() => {
+                    setshowcopymsg(true);
+                    setTimeout(() => setshowcopymsg(false), 2000);
+                })
+                .catch((error) => console.error('Error copying text:', error));
+        } else {
+            const textarea = document.createElement('textarea');
+            textarea.value = labelValue;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = 0;
+            document.body.appendChild(textarea);
+            textarea.focus();
+            textarea.select();
+
+            try {
+                document.execCommand('copy');
+                setshowcopymsg(true);
+                setTimeout(() => setshowcopymsg(false), 2000);
+            } catch (error) {
+                console.error('Fallback: Error copying text', error);
+                alert('Copy failed. Please copy manually.');
+            }
+
+            document.body.removeChild(textarea);
+        }
     };
     const togglePasswordVisibility = () => {
         setvisiblesecretkey(!visiblesecretkey);
@@ -42,7 +66,7 @@ export default function LeadSettingIndex() {
                 <div className='col-md-6 ps-0' >
                     <div className='square-boxes' style={{ height: "100%" }}>
                         <div className='col-12 fw-semibold square-boxes-header'>
-                            Upload CSV
+                            Upload CSV/Excel
                         </div>
                         <div className='square-boxes-body'>
                             <Csv />
@@ -91,7 +115,7 @@ export default function LeadSettingIndex() {
                                 </div>
                             </div>
                             <div className='text-center'>
-                                {showcopymsg && <label className="pt-2 fontwhite">Copied!</label>}
+                                {showcopymsg && <label className="pt-2 fontwhite">Copied.</label>}
                             </div>
                             <div className='pt-3'>
                                 <div className='col-12'>

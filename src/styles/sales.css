@@ -1,0 +1,264 @@
+.greyBox {
+    background: rgba(255, 255, 255, 0.85);
+    color: black;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    flex-wrap: wrap;
+    border-radius: 4px;
+}
+
+.addwingsBox {
+    background: #03053D;
+    border-radius: 5px;
+    font-weight: 500;
+}
+
+.sales-legends {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.buildingimage {
+    background: #b3b4c5;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    box-shadow: 0px 4px 20px 0px #00000040;
+    border: 5px solid #303260;
+    border-bottom: none;
+}
+
+.villabunglowimage {
+    background: #b3b4c5;
+    border-radius: 15px;
+    box-shadow: 0px 4px 20px 0px #00000040;
+    border: 5px solid #303260;
+    border-bottom: none;
+}
+
+
+.buildingbase {
+    background: #b3b4c5;
+    box-shadow: 0px 9px 10px 0px #00000040;
+    height: 300px;
+    border: 5px solid #303260;
+    border-top: none;
+}
+
+.greyColor {
+    color: #4A4A4A;
+}
+
+.units_box {
+    background-color: white;
+    border: 2px solid #FFFFFF;
+    border-radius: 5px;
+    box-shadow: 0px 4px 4px 0px #a39c9c40;
+
+}
+
+.active_units_box {
+    background: #03053D;
+    border: 2px solid #03053D;
+    border-radius: 5px;
+    box-shadow: 0px 4px 4px 0px #a39c9c40;
+
+}
+
+.scroll-icon {
+    border: 1px solid #CCCCCC;
+    border-radius: 50%;
+    padding: 7px 9px;
+    font-size: 10px;
+    color: white;
+    cursor: pointer;
+    background: #CCCCCC;
+}
+
+.scroll-icon.activescrollicon {
+    background: #03053D;
+    border: 1px solid #03053D;
+}
+
+.scroll-icon.disabledscrollicon {
+    background: #CCCCCC;
+    border: 1px solid #CCCCCC;
+    opacity: 0.8;
+    pointer-events: none;
+    cursor: no-drop;
+}
+
+.scroll-iconn.activescrollicon,
+.scroll-icon.disabledscrollicon {
+    cursor: pointer;
+}
+
+
+.progress-bar {
+    background-color: #03053D;
+}
+
+.progress {
+    background: #CCCCCC;
+}
+
+.greyCancelbtn {
+    border: none;
+    font-size: 14px;
+    color: white;
+    font-weight: 600;
+    padding: 7px;
+    background-color: transparent;
+}
+
+.blue_box {
+    background: #E4EAF6;
+    border: 2px solid #0055FF
+}
+
+.green_box {
+    background: #E3F6EC;
+    border: 2px solid #08A95C
+}
+
+.orange_box {
+    background: #FFF8E1;
+    border: 2px solid #FF8C01
+}
+
+.blue_text {
+    color: #0055FF;
+}
+
+.green_text {
+    color: #08A95C;
+}
+
+.orange_text {
+    color: #FF8C01;
+}
+
+
+.gre_dummy_boxes {
+    background: #CCCCCC;
+    border: 2px solid #CCCCCC;
+    border-radius: 5px;
+    box-shadow: 0px 4px 4px 0px #a39c9c40;
+    padding: 3rem !important;
+}
+
+.paymentsummary {
+    border-collapse: separate;
+    border-spacing: 2px;
+}
+
+.paymentsummary th {
+    border: 1px solid #AEAEAE;
+    background: #E4E6F6;
+    color: #4A4A4A;
+}
+
+.paymentsummary td {
+    border: 1px solid #AEAEAE;
+    color: #4A4A4A;
+}
+
+.PaymentTable td {
+    border: 1px solid #FF8C01;
+    color: #FF8C01;
+    background-color: #FEF0C7;
+}
+
+.CompletedAmount {
+    border: 1px solid #08A95C !important;
+    color: #08A95C !important;
+    background-color: #E3F6EC !important;
+}
+
+.unitsDiv .progress-bar {
+    background-color: #FF8C01;
+}
+
+.matchingleadsboxes {
+    border: 1px solid #C9C9C9;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+/* cheque scan css*/
+.check-container {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 250px;
+}
+
+.check-image {
+    width: 100%;
+    height: 100%;
+    /* object-fit: cover; */
+}
+
+.scan-overlay {
+    position: absolute;
+    top: -100%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(0 8 255 / 8%);
+    animation: none;
+    animation: fullScan 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes fullScan {
+    0% {
+        top: -100%;
+    }
+
+    100% {
+        top: 0;
+    }
+}
+
+.wing_name {
+    color: #03053D;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.commoneditclass {
+    position: absolute;
+    top: 6px;
+    transform: translateX(40%);
+}
+
+.white_boxes {
+    border: 1px solid #C2C2C2;
+    background-color: white;
+    padding: 2%;
+    border-radius: 3px;
+    letter-spacing: 0.6px;
+}
+
+.highlight-blue {
+    color: #0315AA;
+}
+
+.existingUnitsDiv {
+    border: 1px solid white;
+    background: transparent;
+    color: #E4E4E4;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 5px;
+    padding: 8px;
+}
+
+.unitNamesDiv {
+    border: 1px solid #FFFFFF1F;
+    background-color: #1c1e50;
+    border-radius: 2px;
+    font-weight: normal;
+    padding: 2px 5px;
+}

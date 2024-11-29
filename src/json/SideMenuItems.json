@@ -1,12 +1,5 @@
 [
     {
-        "path": "/dashboard",
-        "imageKey": "dashboardIcon",
-        "altText": "dashboard",
-        "label": "Dashboard",
-        "submenu": []
-    },
-    {
         "path": "/sales",
         "imageKey": "salesIcon",
         "altText": "Sales",
@@ -14,64 +7,24 @@
         "submenu": []
     },
     {
-        "path": "/customers",
-        "imageKey": "customersIcon",
-        "altText": "Customers",
-        "label": "Customers",
-        "submenu": [
-            {
-                "path": "/investor",
-                "imageKey": "investorIcon",
-                "altText": "Investor",
-                "label": "Investor"
-            },
-            {
-                "path": "/crm",
-                "imageKey": "crmIcon",
-                "label": "CRM"
-            }
-        ]
-    },
-    {
-        "path": "/recent-leads",
+        "path": "/all-leads",
         "imageKey": "leadIcon",
-        "altText": "Lead Management",
-        "label": "Lead Management",
+        "altText": "Leads",
+        "label": "Leads",
         "submenu": []
     },
     {
-        "path": "/inventory",
-        "imageKey": "inventoryIcon",
-        "altText": "Inventory",
-        "label": "Inventory",
+        "path": "/materials",
+        "imageKey": "materialsIcon",
+        "altText": "Materials",
+        "label": "Materials",
         "submenu": []
     },
     {
-        "path": "/labour",
-        "imageKey": "labourIcon",
-        "altText": "Labour",
-        "label": "Labour",
-        "submenu": []
-    },
-    {
-        "path": "/files",
-        "imageKey": "filesIcon",
-        "altText": "Files",
-        "label": "Files",
-        "submenu": []
-    },
-    {
-        "path": "/rera-compliance",
-        "imageKey": "reracomplianceIcon",
-        "altText": "Rera Compliance",
-        "label": "Rera Compliance",
-        "submenu": []
-    },
-    {
-        "path": "/timeline",
+        "path": "/project-management",
         "imageKey": "timelineIcon",
-        "altText": "Timeline",
-        "label": "Timeline",
+        "altText": "Project Management",
+        "label": "Project Management",
         "submenu": []
     }
 ]

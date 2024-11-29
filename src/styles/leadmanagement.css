@@ -22,3 +22,63 @@
 .square-boxes-body {
     padding: 15px 10px;
 }
+
+.green_dot {
+    border-radius: 50%;
+    height: 10px;
+    width: 10px;
+    background-color: #79E07D;
+}
+
+.green_text {
+    color: #79E07D;
+    font-size: 13px;
+}
+
+.blue_dot {
+    border-radius: 50%;
+    height: 10px;
+    width: 10px;
+    background-color: #38A5EB;
+}
+
+.blue_text {
+    color: #38A5EB;
+    font-size: 13px;
+}
+
+.yellow_dot {
+    border-radius: 50%;
+    height: 10px;
+    width: 10px;
+    background-color: #E0E26B;
+}
+
+.yellow_text {
+    color: #E0E26B;
+    font-size: 13px;
+}
+
+.red_dot {
+    border-radius: 50%;
+    height: 10px;
+    width: 10px;
+    background-color: #D45959;
+}
+
+.red_text {
+    color: #D45959;
+    font-size: 13px;
+}
+
+.navyblue_dot {
+    border-radius: 50%;
+    height: 10px;
+    width: 10px;
+    background-color: #2FC6F6;
+}
+
+.navyblue_text {
+    color: #2FC6F6;
+    font-size: 13px;
+}

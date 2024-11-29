@@ -3,7 +3,7 @@
     font-size: 14px;
     color: white;
     background: #03053D;
-    border-radius: 5px;
+    border-radius: 3px;
     padding: 7px 30px;
 }
 
@@ -12,13 +12,97 @@
     font-size: 14px;
     color: black;
     background: white;
-    border-radius: 5px;
+    border-radius: 3px;
     padding: 7px 30px;
-    border: 1px solid #EAEAEA
+    border: 0.5px solid #AEAEAE
+}
+
+.modal-content {
+    padding: .8rem !important;
+    border-radius: 1rem !important;
+    background-color: #F5F5FF !important;
 }
 
 .modal-header {
-    padding: 10px 20px !important;
-    background: #F7F7F7;
+    padding: 0px 7px 8px 5px !important;
+    color: #030A43;
+    border-bottom: 1px solid #575757;
+}
 
+.RedSuccessBtn {
+    border: none;
+    font-size: 13px;
+    color: white;
+    background: #EA4040;
+    border-radius: 5px;
+    padding: 7px 30px;
+    border: 1px solid #EA4040;
+    font-weight: 600;
+}
+
+.dangerCancelBtn {
+    background: #E8E8E8;
+    border: none;
+    font-size: 14px;
+    color: black;
+    font-weight: 600;
+    border-radius: 3px;
+    padding: 7px 30px;
+    border: 1px solid #E8E8E8
+}
+
+.modal-footer {
+    justify-content: center !important;
+    border-top: 0px !important;
+}
+
+.input-labels {
+    background: #F5F5FF;
+    color: #030A43;
+    font-size: 12px;
+    font-weight: 500;
+    left: 9px;
+    padding: 0 3px;
+    position: absolute;
+    top: -6px;
+    z-index: 1;
+}
+
+.custom-inputs::placeholder {
+    color: #030A43;
+    opacity: 50%;
+}
+
+.custom-inputs {
+    /* background: white; */
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    color: #4A4A4A;
+    font-size: 13px;
+    line-height: 1.5;
+    outline: none;
+    padding: 0.7rem 1.1rem;
+    width: 100%;
+}
+
+.custom-inputs:focus {
+    border-color: #80bcfc;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    box-shadow: 0 0 0 .1rem rgba(13, 110, 253, .25) !important;
+    z-index: 0 !important;
+}
+
+.inputbg {
+    background: #EBEBFF;
+    color: #4A4A4A;
+
+}
+
+.modal .form-control:focus {
+    box-shadow: 0 0 0 .1rem rgba(13, 110, 253, .25) !important;
+    z-index: 0 !important;
+}
+
+.modal select {
+    padding: 0.8rem 1.1rem !important;
 }

@@ -64,11 +64,45 @@ const useCommonApiService = () => {
         }
     }
 
+    const getPaymentTypes = async () => {
+        try {
+            const result = await getAPIAuthKey(`/get-payment-types`);
+            if (!result || result == "") {
+                alert('Something went wrong');
+            }
+            else {
+                const responseRs = JSON.parse(result);
+                return responseRs
+            }
+        }
+        catch (error) {
+            console.error(error);
+        }
+    }
+
+    const getLeadStatus = async () => {
+        try {
+            const result = await getAPI(`/get-lead-statuses`);
+            if (!result || result == "") {
+                alert('Something went wrong');
+            }
+            else {
+                const responseRs = JSON.parse(result);
+                return responseRs
+            }
+        }
+        catch (error) {
+            console.error(error);
+        }
+    }
+
     return {
         getSources,
         getAllStates,
         getCities,
-        getArea
+        getArea,
+        getPaymentTypes,
+        getLeadStatus
     };
 }
 export default useCommonApiService;

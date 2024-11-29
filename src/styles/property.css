@@ -13,9 +13,9 @@
 }
 
 .subPropertyTypesBtn {
-    border: 1px solid #ffffff33;
+    border: 1px solid white;
     background: transparent;
-    color: white;
+    color: #E4E4E4;
     font-size: 14px;
     font-weight: 600;
     border-radius: 8px;
@@ -103,7 +103,7 @@
     border-radius: 50%;
     padding: 7px 9px;
     font-size: 10px;
-    color: #CCCCCC99;
+    color: white;
     cursor: pointer;
 }
 
@@ -115,6 +115,7 @@
 .scroll-container {
     overflow-x: auto;
     scroll-behavior: smooth;
+    overflow-y: hidden;
 }
 
 .back-prev-icon.activeIcon,
@@ -124,6 +125,6 @@
 }
 
 .back-prev-icon.disabled {
-    opacity: 0.3;
+    opacity: 0.6;
     pointer-events: none;
 }

@@ -12,12 +12,14 @@ export const PropertyProvider = ({ children }) => {
     const { getAPIAuthKey } = useApiService();
     useEffect(() => {
         if (schemeId) {
-            Cookies.set('schemeId', schemeId, { expires: 1, secure: true, sameSite: 'Strict' });
+            Cookies.set('schemeId', schemeId, { expires: 1 });
             getPropertyDetails();
         } else {
             Cookies.remove('schemeId');
+            setSchemeId(null);
         }
     }, [schemeId]);
+
 
     const getPropertyDetails = async () => {
         try {
@@ -30,6 +32,12 @@ export const PropertyProvider = ({ children }) => {
         }
     };
 
+    const refreshPropertyDetails = () => {
+        if (schemeId) {
+            getPropertyDetails();
+        }
+    };
+
     const switchProperty = (id, name) => {
         setSchemeId(id);
     };
@@ -38,8 +46,9 @@ export const PropertyProvider = ({ children }) => {
         Cookies.remove('schemeId');
         navigate('/schemes');
     };
+
     return (
-        <PropertyContext.Provider value={{ schemeId, switchProperty, handleSwitchProperty, propertyDetails }}>
+        <PropertyContext.Provider value={{ schemeId, switchProperty, handleSwitchProperty, propertyDetails, refreshPropertyDetails }}>
             {children}
         </PropertyContext.Provider>
     );

@@ -2,9 +2,8 @@ import React, { Suspense, lazy } from 'react'
 import { Route, Routes, Navigate } from "react-router-dom";
 import useAuth from '../hooks/useAuth';
 import useProperty from '../hooks/useProperty';
+import Login from '../pages/Signup-Login/Login';
 
-const Login = lazy(() => import('../pages/Signup-Login/Login'));
-const Dashboard = lazy(() => import('../pages/Dashboard/Dashboard'));
 const PageNotFound = lazy(() => import('../pages/404-ErrorPage/PageNotFound'));
 const Layout = lazy(() => import('../components/layout/Layout'));
 const RestApi = lazy(() => import('../pages/LeadSetting/RestApi'));
@@ -14,7 +13,8 @@ const AddProperty = lazy(() => import('../pages/Properties/AddPropertyIndex'));
 const AllLeads = lazy(() => import('../pages/Lead-Management/AllLeads'));
 const LeadSettingIndex = lazy(() => import('../pages/LeadSetting'));
 const UploadCsv = lazy(() => import('../pages/Lead-Management/UploadCsv'));
-const RecentLeads = lazy(() => import('../pages/Lead-Management/RecentLeads'));
+const Sales = lazy(() => import('../pages/Sales/Sales'));
+const AddWings = lazy(() => import('../pages/Sales/AddWings'));
 
 export default function Approutes() {
   const { authToken } = useAuth();
@@ -22,7 +22,7 @@ export default function Approutes() {
   return (
     <Suspense fallback={<div>Loading..</div>}>
       <Routes>
-        <Route path="/" element={<NavigateToDashboardOrLogin />} />
+        <Route path="/" element={<NavigateToOrLogin />} />
         <Route path="login" element={<Login />} />
         <Route path="webform/:schemeId" element={<WebFormContent />} />
 
@@ -33,19 +33,22 @@ export default function Approutes() {
 
             {schemeId && (
               <Route element={<LayoutWrapper />}>
-                <Route path="/" element={<Dashboard />} />
-                <Route path="dashboard" element={<Dashboard />} />
-                <Route path="recent-leads" element={<RecentLeads />} />
+                <Route path="/" element={<Sales />} />
+                <Route path="sales" element={<Sales />} />
+                <Route path="add-wings" element={<AddWings />} />
+
+                {/* leads pages */}
                 <Route path="all-leads" element={<AllLeads />} />
                 <Route path="lead-setting" element={<LeadSettingIndex />} />
                 <Route path="upload-csv" element={<UploadCsv />} />
                 <Route path="rest-api" element={<RestApi />} />
+
                 <Route path="*" element={<PageNotFound />} />
               </Route>
             )}
           </>
         ) : (
-          <Route path="*" element={<Navigate to="/" />} />
+          <Route path="*" element={<PageNotFound />} />
         )}
 
       </Routes>
@@ -53,11 +56,11 @@ export default function Approutes() {
   )
 }
 
-function NavigateToDashboardOrLogin() {
+function NavigateToOrLogin() {
   const { authToken } = useAuth();
   const { schemeId } = useProperty();
   if (!authToken) return <Navigate to="/" />;
-  return schemeId ? <Navigate to="/dashboard" /> : <Navigate to="/schemes" />;
+  return schemeId ? <Navigate to="/sales" /> : <Navigate to="/schemes" />;
 }
 
 

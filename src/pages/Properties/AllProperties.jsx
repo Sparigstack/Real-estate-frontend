@@ -96,7 +96,7 @@ export default function AllProperties() {
     }
     const getCardClick = async (item) => {
         setloading(true);
-        Cookies.set('schemeId', item.id, { expires: 1, secure: true, sameSite: 'Strict' });
+        Cookies.set('schemeId', item.id, { expires: 1 });
         await switchProperty(item.id);
         setTimeout(() => {
             setloading(false);
@@ -146,8 +146,8 @@ export default function AllProperties() {
             {loading && <Loader runningcheck={loading} />}
             <div className="content-area h-100vh p-3">
                 <div className='row align-items-center '>
-                    <div className='col-md-4 fontwhite'>
-                        <h3 className='mb-0 fw-bold'>Your Schemes !</h3>
+                    <div className='col-md-5 fontwhite'>
+                        <h3 className='mb-0 fw-bold'>Your Schemes</h3>
                     </div>
                     <div className='col-md-2 fontwhite text-end' >
                         {ShowResetFilter && (
@@ -173,15 +173,15 @@ export default function AllProperties() {
                                 title='Filter Properties' onClick={(e) => { setFilterPopup(true); setFilterData({ ...FilterData, state: 0, city: 0, area: 0 }); }} />
                         </div>
                     </div>
-                    <div className='col-md-3 d-flex justify-content-between text-end'>
-                        <button type='button' className='WhiteBtn w-100' onClick={(e) => navigate('/add-scheme', { state: { ShowBack: true } })}>
+                    <div className='col-md-2 ps-0 d-flex justify-content-end'>
+                        <button type='button' className='WhiteBtn w-100 p-2' onClick={(e) => navigate('/add-scheme', { state: { ShowBack: true } })}>
                             <img src={Images.blackaddicon} className='img-fluid pe-2' />Add Scheme
                         </button>
-                        <div className='fontwhite ps-4 cursor-pointer' onClick={logout}>
+                        <div className='fontwhite  ps-2 cursor-pointer' onClick={logout}>
                             <FontAwesomeIcon icon={faRightFromBracket} className='logout-icon' />
                         </div>
                     </div>
-                </div>
+                </div >
                 {propertiesData?.Commercial?.length > 0 &&
                     <div className='row my-4'>
                         <div className='col-11'>
@@ -212,7 +212,8 @@ export default function AllProperties() {
                         </div>
                     </div>
                 }
-                {propertiesData?.Residential?.length > 0 &&
+                {
+                    propertiesData?.Residential?.length > 0 &&
                     <div className='row my-4'>
                         <div className='col-11'>
                             <h5 className='fontwhite fw-semibold'>Residential ({propertiesData?.Residential?.length})</h5>
@@ -241,10 +242,12 @@ export default function AllProperties() {
                         </div>
                     </div>
                 }
-                {propertiesData?.Commercial?.length == 0 && propertiesData?.Residential?.length == 0 && (
-                    <h5 className='col-12 text-center p-5 fontwhite'>No Record Found</h5>
-                )}
-            </div>
+                {
+                    propertiesData?.Commercial?.length == 0 && propertiesData?.Residential?.length == 0 && (
+                        <h5 className='col-12 text-center p-5 fontwhite'>No Record Found</h5>
+                    )
+                }
+            </div >
 
             <CustomModal isShow={FilterPopup} size={"md"} title="Filter By"
                 bodyContent={<FilterModal setFilterData={setFilterData} FilterData={FilterData} />} closePopup={handleHidePopup} footerButtons={[

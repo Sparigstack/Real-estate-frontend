@@ -7,7 +7,7 @@ import Loader from '../../components/loader/Loader'
 
 export default function Login() {
     const [loginview, setLoginView] = useState(1);
-    const [formData, setFormData] = useState({ email: '', username: '' });
+    const [formData, setFormData] = useState({ username: '', companyname: '', otp: '', mobile: '', userExists: '' });
     const [loading, setLoading] = useState(false);
     const [showAlerts, setShowAlerts] = useState(false);
     return (
@@ -15,8 +15,12 @@ export default function Login() {
             {showAlerts}
             {loading && <Loader runningcheck={loading} />}
             <LoginLayout loginview={loginview} setLoginView={setLoginView}>
-                {loginview == 1 && <LandingPage setLoginView={setLoginView} setLoading={setLoading} />}
-                {loginview == 2 && <LoginDetails setShowAlerts={setShowAlerts} setLoginView={setLoginView} setLoading={setLoading} formData={formData} setFormData={setFormData} />}
+                {loginview == 1 && <LandingPage setLoginView={setLoginView} setLoading={setLoading}
+                    setShowAlerts={setShowAlerts} setFormData={setFormData} formData={formData} />}
+
+                {loginview == 2 && <LoginDetails setShowAlerts={setShowAlerts}
+                    setLoading={setLoading} formData={formData} setFormData={setFormData} />}
+
                 {loginview == 3 && <EnterOtp formData={formData} setLoading={setLoading} setShowAlerts={setShowAlerts} />}
             </LoginLayout>
         </>

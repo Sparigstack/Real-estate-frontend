@@ -7,6 +7,9 @@
 @import './modal.css';
 @import './property.css';
 @import './sideTopMenu.css';
+@import './sales.css';
+@import './suggestionbox.css';
+@import './tabs.css';
 
 * {
   margin: 0;

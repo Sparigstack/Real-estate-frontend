@@ -3,20 +3,20 @@ import Cookies from 'js-cookie';
 import Login from '../pages/Signup-Login/Login';
 import useApiService from '../hooks/useApiService';
 import AlertComp from '../components/alerts/AlertComp';
-import useProperty from '../hooks/useProperty';
 import Loader from '../components/loader/Loader';
+import { useNavigate } from 'react-router-dom';
 
 const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
-    const { setSchemeId } = useProperty();
+    const navigate = useNavigate();
     const [authToken, setAuthToken] = useState(Cookies.get('authToken') || null);
     const [userId, setUserId] = useState(Cookies.get('userId') || null);
     const [loading, setloading] = useState(false);
     const [showAlerts, setShowAlerts] = useState(false);
     const [userDetails, setUserDetails] = useState({
         userName: '',
-        email: '',
+        companyname: '',
         client_id: '',
         client_secret_key: ''
     });
@@ -24,8 +24,8 @@ export const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         if (authToken && userId) {
-            Cookies.set('authToken', authToken, { expires: 1, secure: true, sameSite: 'Strict' });
-            Cookies.set('userId', userId, { expires: 1, secure: true, sameSite: 'Strict' });
+            Cookies.set('authToken', authToken, { expires: 1 });
+            Cookies.set('userId', userId, { expires: 1 });
             getUserDetails();
         } else {
             Cookies.remove('authToken');
@@ -40,7 +40,7 @@ export const AuthProvider = ({ children }) => {
             const response = JSON.parse(result);
             setUserDetails({
                 userName: response?.message?.name || '',
-                email: response?.message?.email,
+                companyname: response?.message?.company_detail?.name,
                 client_id: response?.message?.client_id,
                 client_secret_key: response?.message?.client_secret_key
             });
@@ -56,17 +56,17 @@ export const AuthProvider = ({ children }) => {
             if (!result) {
                 throw new Error('Something went wrong');
             }
-            setShowAlerts(<AlertComp show={true} variant={'success'} message={'Logout Successfully!!'} />);
+            setShowAlerts(<AlertComp show={true} variant={'success'} message={'Logout Successfully.'} />);
             Cookies.remove('authToken');
             Cookies.remove('userId');
             Cookies.remove('schemeId');
             setTimeout(() => {
-                setShowAlerts(<AlertComp show={false} />);
+                setShowAlerts(false);
                 setUserDetails({ userName: '', email: '', client_id: '', client_secret_key: '' });
                 setloading(false);
                 setAuthToken(null);
                 setUserId(null);
-                setSchemeId(null);
+                navigate("/");
             }, 2000);
 
         }

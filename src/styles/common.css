@@ -1,16 +1,43 @@
+.logosize {
+  height: 50px;
+}
+
+.form-control {
+  border-color: #C9C9C9 !important;
+}
+
+.form-check-input {
+  border: 2px solid #C9C9C9 !important;
+  background-color: transparent;
+}
+
+.form-check-input:checked[type=radio] {
+  background-color: #03053d !important;
+}
+
+.formLabel {
+  color: #4A4A4A;
+}
+
 .cursor-pointer {
   cursor: pointer;
 }
 
+.cursor-nodrop {
+  cursor: no-drop;
+}
+
 .errorText {
-  font-size: 12px;
+  padding-top: 0px;
+  font-size: 11px;
   color: red;
   position: absolute;
+  left: 1%;
 }
 
 /*Font Size css start*/
 .font-12 {
-  font-size: 12px;
+  font-size: 12px !important;
 }
 
 .font-13 {
@@ -49,9 +76,9 @@
 .custom-label {
   background: #03053d;
   color: white;
-  font-size: 13px;
-  font-weight: 600;
-  left: 25px;
+  font-size: 12px;
+  font-weight: 500;
+  left: 9px;
   padding: 0 3px;
   position: absolute;
   top: -6px;
@@ -66,7 +93,7 @@
   font-size: 14px;
   line-height: 1.5;
   outline: none;
-  padding: 0.8rem 1.1rem;
+  padding: 0.7rem 1.1rem;
   width: 100%;
 }
 
@@ -194,9 +221,13 @@ select {
   border-top-right-radius: 8px !important;
 }
 
+.input-group-text {
+  border-color: #C9C9C9 !important;
+}
+
 .PageHeader {
   color: white;
-  font-size: 17px;
+  font-size: 15px;
   background-color: #303260;
   padding: 10px;
   border-radius: 5px;
@@ -246,4 +277,42 @@ select {
 
 .grecaptcha-badge {
   bottom: 0px !important;
+}
+
+.light-grey-color {
+  color: #E4E4E4;
+}
+
+.text-danger {
+  color: #F04349 !important;
+}
+
+input[type="checkbox"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: 1px solid #ccc;
+  width: 13px;
+  height: 13px;
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  border-radius: 3px;
+}
+
+input[type="checkbox"]:checked {
+  background-color: #030A43;
+  border-color: #030A43;
+}
+
+input[type="checkbox"]:checked::after {
+  content: '';
+  position: absolute;
+  top: 1px;
+  left: 4px;
+  width: 4px;
+  height: 8px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
 }

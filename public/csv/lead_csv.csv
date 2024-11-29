@@ -1,2 +1,2 @@
-Name,Email,Contact,Source,Budget
-Jackson,jackson@gmail.com,9923567890,Social Media,200000
+Name,Email(optional),Contact,Source,Notes(optional),Status
+Jackson,jackson@gmail.com,9923567890,Social Media,,New

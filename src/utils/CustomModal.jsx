@@ -8,7 +8,7 @@ export default function CustomModal(props) {
         <Modal show={props.isShow} size={props.size}>
             <Modal.Header className='d-flex justify-content-between'>
                 <Modal.Title>
-                    <b className='font-16'>{props.title}</b>
+                    <b className='font-18'>{props.title}</b>
                 </Modal.Title>
                 <FontAwesomeIcon icon={faTimes} className='cursor-pointer' onClick={props.closePopup} />
             </Modal.Header>

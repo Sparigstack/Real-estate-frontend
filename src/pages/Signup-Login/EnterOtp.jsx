@@ -10,7 +10,7 @@ export default function EnterOtp({ formData, setLoading, setShowAlerts }) {
     const inputRefs = useRef([]);
     const [otp, setOtp] = useState(Array(6).fill(''));
     const [otpError, setOtpError] = useState('');
-    const [timeLeft, setTimeLeft] = useState(180);
+    const [timeLeft, setTimeLeft] = useState(120);
     const [timeExpired, setTimeExpired] = useState(false);
     const navigate = useNavigate();
     const alertTimeoutRef = useRef();
@@ -19,8 +19,11 @@ export default function EnterOtp({ formData, setLoading, setShowAlerts }) {
     const validateOtp = async (otpValue) => {
         setLoading(true);
         var raw = JSON.stringify({
-            email: formData.email,
-            otp: otpValue
+            mobile_number: formData.mobile,
+            otp: otpValue,
+            flag: formData.userExists,
+            company_name: null,
+            user_name: null
         })
         try {
             const result = await postAPI('/check-user-otp', raw);
@@ -29,15 +32,15 @@ export default function EnterOtp({ formData, setLoading, setShowAlerts }) {
             }
             const responseRs = JSON.parse(result);
             if (responseRs.status == 'success') {
-                Cookies.set('authToken', responseRs.token, { expires: 1, secure: true, sameSite: 'Strict' });
-                Cookies.set('userId', responseRs.userId, { expires: 1, secure: true, sameSite: 'Strict' });
+                Cookies.set('authToken', responseRs.token, { expires: 1 });
+                Cookies.set('userId', responseRs.userId, { expires: 1 });
                 setOtpError('');
                 showAlert('User logged in successfully', 'success');
                 setTimeout(() => {
                     setAuthToken(responseRs.token)
                     setUserId(responseRs.userId)
                     setLoading(false);
-                    setShowAlerts(<AlertComp show={false} />);
+                    setShowAlerts(false);
                     if (responseRs.userProperty == 1) {
                         navigate('/schemes');
                     } else {
@@ -85,7 +88,7 @@ export default function EnterOtp({ formData, setLoading, setShowAlerts }) {
     const showAlert = (message, variant = 'success') => {
         setShowAlerts(<AlertComp show={true} variant={variant} message={message} />);
         alertTimeoutRef.current = setTimeout(() => {
-            setShowAlerts(<AlertComp show={false} />);
+            setShowAlerts(false);
         }, 2000);
     };
     const formatTime = (timeInSeconds) => {
@@ -98,8 +101,8 @@ export default function EnterOtp({ formData, setLoading, setShowAlerts }) {
         e.preventDefault();
         setLoading(true);
         var raw = JSON.stringify({
-            username: formData.username,
-            email: formData.email
+            mobile_number: formData.mobile,
+            flag: 2
         })
         try {
             const result = await postAPI('/register-user', raw);
@@ -109,7 +112,7 @@ export default function EnterOtp({ formData, setLoading, setShowAlerts }) {
             const responseRs = JSON.parse(result);
             if (responseRs.status == 'success') {
                 setLoading(false);
-                setTimeLeft(180);
+                setTimeLeft(120);
                 setTimeExpired(false);
                 setOtpError('')
                 setOtp(Array(6).fill(''));
@@ -120,7 +123,7 @@ export default function EnterOtp({ formData, setLoading, setShowAlerts }) {
             else {
                 setShowAlerts(<AlertComp show={true} variant="danger" message={responseRs.message} />);
                 setTimeout(() => {
-                    setShowAlerts(<AlertComp show={false} />);
+                    setShowAlerts(false);
                 }, 2000);
             }
         }
@@ -163,9 +166,9 @@ export default function EnterOtp({ formData, setLoading, setShowAlerts }) {
     return (
         <>
             <div className='text-center pt-5'>
-                <h2 className='fw-normal'>Please Enter a Code</h2>
+                <h2 className='fw-normal'>Please Enter OTP</h2>
                 <div className='mt-2'>
-                    <small className='color-D8DADCE5'>We've sent an email with otp to your email <br /><b>{formData.email}</b></small>
+                    <small className='color-D8DADCE5'>We've sent an otp to your mobile number <br /><b>+91 {formData.mobile}</b></small>
                 </div>
             </div>
             <div className="d-flex justify-content-center mt-5">
@@ -173,22 +176,24 @@ export default function EnterOtp({ formData, setLoading, setShowAlerts }) {
                     <input key={index} type="text" maxLength="1" className={`otpInput mx-2 text-center`} style={{ border: otpError || timeExpired ? '0.5px solid red' : '0.5px solid white' }} ref={(el) => inputRefs.current[index] = el} onChange={(e) => handleChangeOtp(e, index)} onPaste={handlePasteOtp} value={otp[index]} />
                 ))}
             </div>
-            <div className='text-danger mt-2'>{otpError}</div>
-            {!timeExpired && (
-                <div className='text-center mt-2'>
-                    <span className="font-16 text-danger fw-normal">{formatTime(timeLeft)}</span>
-                </div>
-            )}
-            {timeExpired && (
-                <div className='text-center mt-3'>
-                    <span className='fw-light text-danger font-16'>Otp is expired. <a className='fw-bold text-decoration-none cursor-pointer' onClick={handleResendOtp}>Resend Code</a></span>
-                </div>
-            )}
-            {!timeExpired && (
-                <div className='text-center mt-3 mb-4'>
-                    <span className='fw-light font-16'>Don't received code yet? <a className='fw-bold text-decoration-none cursor-pointer' onClick={handleResendOtp}>Resend Code</a></span>
-                </div>
-            )}
+            {otpError ?
+                <>
+                    <div className='text-danger mt-2'>{otpError}</div>
+                    <div className='text-center mt-3 mb-5'>
+                        <a className='fw-bold fontwhite text-decoration-none cursor-pointer' onClick={handleResendOtp}>Resend OTP</a>
+                    </div>
+                </>
+                :
+                timeExpired ?
+                    <div className='text-center mt-3 mb-5'>
+                        <a className='fw-bold fontwhite text-decoration-none cursor-pointer' onClick={handleResendOtp}>Resend OTP</a>
+                    </div>
+                    :
+                    <div className='text-center mt-4 mb-5'>
+                        <span className="font-16 color-D8DADCE5 fw-normal">Resend OTP in <b>{formatTime(timeLeft)}</b></span>
+                    </div>
+            }
+
         </>
     )
 }

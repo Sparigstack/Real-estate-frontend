@@ -1,0 +1,16 @@
+.tab_bg {
+    background: #303260;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.active_tab {
+    background: #AAB8FF;
+    padding: 8px 15px;
+    color: black;
+    border-radius: 8px;
+}

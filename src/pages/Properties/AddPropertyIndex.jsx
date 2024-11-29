@@ -25,13 +25,14 @@ export default function AddProperty() {
                             <FontAwesomeIcon icon={faRightFromBracket} className='logout-icon ms-3' onClick={logout} />
                         </div>
                         <div className="d-flex pt-3 align-items-center justify-content-center position-relative">
-                            <img src={Images.realEstateLogo} alt="realestatelogo" className='' />
+                            <img src={Images.realEstateLogo} alt="realestatelogo" className='logosize' />
                         </div>
                         <div className='loginContent'>
                             <div className="text-center p-4">
-                                <h4 className='heading pt-4'>Add Scheme !</h4>
-                                <p className='font-16 text-white fw-normal'>It will only take 5 minutes to add scheme details. <span className='fw-bold'>Let's Start</span></p>
-                                <h5 className='pt-3 text-white fw-semibold'>Choose your Scheme type?</h5>
+                                <h4 className='heading pt-4 '>Add Your First Project</h4>
+                                <p className='font-16 mb-1 text-white fw-normal'>Adding your project is quick and easy in SuperBuildup. It is an entry point to start your journey with us. <span className='fw-bold'>Let's Start</span></p>
+                                <p className='font-16 text-white fw-normal'>Managing one project is 100% free on SuperBuildup. </p>
+                                <h6 className='pt-4 text-white fw-semibold'>What type of project do you want to manage?</h6>
                                 <div className='text-center d-flex justify-content-center gap-3 pt-3'>
                                     <div className='propertiesOptions cursor-pointer' onClick={(e) => { setPropertyType(1); setFormView(2) }}>
                                         <img src={Images.commercial} alt="commercial" style={{ height: '30px' }} />

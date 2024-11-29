@@ -39,14 +39,14 @@ export default function Csv() {
             }
             const responseRs = JSON.parse(result);
             if (responseRs.status == "success") {
-                setShowAlerts(<AlertComp show={true} variant="success" message={'CSV imported Successfully'} />);
+                setShowAlerts(<AlertComp show={true} variant="success" message={'File imported Successfully'} />);
                 setTimeout(() => {
-                    setShowAlerts(<AlertComp show={false} />);
+                    setShowAlerts(false);
                     navigate('/all-leads')
                 }, 1500);
             } else {
                 setShowAlerts(<AlertComp show={true} variant="danger" message={responseRs.message} />);
-                setTimeout(() => setShowAlerts(<AlertComp show={false} />), 2000);
+                setTimeout(() => setShowAlerts(false), 2000);
             }
         } catch (error) {
             setLoading(false);
@@ -68,7 +68,7 @@ export default function Csv() {
                 <p className='p-0 m-0'>
                     <a className='fw-semibold fontwhite cursor-pointer ' href="/csv/lead_csv.csv" download="Lead.csv">
                         <i> CLICK HERE</i>
-                    </a> to download the template CSV file for leads data. Use this template to prepare your CSV file. Once your file is ready, browse for the file on your computer and click the upload button to import the data into your account.
+                    </a> to download the template CSV file for leads data. Use this template to prepare your CSV/Excel file. Once your file is ready, browse for the file on your computer and click the upload button to import the data into your account.
                 </p>
             </div>
             <div className="text-center mt-4">
@@ -76,14 +76,14 @@ export default function Csv() {
                     onClick={handleButtonClick}>
                     <input
                         type="file"
-                        accept=".csv"
+                        accept=".csv,.xlsx"
                         onChange={handleFileChange}
                         className="ms-3 cursor-pointer"
                         style={{ display: 'none' }}
                         ref={fileInputRef}
                     />
                     <img src={Images.importicon} className='pe-2 iconsize' />
-                    Import Lead CSV
+                    Import Lead CSV/Excel
                 </button>
                 <div className='py-3 px-5'>
                     <LoadingBar style={{ borderRadius: "6px" }}
@@ -96,7 +96,7 @@ export default function Csv() {
                         <br />
 
                         <button className='text-center WhiteBtn mt-2' onClick={handleFileUpload}>
-                            Upload CSV
+                            Upload File
                         </button>
                     </p>
                 }

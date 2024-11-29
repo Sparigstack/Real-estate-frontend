@@ -127,10 +127,10 @@
 }
 
 .profile-menu {
-    background-color: white;
+    background-color: #F5F5FF;
     border-radius: 5px;
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-    padding: 4px 10px;
+    padding: 10px 10px;
     min-width: 200px;
     right: 20px;
     position: absolute;
@@ -141,7 +141,7 @@
 .profile-menu li {
     list-style: none;
     padding: 5px;
-    color: #686868;
+    color: #4A4A4A;
     cursor: pointer;
 }
 

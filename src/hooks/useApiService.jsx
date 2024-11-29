@@ -1,11 +1,15 @@
 import { useCallback } from "react";
 import useAuth from "./useAuth";
 import Cookies from 'js-cookie';
-
 const useApiService = () => {
     const { logout } = useAuth();
     const authToken = Cookies.get('authToken');
+    const userId = Cookies.get('userId');
     const BASE_URL = import.meta.env.VITE_BASE_URL;
+
+    const setCookieWithExpiry = (key, value, expiresInHours = 24) => {
+        Cookies.set(key, value, { expires: expiresInHours / 24 });
+    };
 
     const createHeaders = (useAuthToken, csv) => {
         const headers = new Headers();
@@ -26,6 +30,10 @@ const useApiService = () => {
         } else if (!responseBody) {
             alert('Something went wrong');
         }
+        if (authToken && userId) {
+            setCookieWithExpiry('authToken', authToken);
+            setCookieWithExpiry('userId', userId);
+        }
         return responseBody;
     };
 
@@ -43,6 +51,7 @@ const useApiService = () => {
         };
 
         try {
+
             const response = await fetch(`${BASE_URL}${endpoint}`, requestOptions);
             return await handleResponse(response);
         } catch (error) {
