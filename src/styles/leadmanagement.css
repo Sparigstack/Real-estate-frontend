@@ -86,10 +86,9 @@
 .tags_label {
     background-color: white;
     color: #050854;
-    padding: 2px;
+    padding: 2px 5px;
     font-size: 10px;
     border-radius: 3px;
-    padding-left: 7px;
 }
 
 .suggestion-box {

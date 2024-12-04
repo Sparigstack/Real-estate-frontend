@@ -11,7 +11,6 @@ import CustomModal from '../../utils/CustomModal';
 import BookingPopup from './BookingPopup';
 import InterstedLeadsPopup from './InterstedLeadsPopup';
 import ViewBookingPopup from './ViewBookingPopup';
-import LoadingBar from 'react-top-loading-bar';
 import ScanChequePopup from './ScanCheque/ScanChequePopup';
 import UnitNamePopup from './UnitNamePopup';
 import useProperty from '../../hooks/useProperty';
@@ -35,6 +34,7 @@ export default function AllFloorsUnits({ FloorUnitDetails, activeWingId, setFloo
     const [InterstedLeadPopup, setInterstedLeadPopup] = useState(false);
     const [ViewBookingModal, setViewBookingModal] = useState(false);
     const [showLoader, setshowLoader] = useState(false);
+    const [Unitname, setUnitname] = useState('');
     const [UnitNamePopupShow, setUnitNamePopupShow] = useState(false)
     const [BookingDetails, setBookingDetails] = useState({
         bookingtype: '',
@@ -546,7 +546,7 @@ export default function AllFloorsUnits({ FloorUnitDetails, activeWingId, setFloo
                                                                 {units.booking_status != 3 && units.booking_status != 4 && (
                                                                     <img src={InterstedLeadPopup == true && unitId == units.id ? Images.white_lead : Images.lead}
                                                                         className={`cursor-pointer ${InterstedLeadPopup == true && unitId == units.id ? 'active_units_box' : 'units_box'} bigiconsize p-1`} title='Add Leads'
-                                                                        onClick={(e) => { setInterstedLeadPopup(true); setUnitId(units.id) }} />
+                                                                        onClick={(e) => { setInterstedLeadPopup(true); setUnitId(units.id); setUnitname(units.name) }} />
                                                                 )}
                                                             </div>
 
@@ -658,7 +658,7 @@ export default function AllFloorsUnits({ FloorUnitDetails, activeWingId, setFloo
                 bodyContent={<BookingPopup setBookingModel={setBookingModel} unitid={unitId} />} />
 
             <CustomModal isShow={InterstedLeadPopup} size={"md"} title="Add Intersted Leads" closePopup={(e) => setInterstedLeadPopup(false)}
-                bodyContent={<InterstedLeadsPopup setInterstedLeadPopup={setInterstedLeadPopup} unitId={unitId} setShowAlerts={setShowAlerts} />} />
+                bodyContent={<InterstedLeadsPopup setInterstedLeadPopup={setInterstedLeadPopup} unitname={`${FloorUnitDetails?.name} - ${Unitname}`} unitId={unitId} setShowAlerts={setShowAlerts} />} />
 
             <CustomModal isShow={ViewBookingModal} size={"lg"} title="View Booking Details" closePopup={(e) => { setViewBookingModal(false); refreshPropertyDetails() }}
                 bodyContent={<ViewBookingPopup BookingDetails={BookingDetails} unitId={unitId}

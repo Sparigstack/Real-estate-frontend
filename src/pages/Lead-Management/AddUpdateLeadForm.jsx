@@ -19,6 +19,7 @@ export default function AddUpdateLeadForm() {
     const location = useLocation();
     const unitidfromsales = location.state && location.state.unitid;
     const leadid = location.state && location.state.leadid;
+    const unitname = location.state && location.state.unitname;
     const [tags, setTags] = useState([]);
     const [allTags, setAllTags] = useState([]);
     const [formData, setFormData] = useState({
@@ -110,7 +111,12 @@ export default function AddUpdateLeadForm() {
                 setShowAlerts(<AlertComp show={true} variant="success" message={msg} />);
                 setTimeout(() => {
                     setShowAlerts(false);
-                    navigate('/all-leads')
+                    {
+                        unitidfromsales ?
+                            navigate('/sales')
+                            :
+                            navigate('/all-leads')
+                    }
                 }, 2000);
             }
             else {
@@ -134,6 +140,9 @@ export default function AddUpdateLeadForm() {
                     <div className='col-6'>
                         <label className='graycolor cursor-pointer' onClick={(e) => navigate('/all-leads')}>
                             All Leads /</label> {leadid == 0 ? 'Add Lead' : 'Edit Lead'}
+                    </div>
+                    <div className='col-6 text-end'>
+                        {unitname}
                     </div>
                 </div>
             </div>

@@ -219,11 +219,22 @@ export default function AllLeads() {
                             <div className='col-md-1'>
                                 <label className={statuscolor}></label>
                             </div>
-                            <div className='col-md-3 ps-3 d-flex align-items-center'>
-                                {item.entity_type == 2 && (
-                                    <img src={Images.profile_icon_white} className='pe-2 iconsize' />
-                                )}
-                                <label>{item.name}</label>
+                            <div className='col-md-3'>
+                                <div className='col-12 d-flex align-items-center'>
+                                    {item.entity_type == 2 && (
+                                        <img src={Images.profile_icon_white} className='pe-2 iconsize' />
+                                    )}
+                                    {item.name}
+                                </div>
+                                <div className='col-12 ps-0'>
+                                    {item.tags.length > 0 && (
+                                        item.tags.map((tag, tagindex) => {
+                                            return <label className="tags_label me-1" key={tagindex}>
+                                                {tag.name}
+                                            </label>
+                                        })
+                                    )}
+                                </div>
                             </div>
                             <div className='col-md-2'>{item.contact_no}</div>
                             <div className='col-md-2 '>{item?.lead_source ? item?.lead_source?.name : '-'}</div>

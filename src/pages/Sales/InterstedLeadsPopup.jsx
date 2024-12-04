@@ -9,7 +9,7 @@ import { faIndianRupeeSign } from '@fortawesome/free-solid-svg-icons';
 import Images from '../../utils/Images';
 import { useNavigate } from 'react-router-dom';
 
-export default function InterstedLeadsPopup({ setInterstedLeadPopup, unitId, setShowAlerts }) {
+export default function InterstedLeadsPopup({ setInterstedLeadPopup, unitId, setShowAlerts, unitname }) {
     const [allLeads, setAllLeads] = useState([]);
     const navigate = useNavigate();
     const [leadvalues, setLeadvalues] = useState([]);
@@ -143,36 +143,6 @@ export default function InterstedLeadsPopup({ setInterstedLeadPopup, unitId, set
         }
     }
 
-    // const handleAddLead = async (values) => {
-    //     setLoading(true);
-    //     try {
-    //         const raw = JSON.stringify({ ...values, propertyinterest: schemeId, leadid: 0, flag: 2, unitId: unitId });
-    //         const result = await postAPIAuthKey('/add-edit-leads', raw);
-
-    //         if (!result) {
-    //             throw new Error('Something went wrong');
-    //         }
-
-    //         const responseRs = JSON.parse(result);
-    //         setLoading(false);
-    //         if (responseRs.status == 'success') {
-    //             setInterstedLeadPopup(false);
-    //             setShowAlerts(<AlertComp show={true} variant="success" message={'Lead Added Successfully'} />);
-    //             refreshPropertyDetails();
-    //             setTimeout(() => {
-    //                 setShowAlerts(false);
-    //             }, 2000);
-    //         }
-    //         else {
-    //             setShowAlerts(<AlertComp show={true} variant="danger" message={responseRs.message} />);
-    //         }
-    //     }
-    //     catch (error) {
-    //         setLoading(false);
-    //         console.error(error);
-    //     }
-    // }
-
     return (
         <div>
             {Loading && <Loader runningcheck={Loading} />}
@@ -187,7 +157,7 @@ export default function InterstedLeadsPopup({ setInterstedLeadPopup, unitId, set
                 <div className='text-center'>
                     <div className='py-3'>OR</div>
                     <button type="btn" className='SuccessBtn' onClick={(e) => {
-                        navigate('/add-update-leads', { state: { unitid: unitId, leadid: 0 } })
+                        navigate('/add-update-leads', { state: { unitid: unitId, leadid: 0, unitname: unitname } })
                     }}>
                         <img src={Images.addicon} className='bigiconsize h-100 pe-2' />
                         Add Lead</button>
