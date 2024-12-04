@@ -20,6 +20,7 @@ export default function AddUpdateLeadForm() {
     const unitidfromsales = location.state && location.state.unitid;
     const leadid = location.state && location.state.leadid;
     const [tags, setTags] = useState([]);
+    const [allTags, setAllTags] = useState([]);
     const [formData, setFormData] = useState({
         name: '',
         contactno: '',
@@ -63,6 +64,7 @@ export default function AddUpdateLeadForm() {
                     reminder_date: responseRs.reminder_date || '',
                     notes: responseRs.notes || '',
                 });
+                setTags(responseRs.tags);
             }
             catch (error) {
                 setLoading(false);
@@ -70,7 +72,22 @@ export default function AddUpdateLeadForm() {
             }
         }
         getLeadById();
+        getLeadTags();
     }, [leadid])
+    const getLeadTags = async () => {
+        try {
+            const result = await getAPIAuthKey(`/fetch-tags/${schemeId}`);
+            if (!result) {
+                throw new Error('Something went wrong');
+            }
+            const responseRs = JSON.parse(result);
+            setAllTags(responseRs)
+        }
+        catch (error) {
+            setLoading(false);
+            console.error(error);
+        }
+    }
     const handleAddLead = async (values) => {
         setLoading(true);
         try {
@@ -80,27 +97,28 @@ export default function AddUpdateLeadForm() {
                 unitId: unitidfromsales || null,
                 tags: tags
             });
-            console.log(raw)
-            // const result = await postAPIAuthKey('/add-edit-leads', raw);
+            const result = await postAPIAuthKey('/add-edit-leads', raw);
 
-            // if (!result) {
-            //     throw new Error('Something went wrong');
-            // }
+            if (!result) {
+                throw new Error('Something went wrong');
+            }
 
-            // const responseRs = JSON.parse(result);
-            // setLoading(false);
-            // if (responseRs.status == 'success') {
-            //     setLeadPopup(false);
-            //     var msg = leadid == 0 ? 'Lead Added Successfully' : 'Lead Updated Successfully';
-            //     setShowAlerts(<AlertComp show={true} variant="success" message={msg} />);
-            //     setTimeout(() => {
-            //         setShowAlerts(false);
-            //         navigate('/all-leads')
-            //     }, 2000);
-            // }
-            // else {
-            //     setShowAlerts(<AlertComp show={true} variant="danger" message={responseRs.message} />);
-            // }
+            const responseRs = JSON.parse(result);
+            setLoading(false);
+            if (responseRs.status == 'success') {
+                var msg = leadid == 0 ? 'Lead Added Successfully' : 'Lead Updated Successfully';
+                setShowAlerts(<AlertComp show={true} variant="success" message={msg} />);
+                setTimeout(() => {
+                    setShowAlerts(false);
+                    navigate('/all-leads')
+                }, 2000);
+            }
+            else {
+                setShowAlerts(<AlertComp show={true} variant="danger" message={responseRs.message} />);
+                setTimeout(() => {
+                    setShowAlerts(false);
+                }, 5000);
+            }
         }
         catch (error) {
             setLoading(false);
@@ -131,8 +149,8 @@ export default function AddUpdateLeadForm() {
                 {({ values, setFieldValue }) => (
                     <Form className='p-4 property-form'>
                         <GeneralFields setFieldValue={setFieldValue} values={values} showBudget={unitidfromsales} />
-                        <OptionalFields setFieldValue={setFieldValue} />
-                        <LeadTags setTags={setTags} tags={tags} />
+                        <OptionalFields setFieldValue={setFieldValue} values={values} />
+                        <LeadTags setTags={setTags} tags={tags} allTags={allTags} />
                         <div className='col-12 pt-5 text-center'>
                             <button type='button' className="cancelBtn me-2" onClick={(e) => navigate('/all-leads')}>
                                 Cancel

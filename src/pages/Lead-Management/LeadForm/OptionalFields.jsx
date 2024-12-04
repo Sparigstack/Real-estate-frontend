@@ -2,7 +2,7 @@ import { ErrorMessage, Field } from 'formik';
 import React, { useEffect, useState } from 'react'
 import useCommonApiService from '../../../hooks/useCommonApiService';
 
-export default function OptionalFields({ setFieldValue }) {
+export default function OptionalFields({ setFieldValue, values }) {
     const { getAllStates, getCities } = useCommonApiService();
     const [states, setStates] = useState([]);
     const [cities, setCities] = useState([]);
@@ -13,6 +13,11 @@ export default function OptionalFields({ setFieldValue }) {
         }
         fetchStates();
     }, []);
+    useEffect(() => {
+        if (values.city) {
+            GetCities(values.state)
+        }
+    }, [values.city])
     const GetCities = async (stateid) => {
         var cities = await getCities(stateid);
         if (cities) {
@@ -40,7 +45,7 @@ export default function OptionalFields({ setFieldValue }) {
             </div>
             <div className='col-md-3 mb-4 ps-0 position-relative'>
                 <label className='custom-label'>City (optional)</label>
-                <Field as="select" className="customInput" style={{ background: "#03053d", padding: '1em' }}
+                <Field as="select" value={values.city} className="customInput" style={{ background: "#03053d", padding: '1em' }}
                     name='city' onChange={(e) => setFieldValue('city', e.target.value)}>
                     <option value="0" label="Select City" />
                     {cities?.map((item, index) => {
