@@ -61,7 +61,7 @@ export default function Csv() {
         <div>
             {showAlerts}
             {loading && <Loader runningcheck={loading} />}
-            <div className='font-14'>
+            <div className='font-14 fontwhite'>
                 <p>
                     To ensure data accuracy, please download our CSV template file and ensure that your column headings match the template before importing your leads into the system.
                 </p>

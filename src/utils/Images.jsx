@@ -60,6 +60,8 @@ const Images = {
     white_cancel: new URL('../assets/images/white_cancel.svg', import.meta.url).href,
     profile_icon_white: new URL('../assets/images/profile_icon_white.svg', import.meta.url).href,
     white_info: new URL('../assets/images/white_info.svg', import.meta.url).href,
+    white_delete: new URL('../assets/images/white_delete.svg', import.meta.url).href,
+    lead_tags: new URL('../assets/images/lead_tags.svg', import.meta.url).href,
 
     dashboardIcon: new URL('../assets/images/sidemenu/dashboard-icon.svg', import.meta.url).href,
     salesIcon: new URL('../assets/images/sidemenu/sales.svg', import.meta.url).href,
@@ -72,5 +74,6 @@ const Images = {
     customersIcon: new URL('../assets/images/sidemenu/customers.svg', import.meta.url).href,
     investorIcon: new URL('../assets/images/sidemenu/investor.svg', import.meta.url).href,
     crmIcon: new URL('../assets/images/sidemenu/crm.svg', import.meta.url).href,
+    customfieldIcon: new URL('../assets/images/sidemenu/customfieldIcon.svg', import.meta.url).href,
 }
 export default Images

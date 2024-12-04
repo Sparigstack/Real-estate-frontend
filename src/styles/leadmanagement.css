@@ -39,11 +39,11 @@
     border-radius: 50%;
     height: 10px;
     width: 10px;
-    background-color: #38A5EB;
+    background-color: #0055ff;
 }
 
 .blue_text {
-    color: #38A5EB;
+    color: #0055ff;
     font-size: 13px;
 }
 
@@ -75,10 +75,35 @@
     border-radius: 50%;
     height: 10px;
     width: 10px;
-    background-color: #2FC6F6;
+    background-color: #f62ff0;
 }
 
 .navyblue_text {
-    color: #2FC6F6;
+    color: #f62ff0;
     font-size: 13px;
+}
+
+.tags_label {
+    background-color: white;
+    color: #050854;
+    padding: 2px;
+    font-size: 10px;
+    border-radius: 3px;
+    padding-left: 7px;
+}
+
+.suggestion-box {
+    background: white;
+    color: black;
+    font-size: 13px;
+    width: 40%;
+    border-radius: 5px;
+    margin-top: 5px;
+    padding: 7px;
+
+}
+
+.selected_tag {
+    background-color: #e3e8ec;
+    padding-left: 7px;
 }

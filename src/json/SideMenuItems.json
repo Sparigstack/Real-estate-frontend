@@ -7,11 +7,24 @@
         "submenu": []
     },
     {
-        "path": "/all-leads",
+        "path": "/lead-management",
         "imageKey": "leadIcon",
-        "altText": "Leads",
-        "label": "Leads",
-        "submenu": []
+        "altText": "Lead Management",
+        "label": "Lead Management",
+        "submenu": [
+            {
+                "path": "/all-leads",
+                "imageKey": "customersIcon",
+                "altText": "Leads",
+                "label": "Leads"
+            },
+            {
+                "path": "/custom-fields",
+                "imageKey": "customfieldIcon",
+                "altText": "Custom Fields",
+                "label": "Custom Fields"
+            }
+        ]
     },
     {
         "path": "/materials",

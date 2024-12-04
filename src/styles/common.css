@@ -214,16 +214,11 @@ select {
 }
 
 /*custom input group */
-.property-form .input-group-text {
-  border-bottom-left-radius: 0px !important;
-  border-bottom-right-radius: 8px !important;
-  border-top-left-radius: 0px !important;
-  border-top-right-radius: 8px !important;
+.property-form .form-control {
+  background-color: transparent;
+  color: white;
 }
 
-.input-group-text {
-  border-color: #C9C9C9 !important;
-}
 
 .PageHeader {
   color: white;
