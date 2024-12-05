@@ -58,7 +58,7 @@ export default function LeadTags({ tags, setTags, allTags }) {
     };
     return (
         <>
-            <div className='row fontwhite'>
+            <div className='row fontwhite pt-4'>
                 <div className='h6 ps-0 pb-3 fw-semibold'>Tags</div>
             </div>
             <div className='fontwhite row position-relative'>

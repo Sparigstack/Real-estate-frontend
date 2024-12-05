@@ -9,6 +9,7 @@ import OptionalFields from './LeadForm/OptionalFields';
 import LeadTags from './LeadForm/LeadTags';
 import useProperty from '../../hooks/useProperty';
 import AlertComp from '../../components/alerts/AlertComp';
+import LeadCustomFields from './LeadCustomFields';
 
 export default function AddUpdateLeadForm() {
     const { postAPIAuthKey, getAPIAuthKey } = useApiService();
@@ -22,6 +23,7 @@ export default function AddUpdateLeadForm() {
     const unitname = location.state && location.state.unitname;
     const [tags, setTags] = useState([]);
     const [allTags, setAllTags] = useState([]);
+    const [CustomFieldData, setCustomFieldData] = useState([]);
     const [formData, setFormData] = useState({
         name: '',
         contactno: '',
@@ -38,6 +40,9 @@ export default function AddUpdateLeadForm() {
         agent_name: '',
         agent_contact: ''
     });
+    useEffect(() => {
+        getAllFields();
+    }, [])
     useEffect(() => {
         const getLeadById = async () => {
             if (!leadid) return;
@@ -75,6 +80,23 @@ export default function AddUpdateLeadForm() {
         getLeadById();
         getLeadTags();
     }, [leadid])
+    const getAllFields = async () => {
+        try {
+            setLoading(true);
+            const result = await getAPIAuthKey(`/get-custom-fields/` + schemeId);
+            if (!result) {
+                throw new Error('Something went wrong');
+            }
+            const responseRs = JSON.parse(result);
+            setCustomFieldData(responseRs);
+            setLoading(false);
+        }
+        catch (error) {
+            setLoading(false);
+            console.error(error);
+        }
+    }
+
     const getLeadTags = async () => {
         try {
             const result = await getAPIAuthKey(`/fetch-tags/${schemeId}`);
@@ -92,39 +114,69 @@ export default function AddUpdateLeadForm() {
     const handleAddLead = async (values) => {
         setLoading(true);
         try {
+            const customfieldvalues = CustomFieldData?.map((field) => {
+                const fieldName = field.name;
+                const value = values[fieldName];
+
+                if (value !== null && value !== undefined) {
+                    return {
+                        custom_field_id: field.id,
+                        custom_field_structure_id: field.custom_field_structure_id || null,
+                        value_type: field.custom_fields_type_values_id.toString(),
+                        value: value,
+                    };
+                }
+                return null; // Exclude null values
+            }).filter((item) => item !== null);
             const raw = JSON.stringify({
-                ...values, propertyinterest: schemeId,
+                name: values.name,
+                contactno: values.contactno,
+                email: values.email,
+                source: values.source,
+                status: values.status,
+                budget: values.budget,
+                address: values.address,
+                state: values.state,
+                city: values.city,
+                pincode: values.pincode,
+                reminder_date: values.reminder_date,
+                notes: values.notes,
+                agent_name: values.agent_name,
+                agent_contact: values.agent_contact,
+                propertyinterest: schemeId,
                 leadid: leadid,
                 unitId: unitidfromsales || null,
-                tags: tags
+                tags: tags,
+                CustomFieldData: customfieldvalues
             });
-            const result = await postAPIAuthKey('/add-edit-leads', raw);
+            console.log(raw)
+            // const result = await postAPIAuthKey('/add-edit-leads', raw);
 
-            if (!result) {
-                throw new Error('Something went wrong');
-            }
+            // if (!result) {
+            //     throw new Error('Something went wrong');
+            // }
 
-            const responseRs = JSON.parse(result);
-            setLoading(false);
-            if (responseRs.status == 'success') {
-                var msg = leadid == 0 ? 'Lead Added Successfully' : 'Lead Updated Successfully';
-                setShowAlerts(<AlertComp show={true} variant="success" message={msg} />);
-                setTimeout(() => {
-                    setShowAlerts(false);
-                    {
-                        unitidfromsales ?
-                            navigate('/sales')
-                            :
-                            navigate('/all-leads')
-                    }
-                }, 2000);
-            }
-            else {
-                setShowAlerts(<AlertComp show={true} variant="danger" message={responseRs.message} />);
-                setTimeout(() => {
-                    setShowAlerts(false);
-                }, 5000);
-            }
+            // const responseRs = JSON.parse(result);
+            // setLoading(false);
+            // if (responseRs.status == 'success') {
+            //     var msg = leadid == 0 ? 'Lead Added Successfully' : 'Lead Updated Successfully';
+            //     setShowAlerts(<AlertComp show={true} variant="success" message={msg} />);
+            //     setTimeout(() => {
+            //         setShowAlerts(false);
+            //         {
+            //             unitidfromsales ?
+            //                 navigate('/sales')
+            //                 :
+            //                 navigate('/all-leads')
+            //         }
+            //     }, 2000);
+            // }
+            // else {
+            //     setShowAlerts(<AlertComp show={true} variant="danger" message={responseRs.message} />);
+            //     setTimeout(() => {
+            //         setShowAlerts(false);
+            //     }, 5000);
+            // }
         }
         catch (error) {
             setLoading(false);
@@ -160,6 +212,9 @@ export default function AddUpdateLeadForm() {
                         <GeneralFields setFieldValue={setFieldValue} values={values} showBudget={unitidfromsales} />
                         <OptionalFields setFieldValue={setFieldValue} values={values} />
                         <LeadTags setTags={setTags} tags={tags} allTags={allTags} />
+                        {CustomFieldData &&
+                            <LeadCustomFields CustomFieldData={CustomFieldData} />
+                        }
                         <div className='col-12 pt-5 text-center'>
                             <button type='button' className="cancelBtn me-2" onClick={(e) => navigate('/all-leads')}>
                                 Cancel

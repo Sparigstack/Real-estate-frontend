@@ -25,7 +25,7 @@ export default function OptionalFields({ setFieldValue, values }) {
         }
     }
     return (
-        <div className='row fontwhite'>
+        <div className='row fontwhite pt-4'>
             <div className='h6 ps-0 pb-3 fw-semibold'>Extra Fields</div>
             <div className='col-md-6 mb-4 ps-0 position-relative'>
                 <label className='custom-label'>Address (optional)</label>

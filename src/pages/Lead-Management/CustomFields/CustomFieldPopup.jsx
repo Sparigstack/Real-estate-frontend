@@ -4,17 +4,57 @@ import { ErrorMessage, Field, Form, Formik } from 'formik';
 import SingleSelection from './SingleSelection';
 import MultiSelection from './MultiSelection';
 import { CustomFieldValidationSchema } from '../../../utils/validations/CustomFieldValidationSchema';
+import useProperty from '../../../hooks/useProperty';
+import AlertComp from '../../../components/alerts/AlertComp';
 
-export default function CustomFieldPopup({ setLoading, setshowAlerts, handleHide }) {
+export default function CustomFieldPopup({ setLoading, setshowAlerts, handleHide, fieldid, getAllFields }) {
+    const { schemeId } = useProperty();
     const [FieldTypes, setFieldTypes] = useState([]);
     const [singleSelectionOptions, setSingleSelectionOptions] = useState([]);
     const [multiSelectionOptions, setMultiSelectionOptions] = useState([]);
     const [requiredMsg, setrequiredMsg] = useState('');
-    const { getAPIAuthKey } = useApiService();
+    const { getAPIAuthKey, postAPIAuthKey } = useApiService();
+    const [allData, setAllData] = useState({
+        fieldname: '',
+        fieldtype: '',
+        singleselection: [],
+        multiselection: []
+    })
     useEffect(() => {
         setFieldTypes([]);
         getAllFieldTypes();
     }, [])
+    useEffect(() => {
+        const getFieldValue = async () => {
+            try {
+                if (!fieldid) return;
+                setLoading(true);
+                const result = await getAPIAuthKey(`/fetch-custom-field/` + fieldid);
+                if (!result) {
+                    throw new Error('Something went wrong');
+                }
+                const responseRs = JSON.parse(result);
+                setAllData({
+                    ...allData,
+                    fieldname: responseRs.name,
+                    fieldtype: responseRs.custom_fields_type_values_id?.toString() || '',
+                    singleselection: responseRs.custom_fields_type_values_id == 5 ? responseRs.custom_field_structures : [],
+                    multiselection: responseRs.custom_fields_type_values_id == 6 ? responseRs.custom_field_structures : [],
+                });
+                if (responseRs.custom_fields_type_values_id == 5) {
+                    setSingleSelectionOptions(responseRs.custom_field_structures)
+                } else if (responseRs.custom_fields_type_values_id == 6) {
+                    setMultiSelectionOptions(responseRs.custom_field_structures)
+                }
+                setLoading(false);
+            }
+            catch (error) {
+                setLoading(false);
+                console.error(error);
+            }
+        }
+        getFieldValue();
+    }, [fieldid])
     const getAllFieldTypes = async () => {
         try {
             setLoading(true);
@@ -31,12 +71,15 @@ export default function CustomFieldPopup({ setLoading, setshowAlerts, handleHide
             console.error(error);
         }
     }
-    const handleSubmit = (values) => {
-        const submissionData = {
+    const handleSubmit = async (values) => {
+        setLoading(true);
+        const submissionData = JSON.stringify({
             ...values,
             singleselection: singleSelectionOptions || null,
             multiselection: multiSelectionOptions || null,
-        };
+            propertyId: schemeId,
+            fieldId: fieldid
+        });
         if (values.fieldtype == '5' && (singleSelectionOptions.length === 0 || !singleSelectionOptions[0])) {
             setrequiredMsg("One option is required for single selection.");
             return;
@@ -47,7 +90,29 @@ export default function CustomFieldPopup({ setLoading, setshowAlerts, handleHide
             return;
         }
         setrequiredMsg("");
-        console.log(submissionData);
+        const result = await postAPIAuthKey('/add-custom-fields', submissionData);
+
+        if (!result) {
+            throw new Error('Something went wrong');
+        }
+
+        const responseRs = JSON.parse(result);
+        setLoading(false);
+        if (responseRs.status == 'success') {
+            var msg = fieldid == 0 ? 'Field Added Successfully' : 'Field Updated Successfully';
+            setshowAlerts(<AlertComp show={true} variant="success" message={msg} />);
+            handleHide();
+            getAllFields();
+            setTimeout(() => {
+                setshowAlerts(false);
+            }, 2000);
+        }
+        else {
+            setshowAlerts(<AlertComp show={true} variant="danger" message={responseRs.message} />);
+            setTimeout(() => {
+                setshowAlerts(false);
+            }, 5000);
+        }
     }
     const handleFieldType = (id) => {
         setSingleSelectionOptions([])
@@ -60,13 +125,8 @@ export default function CustomFieldPopup({ setLoading, setshowAlerts, handleHide
     }
     return (
         <div className='px-0 pb-4 row font-13 formLabel'>
-            <Formik initialValues={{
-                fieldname: '',
-                fieldtype: '',
-                fieldrequired: '',
-                singleselection: [],
-                multiselection: [],
-            }}
+            <Formik initialValues={allData}
+                enableReinitialize={true}
                 validationSchema={CustomFieldValidationSchema}
                 validateOnBlur={false}
                 validateOnChange={false}
@@ -85,27 +145,16 @@ export default function CustomFieldPopup({ setLoading, setshowAlerts, handleHide
                                     <div key={index} className="mb-2 col-md-4">
                                         <label className={`d-flex align-items-center pb-1`}>
                                             <Field className="me-2" type="radio" name="fieldtype"
-                                                value={item.id.toString()} onChange={(e) => { handleFieldType(item.id); setFieldValue('fieldtype', item.id.toString()) }} />
+                                                disabled={fieldid != 0}
+                                                value={item.id.toString()}
+                                                checked={values.fieldtype == item.id.toString()}
+                                                onChange={(e) => { handleFieldType(item.id); setFieldValue('fieldtype', item.id.toString()) }} />
                                             {item.type}
                                         </label>
                                     </div>
                                 ))}
                             </div>
                             <ErrorMessage name='fieldtype' component="leads" className="text-start errorText" />
-                        </div>
-                        <div className='mb-4 px-2'>
-                            <div className='d-flex '>
-                                <label className='fw-semibold'>Make this field mandatory? <span className='text-danger'>*</span></label>
-                                <label className={`d-flex align-items-center ps-3 pb-1`}>
-                                    <Field className="me-2" type="radio" name="fieldrequired" value={"1"} />
-                                    Yes
-                                </label>
-                                <label className={`d-flex align-items-center ps-3 pb-1`}>
-                                    <Field className="me-2" type="radio" name="fieldrequired" value={"2"} />
-                                    No
-                                </label>
-                            </div>
-                            <ErrorMessage name='fieldrequired' component="div" className="ps-2 text-start errorText" />
                         </div>
                         {values.fieldtype == '5' && (
                             <SingleSelection singleSelectionOptions={singleSelectionOptions} setrequiredMsg={setrequiredMsg}
@@ -116,8 +165,8 @@ export default function CustomFieldPopup({ setLoading, setshowAlerts, handleHide
                                 setMultiSelectionOptions={setMultiSelectionOptions} requiredMsg={requiredMsg} />
                         )}
                         <div className='col-12 pt-3 text-center' >
-                            <button type='button' className="CancelBtn me-2" onClick={handleReset}>
-                                Reset
+                            <button type='button' className="CancelBtn me-2" onClick={handleHide}>
+                                Cancel
                             </button>
                             <button type='submit' className="SuccessBtn">
                                 Confirm
