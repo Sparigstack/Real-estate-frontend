@@ -71,6 +71,7 @@ export default function AddUpdateLeadForm() {
                     notes: responseRs.notes || '',
                 });
                 setTags(responseRs.tags);
+                // setCustomFieldData(responseRs.setCustomFieldData);
             }
             catch (error) {
                 setLoading(false);
@@ -117,13 +118,34 @@ export default function AddUpdateLeadForm() {
             const customfieldvalues = CustomFieldData?.map((field) => {
                 const fieldName = field.name;
                 const value = values[fieldName];
-
+                let customFieldStructureId = null;
+                if (field.custom_fields_type_values_id === 5 || field.custom_fields_type_values_id === 6) {
+                    if (Array.isArray(value)) {
+                        customFieldStructureId = value
+                            .map((selectedValue) => {
+                                const selectedStructure = field.custom_field_structures.find(
+                                    (item) => item.value === selectedValue
+                                );
+                                return selectedStructure ? selectedStructure.id : null;
+                            })
+                            .filter((id) => id !== null);
+                    } else {
+                        const selectedStructure = field.custom_field_structures.find(
+                            (item) => item.value === value
+                        );
+                        if (selectedStructure) {
+                            customFieldStructureId = selectedStructure.id;
+                        }
+                    }
+                }
                 if (value !== null && value !== undefined) {
                     return {
                         custom_field_id: field.id,
-                        custom_field_structure_id: field.custom_field_structure_id || null,
+                        custom_field_structure_id: Array.isArray(customFieldStructureId)
+                            ? customFieldStructureId.join(',')
+                            : customFieldStructureId,
                         value_type: field.custom_fields_type_values_id.toString(),
-                        value: value,
+                        value: Array.isArray(value) ? value.join(',') : value
                     };
                 }
                 return null; // Exclude null values
@@ -150,33 +172,33 @@ export default function AddUpdateLeadForm() {
                 CustomFieldData: customfieldvalues
             });
             console.log(raw)
-            // const result = await postAPIAuthKey('/add-edit-leads', raw);
+            const result = await postAPIAuthKey('/add-edit-leads', raw);
 
-            // if (!result) {
-            //     throw new Error('Something went wrong');
-            // }
+            if (!result) {
+                throw new Error('Something went wrong');
+            }
 
-            // const responseRs = JSON.parse(result);
-            // setLoading(false);
-            // if (responseRs.status == 'success') {
-            //     var msg = leadid == 0 ? 'Lead Added Successfully' : 'Lead Updated Successfully';
-            //     setShowAlerts(<AlertComp show={true} variant="success" message={msg} />);
-            //     setTimeout(() => {
-            //         setShowAlerts(false);
-            //         {
-            //             unitidfromsales ?
-            //                 navigate('/sales')
-            //                 :
-            //                 navigate('/all-leads')
-            //         }
-            //     }, 2000);
-            // }
-            // else {
-            //     setShowAlerts(<AlertComp show={true} variant="danger" message={responseRs.message} />);
-            //     setTimeout(() => {
-            //         setShowAlerts(false);
-            //     }, 5000);
-            // }
+            const responseRs = JSON.parse(result);
+            setLoading(false);
+            if (responseRs.status == 'success') {
+                var msg = leadid == 0 ? 'Lead Added Successfully' : 'Lead Updated Successfully';
+                setShowAlerts(<AlertComp show={true} variant="success" message={msg} />);
+                setTimeout(() => {
+                    setShowAlerts(false);
+                    {
+                        unitidfromsales ?
+                            navigate('/sales')
+                            :
+                            navigate('/all-leads')
+                    }
+                }, 2000);
+            }
+            else {
+                setShowAlerts(<AlertComp show={true} variant="danger" message={responseRs.message} />);
+                setTimeout(() => {
+                    setShowAlerts(false);
+                }, 5000);
+            }
         }
         catch (error) {
             setLoading(false);
