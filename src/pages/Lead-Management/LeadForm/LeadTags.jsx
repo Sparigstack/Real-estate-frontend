@@ -57,12 +57,10 @@ export default function LeadTags({ tags, setTags, allTags }) {
         setSelectedIndex(-1);
     };
     return (
-        <>
-            <div className='row fontwhite pt-4'>
-                <div className='h6 ps-0 pb-3 fw-semibold'>Tags</div>
-            </div>
+        <div className='row fontwhite pt-4 px-5'>
+            <div className='h6 ps-0 pb-3 fw-semibold'>Tags</div>
             <div className='fontwhite row position-relative'>
-                <div className='col-md-6 ps-0 position-relative'>
+                <div className='col-md-4 ps-0 position-relative'>
                     <label className='custom-label'>Add Tag</label>
                     <input
                         type="text"
@@ -106,6 +104,7 @@ export default function LeadTags({ tags, setTags, allTags }) {
                 )}
 
             </div>
-        </>
+        </div>
+
     )
 }

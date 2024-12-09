@@ -62,6 +62,8 @@ const Images = {
     white_info: new URL('../assets/images/white_info.svg', import.meta.url).href,
     white_delete: new URL('../assets/images/white_delete.svg', import.meta.url).href,
     lead_tags: new URL('../assets/images/lead_tags.svg', import.meta.url).href,
+    downArrow: new URL('../assets/images/downArrow.svg', import.meta.url).href,
+    topArrow: new URL('../assets/images/topArrow.svg', import.meta.url).href,
 
     dashboardIcon: new URL('../assets/images/sidemenu/dashboard-icon.svg', import.meta.url).href,
     salesIcon: new URL('../assets/images/sidemenu/sales.svg', import.meta.url).href,

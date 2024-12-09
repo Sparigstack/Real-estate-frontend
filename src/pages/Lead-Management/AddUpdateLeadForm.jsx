@@ -10,6 +10,7 @@ import LeadTags from './LeadForm/LeadTags';
 import useProperty from '../../hooks/useProperty';
 import AlertComp from '../../components/alerts/AlertComp';
 import LeadCustomFields from './LeadCustomFields';
+import Images from '../../utils/Images';
 
 export default function AddUpdateLeadForm() {
     const { postAPIAuthKey, getAPIAuthKey } = useApiService();
@@ -24,6 +25,7 @@ export default function AddUpdateLeadForm() {
     const [tags, setTags] = useState([]);
     const [allTags, setAllTags] = useState([]);
     const [CustomFieldData, setCustomFieldData] = useState([]);
+    const [isMoreFieldsVisible, setIsMoreFieldsVisible] = useState(false);
     const [formData, setFormData] = useState({
         name: '',
         contactno: '',
@@ -41,8 +43,11 @@ export default function AddUpdateLeadForm() {
         agent_contact: ''
     });
     useEffect(() => {
-        getAllFields();
-    }, [])
+        if (isMoreFieldsVisible) {
+            getAllFields();
+            getLeadTags();
+        }
+    }, [isMoreFieldsVisible])
     useEffect(() => {
         const getLeadById = async () => {
             if (!leadid) return;
@@ -76,31 +81,36 @@ export default function AddUpdateLeadForm() {
             }
         }
         getLeadById();
-        getLeadTags();
     }, [leadid])
     const getAllFields = async () => {
         try {
-            const result = await getAPIAuthKey(`/get-custom-field-with-lead-values/` + schemeId + "/" + leadid);
-            if (!result) {
-                throw new Error('Something went wrong');
+            if (CustomFieldData.length == 0) {
+                setLoading(true);
+                const result = await getAPIAuthKey(`/get-custom-field-with-lead-values/` + schemeId + "/" + leadid);
+                if (!result) {
+                    throw new Error('Something went wrong');
+                }
+                const responseRs = JSON.parse(result);
+                setCustomFieldData(responseRs);
+                setLoading(false);
+
             }
-            const responseRs = JSON.parse(result);
-            setCustomFieldData(responseRs);
         }
         catch (error) {
             setLoading(false);
             console.error(error);
         }
     }
-
     const getLeadTags = async () => {
         try {
-            const result = await getAPIAuthKey(`/fetch-tags/${schemeId}`);
-            if (!result) {
-                throw new Error('Something went wrong');
+            if (tags.length == 0) {
+                const result = await getAPIAuthKey(`/fetch-tags/${schemeId}`);
+                if (!result) {
+                    throw new Error('Something went wrong');
+                }
+                const responseRs = JSON.parse(result);
+                setAllTags(responseRs)
             }
-            const responseRs = JSON.parse(result);
-            setAllTags(responseRs)
         }
         catch (error) {
             setLoading(false);
@@ -110,40 +120,43 @@ export default function AddUpdateLeadForm() {
     const handleAddLead = async (values) => {
         setLoading(true);
         try {
-            const customfieldvalues = CustomFieldData?.map((field) => {
-                const value = field.value;
-                let customFieldStructureId = null;
-                if (field.value_type === 5 || field.value_type === 6) {
-                    if (Array.isArray(value)) {
-                        customFieldStructureId = value
-                            .map((selectedValue) => {
-                                const selectedStructure = field.custom_field_structures.find(
-                                    (item) => item.id == selectedValue
-                                );
-                                return selectedStructure ? selectedStructure.id : null;
-                            })
-                            .filter((id) => id != null);
-                    } else {
-                        const selectedStructure = field.custom_field_structures.find(
-                            (item) => item.id == value
-                        );
-                        if (selectedStructure) {
-                            customFieldStructureId = selectedStructure.id;
+            var customfieldvalues = [];
+            if (CustomFieldData.length > 0) {
+                customfieldvalues = CustomFieldData?.map((field) => {
+                    const value = field.value;
+                    let customFieldStructureId = null;
+                    if (field.value_type === 5 || field.value_type === 6) {
+                        if (Array.isArray(value)) {
+                            customFieldStructureId = value
+                                .map((selectedValue) => {
+                                    const selectedStructure = field.custom_field_structures.find(
+                                        (item) => item.id == selectedValue
+                                    );
+                                    return selectedStructure ? selectedStructure.id : null;
+                                })
+                                .filter((id) => id != null);
+                        } else {
+                            const selectedStructure = field.custom_field_structures.find(
+                                (item) => item.id == value
+                            );
+                            if (selectedStructure) {
+                                customFieldStructureId = selectedStructure.id;
+                            }
                         }
                     }
-                }
-                if (value != null && value != undefined) {
-                    return {
-                        custom_field_id: field.id,
-                        custom_field_structure_id: Array.isArray(customFieldStructureId)
-                            ? customFieldStructureId.join(',')
-                            : customFieldStructureId,
-                        value_type: field.value_type.toString(),
-                        value: Array.isArray(value) ? value.join(',') : value
-                    };
-                }
-                return null; // Exclude null values
-            }).filter((item) => item !== null);
+                    if (value != null && value != undefined) {
+                        return {
+                            custom_field_id: field.id,
+                            custom_field_structure_id: Array.isArray(customFieldStructureId)
+                                ? customFieldStructureId.join(',')
+                                : customFieldStructureId,
+                            value_type: field.value_type.toString(),
+                            value: Array.isArray(value) ? value.join(',') : value
+                        };
+                    }
+                    return null; // Exclude null values
+                }).filter((item) => item !== null);
+            }
             const raw = JSON.stringify({
                 name: values.name,
                 contactno: values.contactno,
@@ -163,9 +176,9 @@ export default function AddUpdateLeadForm() {
                 leadid: leadid,
                 unitId: unitidfromsales || null,
                 tags: tags,
-                CustomFieldData: customfieldvalues
+                CustomFieldData: customfieldvalues,
+                flag: 2
             });
-            console.log(raw)
             const result = await postAPIAuthKey('/add-edit-leads', raw);
 
             if (!result) {
@@ -224,19 +237,32 @@ export default function AddUpdateLeadForm() {
                     handleAddLead(values);
                 }}>
                 {({ values, setFieldValue }) => (
-                    <Form className='p-4 property-form'>
-                        <GeneralFields setFieldValue={setFieldValue} values={values} showBudget={unitidfromsales} />
+                    <Form className='py-3 px-5 property-form'>
+                        <GeneralFields setFieldValue={setFieldValue} values={values} />
                         <OptionalFields setFieldValue={setFieldValue} values={values} />
-                        <LeadTags setTags={setTags} tags={tags} allTags={allTags} />
-                        {CustomFieldData &&
-                            <LeadCustomFields CustomFieldData={CustomFieldData} setCustomFieldData={setCustomFieldData} />
-                        }
+                        <div className='row fontwhite pt-4 px-5'>
+                            <div className='col-10 ps-0'>
+                                <label className='text-decoration-underline fw-medium colorAAB8FF'>Show More Fields</label>
+                            </div>
+                            <div className='col-2 text-end'>
+                                <img src={Images.downArrow} title="Show More Details" className={`cursor-pointer img-fluid ${isMoreFieldsVisible ? "d-none" : ""}`} onClick={(e) => setIsMoreFieldsVisible(true)} />
+                                <img src={Images.topArrow} title="Hide More Details" className={`img-fluid cursor-pointer ${isMoreFieldsVisible ? "" : "d-none"}`} onClick={(e) => setIsMoreFieldsVisible(false)} />
+                            </div>
+                        </div>
+                        {isMoreFieldsVisible && (
+                            <>
+                                <LeadTags setTags={setTags} tags={tags} allTags={allTags} />
+                                {CustomFieldData.length > 0 &&
+                                    <LeadCustomFields CustomFieldData={CustomFieldData} setCustomFieldData={setCustomFieldData} />
+                                }
+                            </>
+                        )}
                         <div className='col-12 pt-5 text-center'>
                             <button type='button' className="cancelBtn me-2" onClick={(e) => navigate('/all-leads')}>
                                 Cancel
                             </button>
                             <button type='submit' className="otpBtn">
-                                Save
+                                {leadid == 0 ? 'Save' : 'Update'}
                             </button>
                         </div>
                     </Form>

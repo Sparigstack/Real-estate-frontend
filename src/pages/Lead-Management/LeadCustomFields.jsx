@@ -2,11 +2,11 @@ import { useFormikContext } from 'formik'
 import React from 'react'
 
 export default function LeadCustomFields({ CustomFieldData, setCustomFieldData }) {
-    const { values, setFieldValue } = useFormikContext();
+    const { setFieldValue } = useFormikContext();
     const renderField = (item, index) => {
         const handleChange = (e) => {
             const updatedFields = CustomFieldData.map(field =>
-                field.name === item.name
+                field.name == item.name
                     ? { ...field, value: e.target.value }
                     : field
             );
@@ -98,10 +98,10 @@ export default function LeadCustomFields({ CustomFieldData, setCustomFieldData }
         }
     };
     return (
-        <div className='row fontwhite pt-5'>
+        <div className='row fontwhite pt-5 px-5'>
             <div className='h6 ps-0 pb-3 fw-semibold'>Custom Fields</div>
             {CustomFieldData.map((item, index) => (
-                <div className='col-md-6 mb-4 ps-0 position-relative' key={index}>
+                <div className='col-md-4 mb-4 ps-0 position-relative' key={index}>
                     <label className='custom-label'>{item.name}</label>
                     {renderField(item, index)}
                 </div>

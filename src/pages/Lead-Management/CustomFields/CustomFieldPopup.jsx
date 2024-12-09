@@ -133,26 +133,28 @@ export default function CustomFieldPopup({ setLoading, setshowAlerts, handleHide
                 onSubmit={handleSubmit}>
                 {({ handleReset, values, setFieldValue }) => (
                     <Form className='row '>
-                        <div className='col-md-6 mt-3 mb-4 px-0 position-relative'>
+                        <div className='col-md-6 mb-4 px-0 position-relative'>
                             <label className='input-labels'>Field Name <span className='text-danger'>*</span></label>
                             <Field type="text" className="custom-inputs" name='fieldname' autoComplete='off' />
                             <ErrorMessage name='fieldname' component="div" className="text-start errorText" />
                         </div>
-                        <div className='mb-4 px-2 position-relative'>
-                            <label className='mb-2 fw-semibold'>Field Type <span className='text-danger'>*</span></label>
-                            <div className='row'>
-                                {FieldTypes?.map((item, index) => (
-                                    <div key={index} className="mb-2 col-md-4">
-                                        <label className={`d-flex align-items-center pb-1`}>
-                                            <Field className="me-2" type="radio" name="fieldtype"
-                                                disabled={fieldid != 0}
-                                                value={item.id.toString()}
-                                                checked={values.fieldtype == item.id.toString()}
-                                                onChange={(e) => { handleFieldType(item.id); setFieldValue('fieldtype', item.id.toString()) }} />
-                                            {item.type}
-                                        </label>
-                                    </div>
-                                ))}
+                        <div className='col-md-12 px-0 mb-4 position-relative' style={{ backgroundColor: "white" }}>
+                            <label className='input-labels'>Field Type <span className='text-danger'>*</span></label>
+                            <div className='pt-4 custom-inputs'>
+                                <div className='row'>
+                                    {FieldTypes?.map((item, index) => (
+                                        <div key={index} className="mb-2  col-md-4">
+                                            <label className={`font-12 d-flex align-items-center pb-1`}>
+                                                <Field className="me-2" type="radio" name="fieldtype"
+                                                    disabled={fieldid != 0}
+                                                    value={item.id.toString()}
+                                                    checked={values.fieldtype == item.id.toString()}
+                                                    onChange={(e) => { handleFieldType(item.id); setFieldValue('fieldtype', item.id.toString()) }} />
+                                                {item.type}
+                                            </label>
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
                             <ErrorMessage name='fieldtype' component="leads" className="text-start errorText" />
                         </div>

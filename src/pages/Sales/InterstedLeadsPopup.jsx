@@ -6,18 +6,29 @@ import Loader from '../../components/loader/Loader';
 import AlertComp from '../../components/alerts/AlertComp';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faIndianRupeeSign } from '@fortawesome/free-solid-svg-icons';
+import LeadForm from '../../components/LeadForm';
 import Images from '../../utils/Images';
-import { useNavigate } from 'react-router-dom';
 
-export default function InterstedLeadsPopup({ setInterstedLeadPopup, unitId, setShowAlerts, unitname }) {
+export default function InterstedLeadsPopup({ setInterstedLeadPopup, unitId, setShowAlerts }) {
     const [allLeads, setAllLeads] = useState([]);
-    const navigate = useNavigate();
     const [leadvalues, setLeadvalues] = useState([]);
     const [Loading, setLoading] = useState(false);
     const [Errormsg, setErrormsg] = useState('');
     const { getAPIAuthKey, postAPIAuthKey } = useApiService();
     const { schemeId, refreshPropertyDetails } = useProperty();
+    const [showForm, setShowForm] = useState(false);
     const [showButtons, setShowButtons] = useState(false);
+    const [initialValues, setinitialValues] = useState({
+        name: '',
+        email: '',
+        source: 0,
+        contactno: '',
+        budget: '',
+        notes: '',
+        agent_name: '',
+        agent_contact: '',
+        status: ''
+    })
     useEffect(() => {
         getUnitLeads();
         setAllLeads([]);
@@ -143,65 +154,109 @@ export default function InterstedLeadsPopup({ setInterstedLeadPopup, unitId, set
         }
     }
 
+    const handleAddLead = async (values) => {
+        setLoading(true);
+        try {
+            const raw = JSON.stringify({ ...values, propertyinterest: schemeId, unitId: unitId, flag: 1 });
+            const result = await postAPIAuthKey('/add-edit-leads', raw);
+
+            if (!result) {
+                throw new Error('Something went wrong');
+            }
+
+            const responseRs = JSON.parse(result);
+            setLoading(false);
+            if (responseRs.status == 'success') {
+                setInterstedLeadPopup(false);
+                setShowAlerts(<AlertComp show={true} variant="success" message={'Lead Added Successfully'} />);
+                refreshPropertyDetails();
+                setTimeout(() => {
+                    setShowAlerts(false);
+                }, 2000);
+            }
+            else {
+                setShowAlerts(<AlertComp show={true} variant="danger" message={responseRs.message} />);
+            }
+        }
+        catch (error) {
+            setLoading(false);
+            console.error(error);
+        }
+    }
+
     return (
         <div>
             {Loading && <Loader runningcheck={Loading} />}
 
-            <div className='col-12 d-grid justify-content-center'>
-                <DropdownTreeSelectBox
-                    data={allLeads}
-                    mode={"multiSelect"}
-                    onChange={handleCategoryChange}
-                    selectedValue={leadvalues}
-                    placeholder={"Choose Intersted Lead"} />
-                <div className='text-center'>
-                    <div className='py-3'>OR</div>
-                    <button type="btn" className='SuccessBtn' onClick={(e) => {
-                        navigate('/add-update-leads', { state: { unitid: unitId, leadid: 0, unitname: unitname } })
-                    }}>
-                        <img src={Images.addicon} className='bigiconsize h-100 pe-2' />
-                        Add Lead</button>
-                </div>
-            </div>
-            <label className='text-danger font-13'>{Errormsg}</label>
-
-            {leadvalues.length > 0 && (
-                <div className='formLabel  py-2 text-start'>
-                    <div className='row fw-semibold font-14 pb-1'>
-                        <div className='col-md-4'>Contact Name</div>
-                        <div className='col-md-4'>Contact No.</div>
-                        <div className='col-md-4'>Budget</div>
+            {showForm ?
+                <LeadForm formData={initialValues} setFormData={setinitialValues} handleAddLead={handleAddLead} handleHide={(e) => setInterstedLeadPopup(false)} showBudget={true} />
+                :
+                <>
+                    <DropdownTreeSelectBox
+                        data={allLeads}
+                        mode={"multiSelect"}
+                        onChange={handleCategoryChange}
+                        selectedValue={leadvalues}
+                        placeholder={"Choose Intersted Lead"} />
+                    <div className='text-center'>
+                        <div className='py-3'>OR</div>
+                        <button type="btn" className='SuccessBtn' onClick={(e) => {
+                            setShowForm(true);
+                            setinitialValues({
+                                ...initialValues,
+                                name: '',
+                                email: '',
+                                source: 0,
+                                budget: '',
+                                contactno: ''
+                            })
+                        }}>
+                            <img src={Images.addicon} className='bigiconsize h-100 pe-2' />
+                            Add Lead</button>
                     </div>
-                    <div className=''>
-                        {leadvalues.map((item, index) => {
-                            return <div className='row align-items-center my-2 fw-medium formLabel  font-14 matchingleadsboxes'>
-                                <div className='col-md-4'>
-                                    {item.name}
-                                </div>
-                                <div className='col-md-4'>
-                                    {item.contactno}
-                                </div>
-                                <div className='col-md-4'>
-                                    <div className="input-group">
-                                        <input type="number" min={0} className="form-control font-13" name='budget'
-                                            autoComplete='off' value={item.budget} onChange={(e) => handleBudgetChange(index, e.target.value)} />
-                                        <span className="input-group-text inputbg">
-                                            <FontAwesomeIcon icon={faIndianRupeeSign} className='pe-1 font-13' />
-                                        </span>
-                                    </div>
-                                </div>
+                    <label className='text-danger font-13'>{Errormsg}</label>
+
+                    {leadvalues.length > 0 && (
+                        <div className='formLabel  py-2 text-start'>
+                            <div className='row fw-semibold font-14 pb-1'>
+                                <div className='col-md-4'>Contact Name</div>
+                                <div className='col-md-4'>Contact No.</div>
+                                <div className='col-md-4'>Budget</div>
                             </div>
+                            <div className=''>
+                                {leadvalues.map((item, index) => {
+                                    return <div className='row align-items-center my-2 fw-medium formLabel  font-14 matchingleadsboxes'>
+                                        <div className='col-md-4'>
+                                            {item.name}
+                                        </div>
+                                        <div className='col-md-4'>
+                                            {item.contactno}
+                                        </div>
+                                        <div className='col-md-4'>
+                                            <div className="input-group">
+                                                <input type="number" min={0} className="form-control font-13" name='budget'
+                                                    autoComplete='off' value={item.budget} onChange={(e) => handleBudgetChange(index, e.target.value)} />
+                                                <span className="input-group-text inputbg">
+                                                    <FontAwesomeIcon icon={faIndianRupeeSign} className='pe-1 font-13' />
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
 
-                        })}
-                    </div>
-                </div>
-            )}
-            {showButtons && (
-                <div className='col-12 pt-2 text-center'>
-                    <button type="button" className='CancelBtn me-2' onClick={(e) => hidePopup()}>Cancel</button>
-                    <button type="submit" className='SuccessBtn' onClick={SaveInterstedLeads}>Save</button>
-                </div>
-            )}
+                                })}
+                            </div>
+                        </div>
+                    )}
+                    {showButtons && (
+                        <div className='col-12 pt-2 text-center'>
+                            <button type="button" className='CancelBtn me-2' onClick={(e) => hidePopup()}>Cancel</button>
+                            <button type="submit" className='SuccessBtn' onClick={SaveInterstedLeads}>Save</button>
+                        </div>
+                    )}
+                </>
+            }
+
+
         </div >
     )
 }

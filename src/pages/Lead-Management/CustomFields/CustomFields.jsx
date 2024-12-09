@@ -3,7 +3,6 @@ import Loader from '../../../components/loader/Loader';
 import Images from '../../../utils/Images';
 import CustomModal from '../../../utils/CustomModal';
 import CustomFieldPopup from './CustomFieldPopup';
-import ExistingFields from './ExistingFields';
 import useApiService from '../../../hooks/useApiService';
 import useProperty from '../../../hooks/useProperty';
 import { DDMMYYYY } from '../../../utils/js/Common';
@@ -18,9 +17,16 @@ export default function CustomFields() {
     const [CustomFieldModal, setCustomFieldModal] = useState(false);
     const [isDeleteModal, setIsDeleteModal] = useState(false);
     const [deleteid, setDeleteid] = useState('');
-    const [activeTab, setActiveTab] = useState(1)
     const [fieldid, setFieldid] = useState('')
     const { schemeId } = useProperty();
+    const ExistingFields = [
+        { name: 'Name', type: 'Small Text' },
+        { name: 'Contact No', type: 'Small Text' },
+        { name: 'Source', type: 'Single Selection' },
+        { name: 'Status', type: 'Single Selection' },
+        { name: 'Email', type: 'Small Text' },
+        { name: 'Notes', type: 'Long Text' },
+    ];
     useEffect(() => {
         getAllFields();
     }, [])
@@ -75,7 +81,7 @@ export default function CustomFields() {
             <div className='PageHeader'>
                 <div className='row align-items-center'>
                     <div className='col-6'>
-                        Custom Fields
+                        Custom Fields for Leads
                     </div>
                     <div className='col-6 font-14'>
                         <div className='fontwhite cursor-pointer px-2 justify-content-end d-flex align-items-center'
@@ -86,64 +92,53 @@ export default function CustomFields() {
                     </div>
                 </div>
             </div>
-            <div className='row pt-3'>
-                <div className='col-md-4'>
-                    <div className='tab_bg'>
-                        <div className='row align-items-center px-2'>
-                            <div className={`col-6 ${activeTab == 1 && "active_tab"}  cursor-pointer`}
-                                onClick={(e) => { setActiveTab(1) }}>Custom Fields</div>
-                            <div className={`col-6 ${activeTab == 2 && "active_tab"}  cursor-pointer`}
-                                onClick={(e) => { setActiveTab(2); }}>Existing Fields</div>
-                        </div>
+            <div className='GridHeader mt-3'>
+                <div className='row'>
+                    <div className='col-md-3 ps-3'>
+                        Name
                     </div>
+                    <div className='col-md-3'>
+                        Type
+                    </div>
+                    <div className='col-md-3'>
+                        Created At
+                    </div>
+                    <div className='col-md-3 text-center'>Action</div>
                 </div>
             </div>
-            {activeTab == 1 ?
-                <>
-                    <div className='GridHeader mt-3'>
-                        <div className='row'>
-                            <div className='col-md-3'>
-                                Name
-                            </div>
-                            <div className='col-md-3'>
-                                Type
-                            </div>
-                            <div className='col-md-3'>
-                                Created At
-                            </div>
-                            <div className='col-md-3 text-center'>Action</div>
-                        </div>
-                    </div>
-                    <div className="parent-container">
-                        <div className=''>
-                            {LeadData.length ?
-                                LeadData.map((item, index) => {
-                                    return <div className='row GridData' key={index}>
-                                        <div className='col-md-3'>
-                                            <label>{item.name}</label>
-                                        </div>
-                                        <div className='col-md-3'>{item?.value_type_name}</div>
-                                        <div className='col-md-3'>{DDMMYYYY(item.created_at)}</div>
-                                        <div className='col-md-3 text-center'>
-                                            <img src={Images.gridEdit} className='cursor-pointer iconsize me-2' title='Edit Field'
-                                                onClick={(e) => { setFieldid(item.id); setCustomFieldModal(true) }} />
-                                            <img src={Images.white_delete} className='cursor-pointer iconsize me-2' title='Delete Field'
-                                                onClick={(e) => { setIsDeleteModal(true); setDeleteid(item.id) }} />
-                                        </div>
-                                    </div>
-                                })
-                                :
-                                <div className='row text-center'>
-                                    <label className='norecorddiv'>
-                                        No Data Found</label>
+            <div className="parent-container">
+                <div className=''>
+                    {LeadData.length &&
+                        LeadData.map((item, index) => {
+                            return <div className='row GridData' key={index}>
+                                <div className='col-md-3 ps-3'>
+                                    <label>{item.name}</label>
                                 </div>
-                            }
-                        </div>
-                    </div>
-                </>
-                :
-                <ExistingFields />
-            }
+                                <div className='col-md-3'>{item?.value_type_name}</div>
+                                <div className='col-md-3'>{DDMMYYYY(item.created_at)}</div>
+                                <div className='col-md-3 text-center'>
+                                    <img src={Images.gridEdit} className='cursor-pointer iconsize me-2' title='Edit Field'
+                                        onClick={(e) => { setFieldid(item.id); setCustomFieldModal(true) }} />
+                                    <img src={Images.white_delete} className='cursor-pointer iconsize me-2' title='Delete Field'
+                                        onClick={(e) => { setIsDeleteModal(true); setDeleteid(item.id) }} />
+                                </div>
+                            </div>
+                        })
+                    }
+                    <>
+                        {ExistingFields.map((item, index) => {
+                            return <div className='row GridData' key={index}>
+                                <div className='col-md-3 ps-3'>
+                                    <label>{item.name}</label>
+                                </div>
+                                <div className='col-md-3'>{item.type}</div>
+                                <div className='col-md-3'>-</div>
+                                <div className='col-md-3 text-center'>-</div>
+                            </div>
+                        })}
+                    </>
+                </div>
+            </div>
 
             <CustomModal isShow={CustomFieldModal} size={"lg"} title={fieldid == 0 ? "Add Field" : "Edit Lead"}
                 bodyContent={<CustomFieldPopup setLoading={setLoading} getAllFields={getAllFields} fieldid={fieldid} setshowAlerts={setShowAlerts} handleHide={(e) => setCustomFieldModal(false)} />} closePopup={(e) => setCustomFieldModal(false)} showBudget={false} />
