@@ -76,13 +76,16 @@ export default function LeadTags({ tags, setTags, allTags }) {
                         }}
                     />
                 </div>
-                <div className="col-md-6 tags-list fontwhite">
+                <div className="col-md-6 d-flex tags-list fontwhite">
                     {tags.map((tag, index) => (
-                        <label className="tags_label m-1" key={index}>
-                            {tag}
+                        <label className="tags_label m-1" key={index} >
+                            <label className='pe-1'>
+                                {tag.charAt(0).toUpperCase() + tag.slice(1)}
+                            </label>
                             <FontAwesomeIcon
                                 icon={faXmark}
-                                className="ps-1 cursor-pointer"
+                                style={{ background: "#03053d", borderRadius: "50%", fontSize: "8px" }}
+                                className="cursor-pointer fontwhite p-1 fw-bold"
                                 onClick={() => deleteTag(index)}
                             />
                         </label>

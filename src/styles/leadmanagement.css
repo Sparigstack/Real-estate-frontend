@@ -86,9 +86,13 @@
 .tags_label {
     background-color: white;
     color: #050854;
-    padding: 2px 5px;
-    font-size: 10px;
-    border-radius: 3px;
+    padding: 2px 11px;
+    font-size: 12px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    height: fit-content;
 }
 
 .suggestion-box {
