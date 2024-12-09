@@ -118,21 +118,21 @@ export default function AddUpdateLeadForm() {
                         customFieldStructureId = value
                             .map((selectedValue) => {
                                 const selectedStructure = field.custom_field_structures.find(
-                                    (item) => item.id === selectedValue
+                                    (item) => item.id == selectedValue
                                 );
                                 return selectedStructure ? selectedStructure.id : null;
                             })
-                            .filter((id) => id !== null);
+                            .filter((id) => id != null);
                     } else {
                         const selectedStructure = field.custom_field_structures.find(
-                            (item) => item.id === value
+                            (item) => item.id == value
                         );
                         if (selectedStructure) {
                             customFieldStructureId = selectedStructure.id;
                         }
                     }
                 }
-                if (value !== null && value !== undefined) {
+                if (value != null && value != undefined) {
                     return {
                         custom_field_id: field.id,
                         custom_field_structure_id: Array.isArray(customFieldStructureId)
@@ -166,33 +166,33 @@ export default function AddUpdateLeadForm() {
                 CustomFieldData: customfieldvalues
             });
             console.log(raw)
-            const result = await postAPIAuthKey('/add-edit-leads', raw);
+            // const result = await postAPIAuthKey('/add-edit-leads', raw);
 
-            if (!result) {
-                throw new Error('Something went wrong');
-            }
+            // if (!result) {
+            //     throw new Error('Something went wrong');
+            // }
 
-            const responseRs = JSON.parse(result);
-            setLoading(false);
-            if (responseRs.status == 'success') {
-                var msg = leadid == 0 ? 'Lead Added Successfully' : 'Lead Updated Successfully';
-                setShowAlerts(<AlertComp show={true} variant="success" message={msg} />);
-                setTimeout(() => {
-                    setShowAlerts(false);
-                    {
-                        unitidfromsales ?
-                            navigate('/sales')
-                            :
-                            navigate('/all-leads')
-                    }
-                }, 2000);
-            }
-            else {
-                setShowAlerts(<AlertComp show={true} variant="danger" message={responseRs.message} />);
-                setTimeout(() => {
-                    setShowAlerts(false);
-                }, 5000);
-            }
+            // const responseRs = JSON.parse(result);
+            // setLoading(false);
+            // if (responseRs.status == 'success') {
+            //     var msg = leadid == 0 ? 'Lead Added Successfully' : 'Lead Updated Successfully';
+            //     setShowAlerts(<AlertComp show={true} variant="success" message={msg} />);
+            //     setTimeout(() => {
+            //         setShowAlerts(false);
+            //         {
+            //             unitidfromsales ?
+            //                 navigate('/sales')
+            //                 :
+            //                 navigate('/all-leads')
+            //         }
+            //     }, 2000);
+            // }
+            // else {
+            //     setShowAlerts(<AlertComp show={true} variant="danger" message={responseRs.message} />);
+            //     setTimeout(() => {
+            //         setShowAlerts(false);
+            //     }, 5000);
+            // }
         }
         catch (error) {
             setLoading(false);
