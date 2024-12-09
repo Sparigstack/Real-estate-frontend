@@ -226,11 +226,11 @@ export default function AllLeads() {
                                     )}
                                     {item.name}
                                 </div>
-                                <div className='col-12 ps-0'>
+                                <div className='col-12 d-flex mt-2 ps-0'>
                                     {item.tags.length > 0 && (
                                         item.tags.map((tag, tagindex) => {
-                                            return <label className="tags_label me-1" key={tagindex}>
-                                                {tag.name}
+                                            return <label className="tags_label font-12 me-1" key={tagindex}>
+                                                {tag.name.charAt(0).toUpperCase() + tag.name.slice(1)}
                                             </label>
                                         })
                                     )}

@@ -84,15 +84,22 @@
 }
 
 .tags_label {
-    background-color: white;
-    color: #050854;
-    padding: 2px 11px;
+    background-color: #1c1e50;
+    color: #E4E4E4;
+    padding: 1px 4px;
     font-size: 12px;
-    border-radius: 10px;
+    border-radius: 3px;
     display: flex;
     align-items: center;
     width: fit-content;
     height: fit-content;
+    border: 1px solid #FFFFFF1F
+}
+
+.tags_label:hover {
+    background: #AAB8FF;
+    color: black;
+    border: 1px solid #FFFFFF1A
 }
 
 .suggestion-box {

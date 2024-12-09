@@ -76,21 +76,23 @@ export default function LeadTags({ tags, setTags, allTags }) {
                         }}
                     />
                 </div>
-                <div className="col-md-6 d-flex tags-list fontwhite">
-                    {tags.map((tag, index) => (
-                        <label className="tags_label m-1" key={index} >
-                            <label className='pe-1'>
-                                {tag.charAt(0).toUpperCase() + tag.slice(1)}
+                {tags.length > 0 && (
+                    <div className="col-md-8 d-flex tags-list fontwhite p-1"
+                        style={{ border: "0.5px solid #777894", borderRadius: "5px", flexWrap: "wrap" }}>
+                        {tags.map((tag, index) => (
+                            <label className="tags_label m-1" key={index} >
+                                <label className='pe-1'>
+                                    {tag.charAt(0).toUpperCase() + tag.slice(1)}
+                                </label>
+                                <FontAwesomeIcon
+                                    icon={faXmark}
+                                    className="cursor-pointer  p-1 fw-bold"
+                                    onClick={() => deleteTag(index)}
+                                />
                             </label>
-                            <FontAwesomeIcon
-                                icon={faXmark}
-                                style={{ background: "#03053d", borderRadius: "50%", fontSize: "8px" }}
-                                className="cursor-pointer fontwhite p-1 fw-bold"
-                                onClick={() => deleteTag(index)}
-                            />
-                        </label>
-                    ))}
-                </div>
+                        ))}
+                    </div>
+                )}
                 {suggestions.length > 0 && (
                     <div className="suggestion-box position-absolute top-100">
                         {suggestions.map((suggestion, index) => (
