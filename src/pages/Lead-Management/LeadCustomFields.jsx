@@ -1,77 +1,111 @@
-import { Field, useFormikContext } from 'formik'
+import { useFormikContext } from 'formik'
 import React from 'react'
 
-export default function LeadCustomFields({ CustomFieldData }) {
+export default function LeadCustomFields({ CustomFieldData, setCustomFieldData }) {
     const { values, setFieldValue } = useFormikContext();
+    const renderField = (item, index) => {
+        const handleChange = (e) => {
+            const updatedFields = CustomFieldData.map(field =>
+                field.name === item.name
+                    ? { ...field, value: e.target.value }
+                    : field
+            );
+            setCustomFieldData(updatedFields);
+        };
+
+        switch (item.value_type) {
+            case 1: // Text
+                return (
+                    <input type="text" className="customInput" name={item.name}
+                        defaultValue={item.value} autoComplete='off' onChange={handleChange} />
+                );
+
+            case 2: // Textarea
+                return (
+                    <textarea className="customInput" name={item.name}
+                        defaultValue={item.value} autoComplete='off' onChange={handleChange} />
+                );
+
+            case 3: // Number
+                return (
+                    <input type="number" className="customInput" name={item.name}
+                        defaultValue={item.value} autoComplete='off' onChange={handleChange} />
+                );
+
+            case 4: // Date
+                return (
+                    <input type="date" className="customInput reminderdate" name={item.name}
+                        defaultValue={item.value} autoComplete='off' onChange={handleChange} />
+                );
+
+            case 5: // Radio
+                return (
+                    <div className='pt-3 d-flex ps-3'>
+                        {item.custom_field_structures.map((singleitem, idx) => (
+                            <div className="pb-2 pe-4" key={idx}>
+                                <input
+                                    className="form-check-input me-2"
+                                    type="radio"
+                                    name={item.name}
+                                    value={singleitem.id}
+                                    defaultChecked={item.value == singleitem.id}
+                                    onChange={handleChange}
+                                />
+                                <label className="form-check-label font-13 ps-0">{singleitem.value}</label>
+                            </div>
+                        ))}
+                    </div>
+                );
+
+            case 6: // Checkbox
+                return (
+                    <div className='pt-3 d-flex ps-3'>
+                        {item.custom_field_structures.map((multiitem, idx) => {
+                            const isChecked = item.value?.includes(multiitem.id); // Check by value
+                            const handleCheckboxChange = (e) => {
+                                const updatedValues = e.target.checked
+                                    ? [...(item.value || []), multiitem.id] // Add value
+                                    : (item.value || []).filter(val => val !== multiitem.id); // Remove value
+
+                                setFieldValue(item.name, updatedValues);
+                                const updatedFields = CustomFieldData.map(field =>
+                                    field.name === item.name
+                                        ? { ...field, value: updatedValues }
+                                        : field
+                                );
+                                setCustomFieldData(updatedFields);
+                            };
+
+                            return (
+                                <div className="pb-1 pe-4" key={idx}>
+                                    <input
+                                        className="form-check-input me-2 normalbg"
+                                        type="checkbox"
+                                        name={item.name}
+                                        value={multiitem.id}
+                                        defaultChecked={isChecked}
+                                        onChange={handleCheckboxChange}
+                                    />
+                                    <label className="form-check-label font-13">{multiitem.value}</label>
+                                </div>
+                            );
+                        })}
+                    </div>
+                );
+
+            default:
+                return null;
+        }
+    };
     return (
         <div className='row fontwhite pt-5'>
             <div className='h6 ps-0 pb-3 fw-semibold'>Custom Fields</div>
-            {CustomFieldData.map((item, index) => {
-                return item.custom_fields_type_values_id == 1 ?
-                    <div className='col-md-6 mb-4 ps-0 position-relative' key={index}>
-                        <label className='custom-label'>{item.name}</label>
-                        <Field type="text" className="customInput" name={item.name} autoComplete='off' />
-                    </div>
-                    : item.custom_fields_type_values_id == 2 ?
-                        <div className='col-md-6 mb-4 ps-0 position-relative' key={index}>
-                            <label className='custom-label'>{item.name}</label>
-                            <Field type="textarea" rows={2} className="customInput" name={item.name} autoComplete='off' />
-                        </div>
-                        : item.custom_fields_type_values_id == 3 ?
-                            <div className='col-md-6 mb-4 ps-0 position-relative' key={index}>
-                                <label className='custom-label'>{item.name}</label>
-                                <Field type="number" className="customInput" name={item.name} autoComplete='off' />
-                            </div>
-                            : item.custom_fields_type_values_id == 4 ?
-                                <div className='col-md-6 mb-4 ps-0 position-relative' key={index}>
-                                    <label className='custom-label'>{item.name}</label>
-                                    <Field type="date" className="customInput reminderdate" name={item.name} autoComplete='off' />
-                                </div>
-                                : item.custom_fields_type_values_id == 5 ?
-                                    <div className='col-md-6 mb-4 ps-0 position-relative' key={index}>
-                                        <div className='font-13'>{item.name}</div>
-                                        <div className='pt-2 d-flex'>
-                                            {item.custom_field_structures.map((singleitem, singleindex) => {
-                                                return <div className="pb-1 pe-4" key={singleindex}>
-                                                    <Field
-                                                        className="form-check-input me-2"
-                                                        type="radio"
-                                                        name={item.name}
-                                                        value={singleitem.value}
-                                                    />
-                                                    <label className="form-check-label font-13">{singleitem.value}</label>
-                                                </div>
-                                            })}
-                                        </div>
-                                    </div>
-                                    : item.custom_fields_type_values_id == 6 ?
-                                        <div className='col-md-6 mb-4 ps-0 position-relative' key={index}>
-                                            <div className='font-13'>{item.name}</div>
-                                            <div className='pt-2 d-flex'>
-                                                {item.custom_field_structures.map((singleitem, singleindex) => {
-                                                    return <div className="pb-1 pe-4" key={singleindex}>
-                                                        <Field
-                                                            className="form-check-input me-2 normalbg"
-                                                            type="checkbox"
-                                                            name={item.name}
-                                                            value={singleitem.value}
-                                                            onChange={(e) => {
-                                                                const checked = e.target.checked;
-                                                                const currentValues = values[item.name] || [];
-                                                                const updatedValues = checked
-                                                                    ? [...currentValues, singleitem.value]
-                                                                    : currentValues.filter((val) => val !== singleitem.value);
-                                                                setFieldValue(item.name, updatedValues);
-                                                            }}
-                                                        />
-                                                        <label className="form-check-label font-13">{singleitem.value}</label>
-                                                    </div>
-                                                })}
-                                            </div>
-                                        </div>
-                                        :
-                                        <></>
-            })}
+            {CustomFieldData.map((item, index) => (
+                <div className='col-md-6 mb-4 ps-0 position-relative' key={index}>
+                    <label className='custom-label'>{item.name}</label>
+                    {renderField(item, index)}
+                </div>
+            ))}
         </div>
     )
 }

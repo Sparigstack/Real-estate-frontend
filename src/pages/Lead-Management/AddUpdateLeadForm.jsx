@@ -71,7 +71,6 @@ export default function AddUpdateLeadForm() {
                     notes: responseRs.notes || '',
                 });
                 setTags(responseRs.tags);
-                // setCustomFieldData(responseRs.setCustomFieldData);
             }
             catch (error) {
                 setLoading(false);
@@ -84,7 +83,7 @@ export default function AddUpdateLeadForm() {
     const getAllFields = async () => {
         try {
             setLoading(true);
-            const result = await getAPIAuthKey(`/get-custom-fields/` + schemeId);
+            const result = await getAPIAuthKey(`/get-custom-field-with-lead-values/` + schemeId + "/" + leadid);
             if (!result) {
                 throw new Error('Something went wrong');
             }
@@ -116,22 +115,21 @@ export default function AddUpdateLeadForm() {
         setLoading(true);
         try {
             const customfieldvalues = CustomFieldData?.map((field) => {
-                const fieldName = field.name;
-                const value = values[fieldName];
+                const value = field.value;
                 let customFieldStructureId = null;
-                if (field.custom_fields_type_values_id === 5 || field.custom_fields_type_values_id === 6) {
+                if (field.value_type === 5 || field.value_type === 6) {
                     if (Array.isArray(value)) {
                         customFieldStructureId = value
                             .map((selectedValue) => {
                                 const selectedStructure = field.custom_field_structures.find(
-                                    (item) => item.value === selectedValue
+                                    (item) => item.id === selectedValue
                                 );
                                 return selectedStructure ? selectedStructure.id : null;
                             })
                             .filter((id) => id !== null);
                     } else {
                         const selectedStructure = field.custom_field_structures.find(
-                            (item) => item.value === value
+                            (item) => item.id === value
                         );
                         if (selectedStructure) {
                             customFieldStructureId = selectedStructure.id;
@@ -144,7 +142,7 @@ export default function AddUpdateLeadForm() {
                         custom_field_structure_id: Array.isArray(customFieldStructureId)
                             ? customFieldStructureId.join(',')
                             : customFieldStructureId,
-                        value_type: field.custom_fields_type_values_id.toString(),
+                        value_type: field.value_type.toString(),
                         value: Array.isArray(value) ? value.join(',') : value
                     };
                 }
@@ -235,7 +233,7 @@ export default function AddUpdateLeadForm() {
                         <OptionalFields setFieldValue={setFieldValue} values={values} />
                         <LeadTags setTags={setTags} tags={tags} allTags={allTags} />
                         {CustomFieldData &&
-                            <LeadCustomFields CustomFieldData={CustomFieldData} />
+                            <LeadCustomFields CustomFieldData={CustomFieldData} setCustomFieldData={setCustomFieldData} />
                         }
                         <div className='col-12 pt-5 text-center'>
                             <button type='button' className="cancelBtn me-2" onClick={(e) => navigate('/all-leads')}>
