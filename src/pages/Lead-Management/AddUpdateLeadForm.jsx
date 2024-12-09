@@ -46,14 +46,12 @@ export default function AddUpdateLeadForm() {
     useEffect(() => {
         const getLeadById = async () => {
             if (!leadid) return;
-            setLoading(true);
             try {
                 const result = await getAPIAuthKey(`/fetch-lead-detail/${schemeId}/${leadid}`);
                 if (!result) {
                     throw new Error('Something went wrong');
                 }
                 const responseRs = JSON.parse(result);
-                setLoading(false);
                 setFormData({
                     name: responseRs.name || '',
                     source: responseRs.source_id || 0,
@@ -82,14 +80,12 @@ export default function AddUpdateLeadForm() {
     }, [leadid])
     const getAllFields = async () => {
         try {
-            setLoading(true);
             const result = await getAPIAuthKey(`/get-custom-field-with-lead-values/` + schemeId + "/" + leadid);
             if (!result) {
                 throw new Error('Something went wrong');
             }
             const responseRs = JSON.parse(result);
             setCustomFieldData(responseRs);
-            setLoading(false);
         }
         catch (error) {
             setLoading(false);

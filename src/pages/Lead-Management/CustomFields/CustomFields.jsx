@@ -122,7 +122,7 @@ export default function CustomFields() {
                                         <div className='col-md-3'>
                                             <label>{item.name}</label>
                                         </div>
-                                        <div className='col-md-3'>{item?.type_value?.type}</div>
+                                        <div className='col-md-3'>{item?.value_type_name}</div>
                                         <div className='col-md-3'>{DDMMYYYY(item.created_at)}</div>
                                         <div className='col-md-3 text-center'>
                                             <img src={Images.gridEdit} className='cursor-pointer iconsize me-2' title='Edit Field'

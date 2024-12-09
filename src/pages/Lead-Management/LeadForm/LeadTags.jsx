@@ -91,7 +91,7 @@ export default function LeadTags({ tags, setTags, allTags }) {
                     ))}
                 </div>
                 {suggestions.length > 0 && (
-                    <div className="suggestion-box">
+                    <div className="suggestion-box position-absolute top-100">
                         {suggestions.map((suggestion, index) => (
                             <div key={suggestion}
                                 className={`py-1 suggestion-item ${index === selectedIndex ? "selected_tag" : ""}`}
