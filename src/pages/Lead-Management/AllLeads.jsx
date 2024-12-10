@@ -29,7 +29,7 @@ export default function AllLeads() {
     const [currentPage, setCurrentPage] = useState(1);
     const [LeadInfoData, setLeadInfoData] = useState('');
     const [totalItems, setTotalItems] = useState('');
-    var itemsPerPage = 3;
+    var itemsPerPage = 8;
 
     const debouncedSearch = useCallback(debounce((searchValue) => {
         getAllLeads(searchValue, utils.sortbyvalue, utils.statusid, utils.sortbykey, currentPage);
