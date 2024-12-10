@@ -44,7 +44,7 @@ export default function AllLeads() {
         try {
             var searchstring = search == '' ? null : search;
             setLoading(true);
-            const result = await getAPIAuthKey(`/get-leads/${schemeId}&${activeTab}&${searchstring}&${sortDirection}&${sortbyvalue}&${currentPage}&${itemsPerPage}`);
+            const result = await getAPIAuthKey(`/get-leads/${schemeId}&${activeTab}&${searchstring}&${sortDirection}&${sortbyvalue}&${statusid}&${currentPage}&${itemsPerPage}`);
             if (!result) {
                 throw new Error('Something went wrong');
             }
