@@ -52,11 +52,13 @@ export default function AddUpdateLeadForm() {
         const getLeadById = async () => {
             if (!leadid) return;
             try {
+                setLoading(true);
                 const result = await getAPIAuthKey(`/fetch-lead-detail/${schemeId}/${leadid}`);
                 if (!result) {
                     throw new Error('Something went wrong');
                 }
                 const responseRs = JSON.parse(result);
+                setLoading(false);
                 setFormData({
                     name: responseRs.name || '',
                     source: responseRs.source_id || 0,
