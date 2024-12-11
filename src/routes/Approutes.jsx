@@ -17,6 +17,7 @@ const Sales = lazy(() => import('../pages/Sales/Sales'));
 const AddWings = lazy(() => import('../pages/Sales/AddWings'));
 const CustomFields = lazy(() => import('../pages/Lead-Management/CustomFields/CustomFields'));
 const AddUpdateLeadForm = lazy(() => import('../pages/Lead-Management/AddUpdateLeadForm'));
+const AllModulesPricing = lazy(() => import('../pages/PricingPlans/AllModulesPricing'));
 const Pricing = lazy(() => import('../pages/PricingPlans/Pricing'));
 
 export default function Approutes() {
@@ -47,6 +48,7 @@ export default function Approutes() {
                 <Route path="rest-api" element={<RestApi />} />
                 <Route path="custom-fields" element={<CustomFields />} />
                 <Route path="add-update-leads" element={<AddUpdateLeadForm />} />
+                <Route path="modules" element={<AllModulesPricing />} />
                 <Route path="plan-pricing" element={<Pricing />} />
 
                 <Route path="*" element={<PageNotFound />} />

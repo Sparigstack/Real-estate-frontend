@@ -45,7 +45,12 @@ export default function TopMenu() {
                     </label>
                 </label>
                 <div>
-                    <label className='fontwhite fw-semibold font-12 pe-3 cursor-pointer' onClick={handleSwitchProperty}>
+                    <label className='colorAAB8FF cursor-pointer font-13 fw-semibold' onClick={(e) => navigate("/modules")}
+                        style={{ borderBottom: "1px solid #AAB8FF" }}>
+                        <img src={Images.upgrade_plan} className='iconsize pe-1 pb-1' />
+                        Pricing
+                    </label>
+                    <label className='fontwhite fw-semibold font-12 px-3 cursor-pointer' onClick={handleSwitchProperty}>
                         <img src={Images.scheme} className='img-fluid iconsize pe-2' />My Schemes</label>
                     <button className="profileOpen" onClick={toggleProfile}>
                         {userDetails?.userName?.charAt(0).toUpperCase()}
@@ -67,9 +72,6 @@ export default function TopMenu() {
                                     </a>
                                 </li>
 
-                                <li className='font-14 p-1' onClick={(e) => { navigate("/plan-pricing"); setOpenProfile(false) }} >
-                                    <img src={Images.profile_icon} className='ps-1 pe-3' />
-                                    View Plans</li>
                                 <li className='font-14 p-1' onClick={logout}>
                                     <img src={Images.logout_icon} className='ps-1 pe-3' />
                                     Logout

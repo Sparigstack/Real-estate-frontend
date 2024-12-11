@@ -1,5 +1,32 @@
-.price_boxes {
-    border: 1px solid white;
-    padding: 7px;
+.module_boxes {
+    border: 1px solid #EBEBEB;
+    padding: 12px;
     border-radius: 5px;
+}
+
+.price_boxes {
+    border: 2px solid #EBEBEBCC;
+    padding: 12px;
+    border-radius: 5px;
+    height: 100%;
+}
+
+.standard_plan {
+    background: linear-gradient(180deg, #03053D 0%, #030769 50%, #070C8B 100%);
+}
+
+.custom-icon {
+    list-style-type: none;
+    position: relative;
+    padding-left: 20px;
+    margin-left: -15px;
+    padding-bottom: 5px;
+}
+
+.custom-icon::before {
+    content: "✓";
+    color: white;
+    position: absolute;
+    left: 0;
+    top: 0;
 }

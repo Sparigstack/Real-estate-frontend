@@ -36,6 +36,10 @@
 }
 
 /*Font Size css start*/
+.font-10 {
+  font-size: 10px !important;
+}
+
 .font-12 {
   font-size: 12px !important;
 }
@@ -116,11 +120,17 @@
 .WhiteBtn {
   border: none;
   font-size: 13px;
-  color: black;
+  color: #03053d;
   background: white;
   border-radius: 5px;
   padding: 8px 10px;
   font-weight: 600;
+}
+
+.WhiteBtn:hover {
+  background-color: #03053d;
+  color: white;
+  border: 1px solid white;
 }
 
 .borderBtn {
