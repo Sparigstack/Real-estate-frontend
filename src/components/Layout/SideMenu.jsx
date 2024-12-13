@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Images from '../../utils/Images';
 import { NavLink, useLocation } from 'react-router-dom';
 import SideMenuItems from '../../json/SideMenuItems.json';
@@ -9,31 +9,12 @@ export default function SideMenu() {
     const [openMenus, setOpenMenus] = useState({});
     const location = useLocation();
 
-    const parentRouteMappings = {
-        "/all-leads": ["/all-leads", "/upload-csv", "/lead-setting", "/rest-api"],
-        "/sales": ["/sales", "/add-wings"],
-    };
-
-    const isParentMenuActive = (parentPath, submenu) => {
-        const allRelevantPaths = [parentPath, ...(parentRouteMappings[parentPath] || [])];
-        return allRelevantPaths.some(path => location.pathname.startsWith(path));
-    };
-
-    useEffect(() => {
-        const newOpenMenus = {};
-        SideMenuItems.forEach((item, index) => {
-            if (isParentMenuActive(item.path, item.submenu)) {
-                newOpenMenus[index] = true;
-            }
-        });
-        setOpenMenus(newOpenMenus);
-    }, [location]);
-
     const handleToggleSubMenu = (index) => {
-        setOpenMenus((prevOpenMenus) => ({
-            ...prevOpenMenus,
-            [index]: !prevOpenMenus[index]
-        }));
+        setOpenMenus((prevOpenMenus) => {
+            const updatedMenus = {};
+            updatedMenus[index] = !prevOpenMenus[index];
+            return updatedMenus;
+        });
     };
 
     return (
@@ -44,7 +25,7 @@ export default function SideMenu() {
             <ul className="nav nav-pills flex-column pt-4 sidemenuDropList">
                 {SideMenuItems.map((item, index) => (
                     <li className="nav-item pb-2" key={index}>
-                        <div className='d-flex align-items-center w-100 justify-content-between  px-2'>
+                        <div className='d-flex align-items-center w-100 justify-content-between px-2'>
                             {item.submenu.length > 0 ? (
                                 <div
                                     className='nav-link d-flex w-100 text-white fw-light px-2'
@@ -57,8 +38,9 @@ export default function SideMenu() {
                             ) : (
                                 <NavLink
                                     to={item.path}
+                                    onClick={() => handleToggleSubMenu(index)}
                                     className={
-                                        isParentMenuActive(item.path)
+                                        openMenus[index]
                                             ? 'nav-link d-flex active text-white fw-bold px-2'
                                             : 'nav-link d-flex text-white fw-light px-2'
                                     }
@@ -95,7 +77,7 @@ export default function SideMenu() {
                                             <NavLink
                                                 to={submenuitem.path}
                                                 className={
-                                                    isParentMenuActive(submenuitem.path)
+                                                    location.pathname === submenuitem.path
                                                         ? 'nav-link d-flex active text-white fw-bold px-2'
                                                         : 'nav-link d-flex text-white fw-light px-2'
                                                 }

@@ -4,12 +4,13 @@ import { faBuilding, faGauge, faSignOutAlt, faUser } from '@fortawesome/free-sol
 import Images from '../../utils/Images';
 import useAuth from '../../hooks/useAuth';
 import useProperty from '../../hooks/useProperty';
-import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom';
 
 export default function TopMenu() {
     const [openProfile, setOpenProfile] = useState(false);
     const { userDetails, logout } = useAuth();
     const profileRef = useRef(null);
+    const navigate = useNavigate();
     const { handleSwitchProperty, propertyDetails } = useProperty();
     useEffect(() => {
         if (openProfile) {
@@ -46,7 +47,7 @@ export default function TopMenu() {
                     </label>
                 </label>
                 <div>
-                    <label className='fontwhite fw-semibold font-12 pe-3 cursor-pointer' onClick={handleSwitchProperty}>
+                    <label className='fontwhite fw-semibold font-12 px-3 cursor-pointer' onClick={handleSwitchProperty}>
                         <img src={Images.scheme} className='img-fluid iconsize pe-2' />My Schemes</label>
                     <button className="profileOpen" onClick={toggleProfile}>
                         {userDetails?.userName?.charAt(0).toUpperCase()}
@@ -68,8 +69,6 @@ export default function TopMenu() {
                                     </a>
                                 </li>
 
-                                <li className='font-14 p-1'><img src={Images.profile_icon} className='ps-1 pe-3' />
-                                    My Profile</li>
                                 <li className='font-14 p-1' onClick={logout}>
                                     <img src={Images.logout_icon} className='ps-1 pe-3' />
                                     Logout

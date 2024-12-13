@@ -27,11 +27,11 @@
     border-radius: 50%;
     height: 10px;
     width: 10px;
-    background-color: #79E07D;
+    background-color: #08A95C;
 }
 
 .green_text {
-    color: #79E07D;
+    color: #08A95C;
     font-size: 13px;
 }
 
@@ -39,11 +39,11 @@
     border-radius: 50%;
     height: 10px;
     width: 10px;
-    background-color: #38A5EB;
+    background-color: #0055ff;
 }
 
 .blue_text {
-    color: #38A5EB;
+    color: #0055ff;
     font-size: 13px;
 }
 
@@ -75,10 +75,49 @@
     border-radius: 50%;
     height: 10px;
     width: 10px;
-    background-color: #2FC6F6;
+    background-color: #f62ff0;
 }
 
 .navyblue_text {
-    color: #2FC6F6;
+    color: #f62ff0;
     font-size: 13px;
+}
+
+.tags_label {
+    background-color: #1c1e50;
+    color: #E4E4E4;
+    padding: 1px 4px;
+    font-size: 12px;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    height: fit-content;
+    border: 1px solid #FFFFFF1F
+}
+
+.tags_label:hover {
+    background: #AAB8FF;
+    color: black;
+    border: 1px solid #FFFFFF1A
+}
+
+.suggestion-box {
+    background: white;
+    color: black;
+    font-size: 13px;
+    width: 40%;
+    border-radius: 5px;
+    margin-top: 5px;
+    padding: 7px;
+
+}
+
+.selected_tag {
+    background-color: #e3e8ec;
+    padding-left: 7px;
+}
+
+.colorAAB8FF {
+    color: #AAB8FF;
 }

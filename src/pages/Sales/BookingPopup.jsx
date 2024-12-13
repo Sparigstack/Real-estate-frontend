@@ -143,7 +143,7 @@ export default function BookingPopup({ setBookingModel, unitid }) {
             {showAlerts}
             {Loading && <Loader runningcheck={Loading} />}
             <label className='pb-3 font-13 formLabel' style={{ textAlign: "justify" }}>
-                You can add a lead to this unit if someone expresses interest or manually add a customer for this unit. Once booked, the customer will be allocated to this unit. To add a lead, simply select a contact name from the box below.
+                You can select an existing lead or customer, or add a new one, to book this unit. Once the booking is confirmed, the customer will be assigned to the unit.
             </label>
             {!showForm ?
                 <div className='col-12 d-grid justify-content-center'>
@@ -166,7 +166,7 @@ export default function BookingPopup({ setBookingModel, unitid }) {
                             })
                         }}>
                             <img src={Images.addicon} className='bigiconsize h-100 pe-2' />
-                            <label className=''>Add Customer</label>
+                            <label className=''>Add Lead/Customer</label>
 
                         </button>
                     </div>
@@ -184,7 +184,7 @@ export default function BookingPopup({ setBookingModel, unitid }) {
                         <Form className='' onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
                             <div className='row'>
                                 <div className='col-md-6 mb-4 ps-0 position-relative'>
-                                    <label className='input-labels'>Contact Name <span className='text-danger'>*</span></label>
+                                    <label className='input-labels'>Name <span className='text-danger'>*</span></label>
                                     <Field type="text" className="custom-inputs" name='contact_name' autoComplete='off'
                                         disabled={leadvalue ? true : false} />
                                     <ErrorMessage name='contact_name' component="div" className="text-start errorText" />
@@ -198,7 +198,7 @@ export default function BookingPopup({ setBookingModel, unitid }) {
                                     <ErrorMessage name='contact_number' component="div" className="text-start errorText" />
                                 </div>
                                 <div className='col-md-3 mb-4 ps-0 position-relative'>
-                                    <label className='input-labels'>Contact Email (optional)</label>
+                                    <label className='input-labels'>Email (optional)</label>
                                     <Field type="text" className="custom-inputs" name='contact_email' autoComplete='off'
                                         disabled={leadvalue ? true : false} />
                                 </div>

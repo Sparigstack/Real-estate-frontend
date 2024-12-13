@@ -15,6 +15,9 @@ const LeadSettingIndex = lazy(() => import('../pages/LeadSetting'));
 const UploadCsv = lazy(() => import('../pages/Lead-Management/UploadCsv'));
 const Sales = lazy(() => import('../pages/Sales/Sales'));
 const AddWings = lazy(() => import('../pages/Sales/AddWings'));
+const CustomFields = lazy(() => import('../pages/Lead-Management/CustomFields/CustomFields'));
+const AddUpdateLeadForm = lazy(() => import('../pages/Lead-Management/AddUpdateLeadForm'));
+
 
 export default function Approutes() {
   const { authToken } = useAuth();
@@ -42,6 +45,8 @@ export default function Approutes() {
                 <Route path="lead-setting" element={<LeadSettingIndex />} />
                 <Route path="upload-csv" element={<UploadCsv />} />
                 <Route path="rest-api" element={<RestApi />} />
+                <Route path="custom-fields" element={<CustomFields />} />
+                <Route path="add-update-leads" element={<AddUpdateLeadForm />} />
 
                 <Route path="*" element={<PageNotFound />} />
               </Route>

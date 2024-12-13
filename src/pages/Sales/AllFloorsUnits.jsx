@@ -3,7 +3,6 @@ import Images from '../../utils/Images'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight, faIndianRupeeSign } from '@fortawesome/free-solid-svg-icons';
 import { formatCurrency } from '../../utils/js/Common';
-import DeleteModal from '../../utils/DeleteModal';
 import Loader from '../../components/loader/Loader';
 import useApiService from '../../hooks/useApiService';
 import AlertComp from '../../components/alerts/AlertComp';

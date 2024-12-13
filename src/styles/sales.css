@@ -262,3 +262,7 @@
     font-weight: normal;
     padding: 2px 5px;
 }
+
+.reminderdate[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+}

@@ -34,7 +34,6 @@ export default function AddPropertyForm({ schemeType, setFormView }) {
         city: 0,
         area: ''
     });
-    const [selectedPropertySubType, setSelectedPropertySubType] = useState(null);
     const [propertyTypeArray, setpropertyTypeArray] = useState([]);
     const [StateArray, setStateArray] = useState([]);
     const [CityArray, setCityArray] = useState([]);
