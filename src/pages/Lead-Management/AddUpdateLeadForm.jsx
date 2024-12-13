@@ -105,14 +105,12 @@ export default function AddUpdateLeadForm() {
     }
     const getLeadTags = async () => {
         try {
-            if (tags.length == 0) {
-                const result = await getAPIAuthKey(`/fetch-tags/${schemeId}`);
-                if (!result) {
-                    throw new Error('Something went wrong');
-                }
-                const responseRs = JSON.parse(result);
-                setAllTags(responseRs)
+            const result = await getAPIAuthKey(`/fetch-tags/${schemeId}`);
+            if (!result) {
+                throw new Error('Something went wrong');
             }
+            const responseRs = JSON.parse(result);
+            setAllTags(responseRs)
         }
         catch (error) {
             setLoading(false);
