@@ -10,6 +10,7 @@
 @import './sales.css';
 @import './suggestionbox.css';
 @import './tabs.css';
+@import './pricing.css';
 
 * {
   margin: 0;

@@ -1,6 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBuilding, faGauge, faSignOutAlt, faUser } from '@fortawesome/free-solid-svg-icons';
 import Images from '../../utils/Images';
 import useAuth from '../../hooks/useAuth';
 import useProperty from '../../hooks/useProperty';

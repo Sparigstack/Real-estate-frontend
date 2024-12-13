@@ -11,7 +11,6 @@ import useProperty from '../../hooks/useProperty';
 import AlertComp from '../../components/alerts/AlertComp';
 import LeadCustomFields from './LeadCustomFields';
 import Images from '../../utils/Images';
-import UpgradePlanPopup from '../../components/UpgradePlan/UpgradePlanPopup';
 
 export default function AddUpdateLeadForm() {
     const { postAPIAuthKey, getAPIAuthKey } = useApiService();
@@ -27,11 +26,6 @@ export default function AddUpdateLeadForm() {
     const [allTags, setAllTags] = useState([]);
     const [CustomFieldData, setCustomFieldData] = useState([]);
     const [isMoreFieldsVisible, setIsMoreFieldsVisible] = useState(false);
-    const [PlanPopup, setPlanPopup] = useState(false);
-    const [planResponse, setPlanResponse] = useState({
-        moduleid: "",
-        planname: ""
-    })
     const [formData, setFormData] = useState({
         name: '',
         contactno: '',
@@ -282,8 +276,6 @@ export default function AddUpdateLeadForm() {
                 )}
             </Formik>
 
-            {PlanPopup && <UpgradePlanPopup show={PlanPopup} onHide={() => setPlanPopup(false)}
-                data={planResponse} />}
         </div>
     )
 }

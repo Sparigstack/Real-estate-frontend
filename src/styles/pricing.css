@@ -1,0 +1,71 @@
+.module_boxes {
+    border: 1px solid #EBEBEB;
+    padding: 12px;
+    border-radius: 5px;
+}
+
+.price_boxes {
+    border: 1px solid #EBEBEBCC;
+    padding: 12px;
+    border-radius: 15px;
+    height: 100%;
+    background-color: #03053D;
+}
+
+.standard_plan {
+    background: linear-gradient(180deg, #03053D 0%, #030769 50%, #070C8B 100%);
+}
+
+.custom-icon {
+    list-style-type: none;
+    position: relative;
+    padding-left: 15px;
+    margin-left: -10px;
+    padding-bottom: 10px;
+}
+
+.custom-icon::before {
+    content: "✓";
+    color: white;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.ActivePlanBtn {
+    border: 1px solid white;
+    font-size: 13px;
+    color: white;
+    background: #03053d;
+    border-radius: 5px;
+    padding: 8px 10px;
+    font-weight: 600;
+}
+
+.grid_brdr_btm {
+    border-bottom: 1px solid #FFFFFF
+}
+
+.upgradeplan_btn {
+    background: linear-gradient(90deg, #03053D 0%, #080DA3 100%);
+    border: none;
+    color: white;
+    font-size: 13px;
+    border-radius: 5px;
+    padding: 8px 10px;
+    font-weight: 600;
+}
+
+.upgradeplan_link {
+    color: #03053D;
+}
+
+.upgradeplan_alerts {
+    max-width: 50% !important;
+    position: fixed !important;
+    bottom: 0;
+    right: 20px;
+    text-align: center;
+    z-index: 6000;
+    transition: all 0.3s ease-in-out;
+}
