@@ -11,9 +11,13 @@ import useProperty from '../../hooks/useProperty';
 import AlertComp from '../../components/alerts/AlertComp';
 import LeadCustomFields from './LeadCustomFields';
 import Images from '../../utils/Images';
+import UpgradePlanPopup from '../../components/UpgradePlan/UpgradePlanPopup';
+import Cookies from 'js-cookie';
+import useCommonApiService from '../../hooks/useCommonApiService';
 
 export default function AddUpdateLeadForm() {
     const { postAPIAuthKey, getAPIAuthKey } = useApiService();
+    const { getLeadTags } = useCommonApiService();
     const navigate = useNavigate();
     const { schemeId } = useProperty();
     const [loading, setLoading] = useState(false);
@@ -22,10 +26,16 @@ export default function AddUpdateLeadForm() {
     const unitidfromsales = location.state && location.state.unitid;
     const leadid = location.state && location.state.leadid;
     const unitname = location.state && location.state.unitname;
+    const userid = Cookies.get('userId');
     const [tags, setTags] = useState([]);
     const [allTags, setAllTags] = useState([]);
     const [CustomFieldData, setCustomFieldData] = useState([]);
     const [isMoreFieldsVisible, setIsMoreFieldsVisible] = useState(false);
+    const [PlanPopup, setPlanPopup] = useState(false);
+    const [planResponse, setPlanResponse] = useState({
+        moduleid: "",
+        planname: ""
+    })
     const [formData, setFormData] = useState({
         name: '',
         contactno: '',
@@ -42,10 +52,15 @@ export default function AddUpdateLeadForm() {
         agent_name: '',
         agent_contact: ''
     });
+    const getTags = async () => {
+        const sources = await getLeadTags();
+        setAllTags(sources)
+    }
     useEffect(() => {
+
         if (isMoreFieldsVisible) {
             getAllFields();
-            getLeadTags();
+            getTags();
         }
     }, [isMoreFieldsVisible])
     useEffect(() => {
@@ -96,22 +111,6 @@ export default function AddUpdateLeadForm() {
                 setCustomFieldData(responseRs);
                 setLoading(false);
 
-            }
-        }
-        catch (error) {
-            setLoading(false);
-            console.error(error);
-        }
-    }
-    const getLeadTags = async () => {
-        try {
-            if (tags.length == 0) {
-                const result = await getAPIAuthKey(`/fetch-tags/${schemeId}`);
-                if (!result) {
-                    throw new Error('Something went wrong');
-                }
-                const responseRs = JSON.parse(result);
-                setAllTags(responseRs)
             }
         }
         catch (error) {
@@ -179,7 +178,9 @@ export default function AddUpdateLeadForm() {
                 unitId: unitidfromsales || null,
                 tags: tags,
                 CustomFieldData: customfieldvalues,
-                flag: 2
+                flag: 2,
+                userCapabilities: 'manual_entry_csv_import',
+                userId: userid
             });
             const result = await postAPIAuthKey('/add-edit-leads', raw);
 
@@ -201,6 +202,10 @@ export default function AddUpdateLeadForm() {
                             navigate('/all-leads')
                     }
                 }, 2000);
+            }
+            else if (responseRs.status == "upgradeplan") {
+                setPlanResponse({ ...planResponse, moduleid: 2, planname: "Basic" });
+                setPlanPopup(true);
             }
             else {
                 setShowAlerts(<AlertComp show={true} variant="danger" message={responseRs.message} />);
@@ -270,6 +275,9 @@ export default function AddUpdateLeadForm() {
                     </Form>
                 )}
             </Formik>
+
+            {PlanPopup && <UpgradePlanPopup show={PlanPopup} onHide={() => setPlanPopup(false)}
+                data={planResponse} />}
         </div>
     )
 }

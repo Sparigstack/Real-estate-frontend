@@ -6,10 +6,12 @@ import Loader from '../../components/loader/Loader';
 import LoadingBar from 'react-top-loading-bar';
 import useProperty from '../../hooks/useProperty';
 import Images from '../../utils/Images';
+import Cookies from 'js-cookie';
 
 export default function Csv() {
     const { postAPIAuthKey } = useApiService();
     const { schemeId } = useProperty();
+    const userid = Cookies.get('userId');
     const fileInputRef = useRef(null);
     const loadingBarRef = useRef(null);
     const handleButtonClick = () => fileInputRef.current?.click();
@@ -33,6 +35,7 @@ export default function Csv() {
             var formdata = new FormData();
             formdata.append("file", file);
             formdata.append("propertyid", schemeId);
+            formdata.append("userid", userid);
             const result = await postAPIAuthKey('/add-leads-csv', formdata, true);
             if (!result) {
                 throw new Error('Something went wrong');

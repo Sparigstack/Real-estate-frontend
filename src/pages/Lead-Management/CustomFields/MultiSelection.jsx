@@ -35,7 +35,7 @@ export default function MultiSelection({ multiSelectionOptions, setrequiredMsg, 
                             value={option}
                             onChange={(e) => handleMultiOptionChange(index, e.target.value)}
                         />
-                        <button type="button" className="CancelBtn p-2 font-12 formlabel" onClick={() => handleRemoveOption(index)}
+                        <button type="button" className="CancelBtn p-2 font-12 formlabel" onClick={() => handleMultiRemoveOption(index)}
                             style={{ border: "1px solid #ced4da", borderRadius: "6px", color: "#4A4A4A" }}>
                             Remove
                         </button>

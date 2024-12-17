@@ -374,6 +374,12 @@ export default function AllFloorsUnits({ FloorUnitDetails, activeWingId, setFloo
 
                                 </div>
                             </div>
+                            {nextWingId && (
+                                <div className='col-12 pt-2 text-end text-decoration-underline cursor-pointer'
+                                    onClick={(e) => { setActiveWingId(nextWingId); getFloorsUnits(nextWingId) }}>
+                                    Go to next Wing
+                                </div>
+                            )}
                         </div>
                         <div className='col-12 text-center pt-3 wing_name'>{FloorUnitDetails.name} Wing </div>
 
@@ -400,12 +406,15 @@ export default function AllFloorsUnits({ FloorUnitDetails, activeWingId, setFloo
                             {FloorUnitDetails?.floor_details?.map((item, index) => {
                                 return index == 0 && (
                                     <div className='row py-2' key={index}>
-                                        <div className='col-md-2 pe-0 row align-items-center'>
+                                        <div className='col-md-3 pe-0 row align-items-center'>
                                             {bulkEditFlag == 1 ?
                                                 <div className='d-flex justify-content-start text-center font-13 align-items-center'>
                                                     <label className='cursor-pointer fw-bold me-2'
                                                         onClick={handleCancelBulkEdit}>Cancel</label>
-                                                    <label className='cursor-pointer SuccessBtn p-1' style={{ fontSize: "12px" }} onClick={handleSaveBulkEdit}>Save</label>
+                                                    <label className='cursor-pointer SuccessBtn p-1'
+                                                        style={{ fontSize: "12px" }} onClick={handleSaveBulkEdit}>
+                                                        Save Changes
+                                                    </label>
                                                 </div>
                                                 :
                                                 editColumnIndex != null || flaggedUnits ?
@@ -415,7 +424,7 @@ export default function AllFloorsUnits({ FloorUnitDetails, activeWingId, setFloo
                                                     </label> :
                                                     <label className='cursor-pointer ps-2 d-flex align-items-center' title='Edit All Units' style={{ color: "#03053D" }} onClick={handleBulkEdit}>
                                                         <img src={Images.bulk_edit} className='me-1 iconsize ' />
-                                                        <label className='fw-bold ps-1 '>Edit All</label>
+                                                        <label className='fw-bold ps-1 cursor-pointer'>Edit All</label>
                                                     </label>
                                             }
                                         </div>
@@ -613,12 +622,14 @@ export default function AllFloorsUnits({ FloorUnitDetails, activeWingId, setFloo
                             {FloorUnitDetails?.floor_details?.map((item, index) => {
                                 return index == 0 && (
                                     <div className='row py-2' key={index}>
-                                        <div className='col-md-2 pe-0 row align-items-center'>
+                                        <div className='col-md-3 pe-0 row align-items-center'>
                                             {bulkEditFlag == 1 &&
                                                 <div className='d-flex justify-content-start text-center font-13 align-items-center'>
                                                     <label className='cursor-pointer fw-bold me-2'
                                                         onClick={handleCancelBulkEdit}>Cancel</label>
-                                                    <label className='cursor-pointer SuccessBtn p-1' style={{ fontSize: "12px" }} onClick={handleSaveBulkEdit}>Save</label>
+                                                    <label className='cursor-pointer SuccessBtn p-1'
+                                                        style={{ fontSize: "12px" }} onClick={handleSaveBulkEdit}>
+                                                        Save Changes</label>
                                                 </div>
                                             }
                                         </div>
