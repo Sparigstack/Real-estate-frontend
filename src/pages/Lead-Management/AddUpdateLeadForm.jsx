@@ -204,7 +204,7 @@ export default function AddUpdateLeadForm() {
                 }, 2000);
             }
             else if (responseRs.status == "upgradeplan") {
-                setPlanResponse({ ...planResponse, moduleid: 2, planname: "Basic" });
+                setPlanResponse({ ...planResponse, moduleid: responseRs.moduleid, planname: responseRs.activeplanname });
                 setPlanPopup(true);
             }
             else {
