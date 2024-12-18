@@ -26,7 +26,6 @@ export default function AllLeads() {
     const [LeadData, setLeadData] = useState([]);
     const [InfoPopup, setInfoPopup] = useState(false);
     const [utils, setUtils] = useState({
-        search: null,
         sortbykey: 'desc',
         sortbyvalue: null,
         statusid: null,
@@ -38,11 +37,14 @@ export default function AllLeads() {
     const [LeadInfoData, setLeadInfoData] = useState('');
     const [totalItems, setTotalItems] = useState('');
     const [customfieldname, setCustomfieldname] = useState('');
+    const [searchTerm, setSearchTerm] = useState('');
     var itemsPerPage = 8;
 
     const debouncedSearch = useCallback(debounce((searchValue) => {
+        setSearchTerm(searchValue);  // Ensure searchTerm is updated
         getAllLeads(searchValue, utils.sortbyvalue, utils.statusid, utils.sortbykey, utils.customfieldid, utils.tagid, currentPage);
-    }, 500), []);
+    }, 300), [utils, currentPage]);
+
 
     useEffect(() => {
         const fetchStatus = async () => {
@@ -73,12 +75,9 @@ export default function AllLeads() {
     }, []);
 
     useEffect(() => {
-        getAllLeads(null, null, null, null, null, null, 1);
-        setUtils({
-            ...utils, search: '', sortbykey: 'desc', sortbyvalue: null, statusid: null,
-            customfieldid: null, tagid: null
-        })
+        getAllLeads(searchTerm, utils.sortbyvalue, utils.statusid, utils.sortbykey, utils.customfieldid, utils.tagid, 1);
     }, [activeTab]);
+
 
     const getAllLeads = async (search = '', sortbyvalue = null, statusid = null,
         sortDirection = 'asc', customfieldid = null, tagid = null, currentPage) => {
@@ -86,7 +85,6 @@ export default function AllLeads() {
             var searchstring = search == '' ? null : search;
             setLoading(true);
             const result = await getAPIAuthKey(`/get-leads/${schemeId}&${activeTab}&${searchstring}&${sortDirection}&${sortbyvalue}&${statusid}&${customfieldid}&${tagid}&${currentPage}&${itemsPerPage}`);
-            // const result = await getAPIAuthKey(`/get-leads/${schemeId}&${activeTab}&${searchstring}&${sortDirection}&${sortbyvalue}&${statusid}&${currentPage}&${itemsPerPage}`);
             if (!result) {
                 throw new Error('Something went wrong');
             }
@@ -122,25 +120,26 @@ export default function AllLeads() {
 
     const handlePageChange = (page) => {
         setCurrentPage(page);
-        getAllLeads(utils.search, utils.sortbyvalue, utils.statusid, utils.sortbykey, utils.customfieldid, utils.tagid, page);  // Preserve sorting state
+        getAllLeads(searchTerm, utils.sortbyvalue, utils.statusid, utils.sortbykey, utils.customfieldid, utils.tagid, page);  // Preserve sorting state
     };
 
     const handleSorting = (sortField) => {
         const newSortDirection = utils.sortbykey == 'asc' ? 'desc' : 'asc';
         setUtils((prev) => ({ ...prev, sortbyvalue: sortField, sortbykey: newSortDirection }));
-        getAllLeads(utils.search, sortField, utils.statusid, newSortDirection, utils.customfieldid, utils.tagid, currentPage); // Pass updated sort direction and value
+        getAllLeads(searchTerm, sortField, utils.statusid, newSortDirection, utils.customfieldid, utils.tagid, currentPage); // Pass updated sort direction and value
     };
 
     const handleCancelActiveTabs = () => {
         setActiveTab(1);
         setUtils({
-            ...utils, search: '', sortbykey: 'desc',
+            ...utils, sortbykey: 'desc',
             sortbyvalue: null, statusid: null, customfieldid: null,
             tagid: null
-        })
+        });
+        setSearchTerm('')
     }
     const handleCustomFieldChange = (e) => {
-        getAllLeads(utils.search, utils.sortbyvalue, utils.statusid, utils.sortbykey, e.target.value, utils.tagid, currentPage);
+        getAllLeads(searchTerm, utils.sortbyvalue, utils.statusid, utils.sortbykey, e.target.value, utils.tagid, currentPage);
         setUtils((prevdata) => ({ ...prevdata, customfieldid: e.target.value }))
         const selectedField = CustomFieldData.find((item) => item.id == e.target.value);
         const fieldName = selectedField ? selectedField.name : '';
@@ -149,6 +148,27 @@ export default function AllLeads() {
             searchInputRef.current?.focus();
         }
     }
+    const handleTabChange = (tab) => {
+        setActiveTab(tab);
+        setUtils({
+            sortbykey: 'desc', sortbyvalue: null, statusid: null,
+            customfieldid: null, tagid: null
+        });
+        setSearchTerm('')
+    };
+    const handleInputChange = (e) => {
+        setSearchTerm(e.target.value)
+        debouncedSearch(e.target.value);
+    };
+    const handleTagChange = (tag) => {
+        getAllLeads(searchTerm, utils.sortbyvalue, utils.statusid, utils.sortbykey, utils.customfieldid, tag.id, currentPage);
+        setUtils(prevUtils => ({
+            ...prevUtils,
+            tagid: tag.id
+        }));
+    };
+
+
     return (
         <div>
             {loading && <Loader runningcheck={loading} />}
@@ -174,9 +194,9 @@ export default function AllLeads() {
                     <div className='tab_bg'>
                         <div className='row align-items-center px-2'>
                             <div className={`col-5 ${activeTab == 2 && "active_tab"}  cursor-pointer`}
-                                onClick={(e) => { setActiveTab(2) }}>Members</div>
+                                onClick={(e) => { handleTabChange(2) }}>Members</div>
                             <div className={`col-6 ${activeTab == 3 && "active_tab"}  cursor-pointer`}
-                                onClick={(e) => { setActiveTab(3); }}>Non-Members</div>
+                                onClick={(e) => { handleTabChange(3); }}>Non-Members</div>
                             <div className='col-1 ps-0'>
                                 {activeTab != 1 && (
                                     <img src={Images.white_cancel} className='cursor-pointer'
@@ -189,7 +209,7 @@ export default function AllLeads() {
                 <div className='col-md-3'>
                     <select className="customInput" name='status' style={{ background: "#03053d", padding: '0.7em' }}
                         onChange={(e) => {
-                            getAllLeads(utils.search, utils.sortbyvalue, e.target.value, utils.sortbykey, utils.customfieldid, utils.tagid, currentPage);
+                            getAllLeads(searchTerm, utils.sortbyvalue, e.target.value, utils.sortbykey, utils.customfieldid, utils.tagid, currentPage);
                             setUtils((prevdata) => ({ ...prevdata, statusid: e.target.value }))
                         }}>
                         <option value="null" label="Filter by Status" />
@@ -218,10 +238,7 @@ export default function AllLeads() {
                             className="form-control searchInput"
                             placeholder={`Search ${customfieldname}`}
                             value={utils.search}
-                            onChange={(e) => {
-                                debouncedSearch(e.target.value);
-                                setUtils({ ...utils, search: e.target.value })
-                            }}
+                            onChange={(e) => handleInputChange(e)}
                         />
                     </div>
                 </div>
@@ -231,13 +248,18 @@ export default function AllLeads() {
                     <label className='fw-semibold fontwhite'>Recommended</label>
                 </div>
                 <div className='col-12 d-flex ps-4'>
+                    <label className="tags_label cursor-pointer font-12 me-2 px-2"
+                        onClick={(e) => {
+                            getAllLeads(searchTerm, utils.sortbyvalue, utils.statusid, utils.sortbykey, utils.customfieldid, null, currentPage);
+                            setUtils((prevdata) => ({ ...prevdata, tagid: null }))
+                        }}>
+                        All
+                    </label>
                     {AllTags.length > 0 && (
                         AllTags.map((tag, tagindex) => {
-                            return <label className="tags_label cursor-pointer font-12 me-2 px-2" key={tagindex}
-                                onClick={(e) => {
-                                    getAllLeads(utils.search, utils.sortbyvalue, utils.statusid, utils.sortbykey, utils.customfieldid, tag.id, currentPage);
-                                    setUtils((prevdata) => ({ ...prevdata, tagid: e.target.value }))
-                                }}>
+                            return <label className="tags_label cursor-pointer font-12 me-2 px-2"
+                                key={tagindex}
+                                onClick={(e) => { handleTagChange(tag) }}>
                                 {tag.name.charAt(0).toUpperCase() + tag.name.slice(1)}
                             </label>
                         })
