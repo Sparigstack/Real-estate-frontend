@@ -85,8 +85,8 @@ export default function AllLeads() {
         try {
             var searchstring = search == '' ? null : search;
             setLoading(true);
-            // const result = await getAPIAuthKey(`/get-leads/${schemeId}&${activeTab}&${searchstring}&${sortDirection}&${sortbyvalue}&${statusid}&${customfieldid}&${tagid}&${currentPage}&${itemsPerPage}`);
-            const result = await getAPIAuthKey(`/get-leads/${schemeId}&${activeTab}&${searchstring}&${sortDirection}&${sortbyvalue}&${statusid}&${currentPage}&${itemsPerPage}`);
+            const result = await getAPIAuthKey(`/get-leads/${schemeId}&${activeTab}&${searchstring}&${sortDirection}&${sortbyvalue}&${statusid}&${customfieldid}&${tagid}&${currentPage}&${itemsPerPage}`);
+            // const result = await getAPIAuthKey(`/get-leads/${schemeId}&${activeTab}&${searchstring}&${sortDirection}&${sortbyvalue}&${statusid}&${currentPage}&${itemsPerPage}`);
             if (!result) {
                 throw new Error('Something went wrong');
             }
@@ -199,13 +199,15 @@ export default function AllLeads() {
                     </select>
                 </div>
                 <div className='col-md-3'>
-                    <select className="customInput" name='status' style={{ background: "#03053d", padding: '0.7em' }}
-                        onChange={(e) => handleCustomFieldChange(e)}>
-                        <option value="null" label="Filter by Custom Field" />
-                        {CustomFieldData?.map((item, index) => {
-                            return <option value={item.id} label={item.name} key={index} />
-                        })}
-                    </select>
+                    {CustomFieldData.length > 0 &&
+                        <select className="customInput" name='status' style={{ background: "#03053d", padding: '0.7em' }}
+                            onChange={(e) => handleCustomFieldChange(e)}>
+                            <option value="null" label="Filter by Custom Field" />
+                            {CustomFieldData?.map((item, index) => {
+                                return <option value={item.id} label={item.name} key={index} />
+                            })}
+                        </select>
+                    }
                 </div>
                 <div className='col-md-3'>
                     <div className="position-relative">

@@ -161,7 +161,10 @@ export default function InterstedLeadsPopup({ setInterstedLeadPopup, unitId, set
     const handleAddLead = async (values) => {
         setLoading(true);
         try {
-            const raw = JSON.stringify({ ...values, propertyinterest: schemeId, leadid: 0, unitId: unitId, flag: 1, userId: userid });
+            const raw = JSON.stringify({
+                ...values, propertyinterest: schemeId, leadid: 0,
+                unitId: unitId, flag: 1, userId: userid, userCapabilities: 'manual_entry_csv_import'
+            });
             const result = await postAPIAuthKey('/add-edit-leads', raw);
 
             if (!result) {

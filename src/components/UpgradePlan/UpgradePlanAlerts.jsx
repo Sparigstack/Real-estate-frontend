@@ -15,7 +15,7 @@ export default function UpgradePlanAlerts({ show, data, onhide }) {
                 </div>
                 <div className='col-10 ps-4'>
                     <h6 className='fw-meidum text-start font-14 mb-0'>
-                        You have reached your {data.planname} plan limit..!!
+                        You have reached your {data.activeplanname} plan limit..!!
                     </h6>
                     <div className='font-14 col-6 pt-1 d-flex align-items-center fw-semibold cursor-pointer'
                         style={{ borderBottom: "1px solid #03053D" }}
