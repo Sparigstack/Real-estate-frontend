@@ -12,7 +12,7 @@ export default function WebFormContent() {
     const captchasitekey = import.meta.env.VITE_CAPTCHA_SITEKEY;
     const { postAPI } = useApiService();
     const { getSources, getLeadStatus } = useCommonApiService();
-    const { schemeId } = useParams();
+    const { schemeId, userid } = useParams();
     const [sourcesData, setsourcesData] = useState([]);
     const [leadStatusData, setleadStatusData] = useState([]);
     const [alerts, setShowAlerts] = useState('');
@@ -33,7 +33,8 @@ export default function WebFormContent() {
             const raw = JSON.stringify({
                 ...values,
                 propertyinterest: schemeId,
-                grecaptcha: token
+                grecaptcha: token,
+                userId: userid
             });
             const result = await postAPI('/web-form-lead', raw);
 

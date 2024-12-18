@@ -35,7 +35,7 @@ export default function Csv() {
             var formdata = new FormData();
             formdata.append("file", file);
             formdata.append("propertyid", schemeId);
-            formdata.append("userid", userid);
+            formdata.append("userId", userid);
             const result = await postAPIAuthKey('/add-leads-csv', formdata, true);
             if (!result) {
                 throw new Error('Something went wrong');
