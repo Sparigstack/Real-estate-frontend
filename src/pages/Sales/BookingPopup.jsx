@@ -13,6 +13,7 @@ import useCommonApiService from '../../hooks/useCommonApiService';
 import Images from '../../utils/Images';
 
 export default function BookingPopup({ setBookingModel, unitid }) {
+    const userId = Cookies.get('userId');
     const { getAPIAuthKey, postAPIAuthKey } = useApiService();
     const { getPaymentTypes } = useCommonApiService();
     const { schemeId, refreshPropertyDetails } = useProperty();
@@ -89,7 +90,8 @@ export default function BookingPopup({ setBookingModel, unitid }) {
             bookingreferencenumber: values.bookingreferencenumber || null,
             nextpaymenttype: values.nextpaymenttype || 0,
             nextpaymentreferencenumber: values.nextpaymentreferencenumber || null,
-            notes: values.notes || null
+            notes: values.notes || null,
+            userId: userId
         })
         try {
             const result = await postAPIAuthKey('/add-unit-booking-detail', raw);
