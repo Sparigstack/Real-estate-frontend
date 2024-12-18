@@ -11,6 +11,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { PropertyBookingValidationSchema } from '../../utils/validations/PropertyBookingValidationSchema';
 import useCommonApiService from '../../hooks/useCommonApiService';
 import Images from '../../utils/Images';
+import Cookies from 'js-cookie';
 
 export default function BookingPopup({ setBookingModel, unitid }) {
     const userId = Cookies.get('userId');
