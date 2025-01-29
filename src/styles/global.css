@@ -11,6 +11,8 @@
 @import './suggestionbox.css';
 @import './tabs.css';
 @import './pricing.css';
+@import './toggleswitch.css';
+@import './salesdashboard.css';
 
 * {
   margin: 0;

@@ -1,0 +1,14 @@
+.react-switch-bg {
+    background: rgb(170, 184, 255);
+    height: 20px !important;
+    width: 50px !important;
+}
+
+.react-switch-handle {
+    height: 16px !important;
+    width: 16px !important;
+    background: black !important;
+    top: 2px !important;
+    right: 31px;
+    box-shadow: none !important;
+}

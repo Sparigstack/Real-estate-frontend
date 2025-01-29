@@ -1,7 +1,9 @@
 import useApiService from "./useApiService";
+import useProperty from "./useProperty";
 
 const useCommonApiService = () => {
     const { getAPI, getAPIAuthKey } = useApiService();
+    const { schemeId } = useProperty();
     const getSources = async () => {
         try {
             const result = await getAPI(`/get-sources`);
@@ -96,13 +98,47 @@ const useCommonApiService = () => {
         }
     }
 
+    const getLeadTags = async () => {
+        try {
+            const result = await getAPIAuthKey(`/fetch-tags/${schemeId}`);
+            if (!result || result == "") {
+                alert('Something went wrong');
+            }
+            else {
+                const responseRs = JSON.parse(result);
+                return responseRs
+            }
+        }
+        catch (error) {
+            console.error(error);
+        }
+    }
+
+    const getUserMenuAccess = async (userid) => {
+        try {
+            const result = await getAPIAuthKey(`/get-user-menu-access/${userid}`);
+            if (!result || result == "") {
+                alert('Something went wrong');
+            }
+            else {
+                const responseRs = JSON.parse(result);
+                return responseRs
+            }
+        }
+        catch (error) {
+            console.error(error);
+        }
+    }
+
     return {
         getSources,
         getAllStates,
         getCities,
         getArea,
         getPaymentTypes,
-        getLeadStatus
+        getLeadStatus,
+        getLeadTags,
+        getUserMenuAccess
     };
 }
 export default useCommonApiService;

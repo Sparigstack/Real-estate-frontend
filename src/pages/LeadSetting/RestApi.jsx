@@ -83,7 +83,8 @@ export default function RestApi() {
                             The body of the request must contain the lead's information in the following JSON format. Replace the placeholder values with actual data:
                         </p>
                         <label style={{ border: "1px solid gray", borderRadius: "5px" }} className='p-2 mt-2'>
-                            {`{"leads":[{
+                            {`{"userCapabilities":"webform_api_integrations",
+                                "leads":[{
                                 "name": "Parijjjji",
                                 "email": "parioooo@gmail.com",
                                 "contact": "1324354654",
@@ -125,7 +126,8 @@ export default function RestApi() {
                             <br />
                             <b>Body : </b>
                             <br />
-                            {`{"leads":[{
+                            {`{"userCapabilities":"webform_api_integrations",
+                            "leads":[{
                                 "name": "Parijjjji",
                                 "email": "parioooo@gmail.com",
                                 "contact": "1324354654",

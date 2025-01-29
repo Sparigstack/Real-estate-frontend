@@ -10,6 +10,7 @@ import useApiService from '../../hooks/useApiService';
 import useProperty from '../../hooks/useProperty';
 import useCommonApiService from '../../hooks/useCommonApiService';
 import Loader from '../../components/loader/Loader';
+import UpgradePlanPopup from '../../components/UpgradePlan/UpgradePlanPopup';
 
 export default function AddPropertyForm({ schemeType, setFormView }) {
     const { switchProperty } = useProperty();
@@ -39,6 +40,12 @@ export default function AddPropertyForm({ schemeType, setFormView }) {
     const [CityArray, setCityArray] = useState([]);
     const [loading, setLoading] = useState(false);
     const [showAlerts, setShowAlerts] = useState(false);
+    const [PlanPopup, setPlanPopup] = useState(false);
+    const [planResponse, setPlanResponse] = useState({
+        moduleid: "",
+        planname: "",
+        previousPath: location.pathname
+    })
     useEffect(() => {
         const getPropertyTypes = async () => {
             try {
@@ -77,7 +84,8 @@ export default function AddPropertyForm({ schemeType, setFormView }) {
             property_img: filedetails?.uploadedFileBase64 || null,
             state: values?.state,
             city: values?.city,
-            area: values?.area
+            area: values?.area,
+            userCapabilities: 'schemes_units_config'
         })
         try {
             const result = await postAPIAuthKey('/add-property-details', raw);
@@ -85,15 +93,18 @@ export default function AddPropertyForm({ schemeType, setFormView }) {
                 alert('Something went wrong');
             } else {
                 const responseRs = JSON.parse(result);
+                setLoading(false);
                 if (responseRs.status == 'success') {
                     Cookies.set('schemeId', responseRs.propertyId, { expires: 1 });
                     setShowAlerts(<AlertComp show={true} variant="success" message="Scheme Added Successfully." />);
                     await switchProperty(responseRs.propertyId);
                     setTimeout(() => {
-                        setLoading(false);
                         setShowAlerts(false);
-                        navigate("/sales");
+                        navigate("/sales-dashboard");
                     }, 2500);
+                } else if (responseRs.status == "upgradeplan") {
+                    setPlanResponse({ ...planResponse, moduleid: responseRs.moduleid, planname: responseRs.activeplanname });
+                    setPlanPopup(true);
                 }
                 else {
                     setShowAlerts(<AlertComp show={true} variant="danger" message={responseRs?.message} />);
@@ -119,8 +130,10 @@ export default function AddPropertyForm({ schemeType, setFormView }) {
         }
     }
     const GetCities = async (stateid) => {
+        setLoading(true);
         var cities = await getCities(stateid);
         if (cities) {
+            setLoading(false);
             setCityArray(cities)
         }
     }
@@ -176,7 +189,7 @@ export default function AddPropertyForm({ schemeType, setFormView }) {
                                     <Field type="text" className="customInput" name='area' autoComplete='off' />
                                     <ErrorMessage name='area' component="div" className="text-start errorText" />
                                 </div>
-                                <div className='col-md-3 ps-0 position-relative mb-4'>
+                                <div className='col-md-3 ps-0 position-relative'>
                                     <label className='custom-label font-13'>State <span className='text-danger'>*</span></label>
                                     <Field as="select" className="customInput" name='state' style={{ background: "#03053d", padding: '1em' }}
                                         onChange={(e) => { GetCities(e.target.value); setFieldValue('state', e.target.value) }}>
@@ -187,7 +200,8 @@ export default function AddPropertyForm({ schemeType, setFormView }) {
                                     </Field>
                                     <ErrorMessage name='state' component="div" className="text-start errorText" />
                                 </div>
-                                <div className='col-md-3 ps-0 position-relative mb-4'>
+
+                                <div className='col-md-3 ps-0 position-relative'>
                                     <label className='custom-label font-13'>City <span className='text-danger'>*</span></label>
                                     <Field as="select" className="customInput" name='city' style={{ background: "#03053d", padding: '1em' }}>
                                         <option value="0" label="Select" />
@@ -198,18 +212,19 @@ export default function AddPropertyForm({ schemeType, setFormView }) {
                                     <ErrorMessage name='city' component="div" className="text-start errorText" />
                                 </div>
 
-                                <div className='col-md-3 ps-0 position-relative mb-4'>
+                                <div className='col-md-3 ps-0 position-relative'>
                                     <label className='custom-label'>Pincode <span className='text-danger'>*</span></label>
                                     <Field type="text" className="customInput" name='pincode' autoComplete='off' />
                                     <ErrorMessage name='pincode' component="div" className="text-start errorText" />
                                 </div>
-                                <div className='col-md-3 ps-0 position-relative mb-4'>
+                                <div className='col-md-3 ps-0 position-relative'>
                                     <label className='custom-label'>Rera registered number(optional)</label>
                                     <Field type="text" className="customInput" name='reraregisterednumber' autoComplete='off' />
                                 </div>
+
                             </div>
 
-                            <div className="row">
+                            <div className="row mt-4">
                                 <div className='col-md-6 ps-0 position-relative mb-4'>
                                     <label className='custom-label'>Upload Scheme Image(optional)</label>
                                     <div style={{ height: "100%" }} className="customInput text-center" name='companyLogo' autoComplete='off' readOnly aria-describedby="logo-upload" value={filedetails.uploadedFileName} onClick={handleLogoUpload}>
@@ -238,6 +253,8 @@ export default function AddPropertyForm({ schemeType, setFormView }) {
                     )}
                 </Formik>
             </div>
+            {PlanPopup && <UpgradePlanPopup show={PlanPopup} onHide={() => setPlanPopup(false)}
+                data={planResponse} />}
         </div>
     )
 }

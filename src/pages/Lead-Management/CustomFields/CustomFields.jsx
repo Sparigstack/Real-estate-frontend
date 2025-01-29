@@ -140,7 +140,7 @@ export default function CustomFields() {
                 </div>
             </div>
 
-            <CustomModal isShow={CustomFieldModal} size={"lg"} title={fieldid == 0 ? "Add Field" : "Edit Lead"}
+            <CustomModal isShow={CustomFieldModal} size={"md"} title={fieldid == 0 ? "Add Field" : "Edit Lead"}
                 bodyContent={<CustomFieldPopup setLoading={setLoading} getAllFields={getAllFields} fieldid={fieldid} setshowAlerts={setShowAlerts} handleHide={(e) => setCustomFieldModal(false)} />} closePopup={(e) => setCustomFieldModal(false)} showBudget={false} />
 
             <DeleteModal isShow={isDeleteModal} title={"Are you sure want to delete this Field?"} Cancel={(e) => setIsDeleteModal(false)}

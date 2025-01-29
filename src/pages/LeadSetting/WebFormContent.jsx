@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Field, Formik, Form, ErrorMessage } from 'formik';
 import AddUpdateLeadValidationSchema from '../../utils/validations/AddUpdateLeadValidationSchema';
 import { useParams } from 'react-router-dom';
-import AlertComp from '../../components/alerts/AlertComp';
 import useApiService from '../../hooks/useApiService';
 import useCommonApiService from '../../hooks/useCommonApiService';
 import ReCAPTCHA from 'react-google-recaptcha';
@@ -12,7 +11,7 @@ export default function WebFormContent() {
     const captchasitekey = import.meta.env.VITE_CAPTCHA_SITEKEY;
     const { postAPI } = useApiService();
     const { getSources, getLeadStatus } = useCommonApiService();
-    const { schemeId } = useParams();
+    const { schemeId, userid } = useParams();
     const [sourcesData, setsourcesData] = useState([]);
     const [leadStatusData, setleadStatusData] = useState([]);
     const [alerts, setShowAlerts] = useState('');
@@ -33,7 +32,9 @@ export default function WebFormContent() {
             const raw = JSON.stringify({
                 ...values,
                 propertyinterest: schemeId,
-                grecaptcha: token
+                grecaptcha: token,
+                userId: userid,
+                userCapabilities: 'webform_api_integrations'
             });
             const result = await postAPI('/web-form-lead', raw);
 
@@ -43,17 +44,19 @@ export default function WebFormContent() {
 
             const responseRs = JSON.parse(result);
             if (responseRs.status == 'success') {
-                setShowAlerts(<AlertComp show={true} variant="success" message={'Lead Added Successfully'} />);
+                setShowAlerts('Lead Added Successfully');
                 setTimeout(() => {
                     setShowAlerts(false);
                     resetForm();
                 }, 2000);
+            } else if (responseRs.status == "upgradeplan") {
+                setShowAlerts(`You have reached your ${responseRs.activeplanname} plan limit`);
             }
             else {
                 recaptcharef.current.reset();
-                setShowAlerts(<AlertComp show={true} variant="danger" message={responseRs.message} />);
+                setShowAlerts(responseRs.message);
                 setTimeout(() => {
-                    setShowAlerts(false);
+                    setShowAlerts('');
                 }, 2000);
             }
         }
@@ -68,7 +71,7 @@ export default function WebFormContent() {
     };
     return (
         <div className='row'>
-            {alerts}
+
             <Formik initialValues={{
                 name: '',
                 email: '',
@@ -141,7 +144,7 @@ export default function WebFormContent() {
                             <Field type="textarea" className="custom-inputs" name='notes' autoComplete='off' />
                         </div>
 
-                        <div className='col-12 pt-3 text-center' >
+                        <div className='col-12 pt-1 text-center' >
                             <button type='button' className="CancelBtn me-2" onClick={handleReset}>
                                 Reset
                             </button>
@@ -149,6 +152,9 @@ export default function WebFormContent() {
                                 Confirm
                             </button>
                         </div>
+                        <label className='pb-5 pt-2'>
+                            {alerts}
+                        </label>
                         <div className='pt-5'>
                             <ReCAPTCHA ref={recaptcharef} sitekey={captchasitekey} size="invisible" />
                         </div>

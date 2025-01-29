@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
 import useProperty from '../../hooks/useProperty';
 import Images from '../../utils/Images';
+import Cookies from 'js-cookie';
 
 export default function WebForm() {
     const { schemeId } = useProperty();
+    const userid = Cookies.get('userId');
     const frontendurl = import.meta.env.VITE_REDIRECT_URL;
     const [showcopymsg, setshowcopymsg] = useState(false)
     const handleCopyClick = (labelValue) => {
@@ -49,7 +51,7 @@ export default function WebForm() {
             alert('Web Share API is not supported in your browser.');
         }
     };
-    const iframeCode = `<iframe src="${frontendurl}/webform/${schemeId}" height="400px"></iframe>`;
+    const iframeCode = `<iframe src="${frontendurl}/webform/${schemeId}/${userid}" height="600px"></iframe>`;
     return (
         <div className='font-14'>
             <label style={{ textAlign: "justify" }}>You can copy the link and share it as a webform. If you send the webform link to someone and they place it on their website or any other platform, they will be able to collect leads through that webform.</label>

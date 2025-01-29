@@ -10,11 +10,13 @@ import AddFloorsUnits from './AddFloorsUnits';
 export default function AllSchemeTypes() {
     const navigate = useNavigate();
     const { getAPIAuthKey } = useApiService();
-    const { propertyDetails } = useProperty();
+    const { propertyDetails, schemeId } = useProperty();
     const [ShowAddFloordiv, setShowAddFloordiv] = useState(false);
     const [FloorUnitDetails, setFloorUnitDetails] = useState([])
     const [activeWingId, setActiveWingId] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [divVisibleForExport, setdivVisibleForExport] = useState(false);
+    const [CsvDataForSales, setCsvDataForSales] = useState([]);
     useEffect(() => {
         if (activeWingId) {
             setActiveWingId(activeWingId)
@@ -57,6 +59,52 @@ export default function AllSchemeTypes() {
         return null;
     };
 
+    const getExportSales = async () => {
+        setLoading(true);
+        try {
+            const result = await getAPIAuthKey(`/exportSales/${schemeId}`);
+            if (!result) {
+                throw new Error('Something went wrong');
+            }
+            const responseRs = JSON.parse(result);
+            setLoading(false);
+            setCsvDataForSales(responseRs.wings);
+            setdivVisibleForExport(true)
+        }
+        catch (error) {
+            setLoading(false);
+            console.error(error);
+        }
+    }
+    const handleExportCsv = () => {
+        const csvContent = [];
+        CsvDataForSales?.forEach((data) => {
+            csvContent.push(['Wing : ' + data.wingname]);
+            csvContent.push(['Total Floors : ' + data.total_floors]);
+            const headers = ['Floors', 'Total Units', 'Total Booked', 'Total Intersted Units'];
+            csvContent.push(headers);
+            data.floors.forEach((item) => {
+                const values = [item.floor_name, item.total_units, item.total_booked, item.interested_units];
+                csvContent.push(values);
+            });
+            csvContent.push([]);
+        });
+
+        const csvString = csvContent.map(row => row.join(',')).join('\n');
+        const blob = new Blob([csvString], { type: 'text/csv' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'Sales.csv';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
+    function RemovSalesCsv() {
+        setCsvDataForSales([]);
+        setdivVisibleForExport(false);
+    }
+
     return (
         <div>
             {loading && <Loader runningcheck={loading} />}
@@ -70,6 +118,21 @@ export default function AllSchemeTypes() {
                             <label className='ps-5 light-grey-color'>
                                 Total Units : <b>{propertyDetails?.total_units}</b>
                             </label>
+                        </div>
+                        <div className='col-8 fontwhite d-flex'>
+                            <label className='px-2 light-grey-color cursor-pointer text-decoration-underline'
+                                onClick={getExportSales}>
+                                Export Sales CSV
+                            </label>
+                            {divVisibleForExport &&
+                                <div className='ps-5'>
+                                    <label className=''>
+                                        Sales.csv
+                                    </label>
+                                    <img src={Images.white_cancel} className="cursor-pointer ps-2" onClick={RemovSalesCsv} />
+                                    <button className='WhiteBtn WhiteFont ms-4 py-1 px-3' onClick={handleExportCsv}>Download</button>
+                                </div>
+                            }
                         </div>
                     </div>
                     <div className='row pt-3'>
@@ -112,6 +175,8 @@ export default function AllSchemeTypes() {
                             <button className='WhiteBtn mt-5 px-4' onClick={(e) => navigate('/add-wings')}>Add Wing</button>
                         </div>
             }
+
+
         </div>
     )
 }

@@ -7,14 +7,23 @@ import useApiService from '../../hooks/useApiService';
 import AlertComp from '../../components/alerts/AlertComp';
 import Loader from '../../components/loader/Loader';
 import * as Yup from 'yup';
+import Cookies from 'js-cookie';
+import UpgradePlanPopup from '../../components/UpgradePlan/UpgradePlanPopup';
 
 export default function AddFloorsUnits({ activeWingId, UnitDetailsCount, setShowAddFloordiv }) {
     const [loading, setLoading] = useState(false);
+    const userid = Cookies.get('userId');
     const { schemeId, refreshPropertyDetails } = useProperty();
     const [showAlerts, setShowAlerts] = useState(false);
     const [yesnoRadio, setYesnoRadio] = useState(0);
     const [WingsWithData, setWingsWithData] = useState([])
     const { postAPIAuthKey, getAPIAuthKey } = useApiService();
+    const [PlanPopup, setPlanPopup] = useState(false);
+    const [planResponse, setPlanResponse] = useState({
+        moduleid: "",
+        planname: "",
+        previousPath: location.pathname
+    })
     const [allData, setallData] = useState({
         totalFloors: '',
         unitFlag: 2,
@@ -22,10 +31,7 @@ export default function AddFloorsUnits({ activeWingId, UnitDetailsCount, setShow
         unitsArray: []
     })
     const [totalUnits, setTotalUnits] = useState(0);
-    useEffect(() => {
-        setYesnoRadio(0);
-        getWingsUnitFloors();
-    }, [activeWingId])
+
     const submitFloorUnitDetails = async (values) => {
         setLoading(true);
         var raw = JSON.stringify({
@@ -34,7 +40,9 @@ export default function AddFloorsUnits({ activeWingId, UnitDetailsCount, setShow
             numberOfFloors: values.totalFloors,
             sameUnitsFlag: values.unitFlag,
             sameUnitCount: values.unitsFloorWise,
-            unitDetails: values.unitsArray
+            unitDetails: values.unitsArray,
+            userId: userid,
+            userCapabilities: "schemes_units_config"
         })
         try {
             const result = await postAPIAuthKey('/add-wings-floor-details', raw);
@@ -49,6 +57,10 @@ export default function AddFloorsUnits({ activeWingId, UnitDetailsCount, setShow
                         setShowAlerts(false);
                         refreshPropertyDetails()
                     }, 2500);
+                } else if (responseRs.status == "upgradeplan") {
+                    setLoading(false);
+                    setPlanResponse({ ...planResponse, moduleid: responseRs.moduleid, planname: responseRs.activeplanname });
+                    setPlanPopup(true);
                 }
                 else {
                     setShowAlerts(<AlertComp show={true} variant="danger" message={responseRs?.message} />);
@@ -82,12 +94,18 @@ export default function AddFloorsUnits({ activeWingId, UnitDetailsCount, setShow
             console.error(error);
         }
     }
+    useEffect(() => {
+        setYesnoRadio(0);
+        getWingsUnitFloors();
+    }, [activeWingId]);
     const submitSimilarWingDetails = async (values) => {
         setLoading(true);
         var raw = JSON.stringify({
             selectedwingId: values.selectedwing,
             propertyid: schemeId,
             currentwingid: activeWingId,
+            userId: userid,
+            userCapabilities: "schemes_units_config"
         })
         try {
             const result = await postAPIAuthKey('/add-similar-wing-details', raw);
@@ -95,13 +113,16 @@ export default function AddFloorsUnits({ activeWingId, UnitDetailsCount, setShow
                 alert('Something went wrong');
             } else {
                 const responseRs = JSON.parse(result);
+                setLoading(false);
                 if (responseRs.status == 'success') {
                     setShowAlerts(<AlertComp show={true} variant="success" message="Floors and Units Added Successfully." />);
                     setTimeout(() => {
-                        setLoading(false);
                         setShowAlerts(false);
                         refreshPropertyDetails()
                     }, 2500);
+                } else if (responseRs.status == "upgradeplan") {
+                    setPlanResponse({ ...planResponse, moduleid: responseRs.moduleid, planname: responseRs.activeplanname });
+                    setPlanPopup(true);
                 }
                 else {
                     setShowAlerts(<AlertComp show={true} variant="danger" message={responseRs?.message} />);
@@ -240,57 +261,59 @@ export default function AddFloorsUnits({ activeWingId, UnitDetailsCount, setShow
                     </div>
                     {UnitDetailsCount > 0 ?
                         AddFloorsDiv :
-                        <>
-                            <div className='row py-3 ps-0 text-white'>
-                                <label className='ps-0'>Is this wing similar to any existing wing?</label>
-                                <div className='col-md-4 ps-0 d-flex justify-content-between'>
-                                    <div className='text-center pt-2'>
-                                        <input type='radio' className='form-check-input cursor-pointer me-2'
-                                            name='yes' onChange={(e) => setYesnoRadio(1)} checked={yesnoRadio == 1} />
-                                        <label>Yes</label>
-                                    </div>
-                                    <div className='text-center pt-2'>
-                                        <input type='radio' className='form-check-input cursor-pointer me-2'
-                                            name='yes' onChange={(e) => setYesnoRadio(2)} checked={yesnoRadio == 2} />
-                                        <label>No</label>
+                        UnitDetailsCount == 0 ?
+                            <>
+                                <div className='row py-3 ps-0 text-white'>
+                                    <label className='ps-0'>Is this wing similar to any existing wing?</label>
+                                    <div className='col-md-4 ps-0 d-flex justify-content-between'>
+                                        <div className='text-center pt-2'>
+                                            <input type='radio' className='form-check-input cursor-pointer me-2'
+                                                name='yes' onChange={(e) => setYesnoRadio(1)} checked={yesnoRadio == 1} />
+                                            <label>Yes</label>
+                                        </div>
+                                        <div className='text-center pt-2'>
+                                            <input type='radio' className='form-check-input cursor-pointer me-2'
+                                                name='yes' onChange={(e) => setYesnoRadio(2)} checked={yesnoRadio == 2} />
+                                            <label>No</label>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            {yesnoRadio == 1 && (
-                                <Formik initialValues={{ selectedwing: '' }}
-                                    validateOnBlur={false}
-                                    validateOnChange={false}
-                                    validationSchema={SelectedWingValidationSchema}
-                                    onSubmit={(values) => {
-                                        submitSimilarWingDetails(values);
-                                    }}>
-                                    {({ handleSubmit }) => (
-                                        <Form className='pt-2 mt-2 property-form' onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
-                                            <div className="row">
-                                                <div className='col-md-12 ps-0 position-relative mb-4'>
-                                                    <label className='custom-label font-13'>Select Wing <span className='text-danger'>*</span></label>
-                                                    <Field as="select" className="customInput" name='selectedwing' style={{ background: "#03053d", padding: '1em' }}>
-                                                        <option value="0" label="Select" />
-                                                        {WingsWithData?.length && WingsWithData?.map((item, index) => {
-                                                            return <option value={item.id} label={item.name} key={index} />
-                                                        })}
-                                                    </Field>
-                                                    <ErrorMessage name='selectedwing' component="div" className="text-start errorText" />
+                                {yesnoRadio == 1 && (
+                                    <Formik initialValues={{ selectedwing: '' }}
+                                        validateOnBlur={false}
+                                        validateOnChange={false}
+                                        validationSchema={SelectedWingValidationSchema}
+                                        onSubmit={(values) => {
+                                            submitSimilarWingDetails(values);
+                                        }}>
+                                        {({ handleSubmit }) => (
+                                            <Form className='pt-2 mt-2 property-form' onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
+                                                <div className="row">
+                                                    <div className='col-md-12 ps-0 position-relative mb-4'>
+                                                        <label className='custom-label font-13'>Select Wing <span className='text-danger'>*</span></label>
+                                                        <Field as="select" className="customInput" name='selectedwing' style={{ background: "#03053d", padding: '1em' }}>
+                                                            <option value="0" label="Select" />
+                                                            {WingsWithData?.length && WingsWithData?.map((item, index) => {
+                                                                return <option value={item.id} label={item.name} key={index} />
+                                                            })}
+                                                        </Field>
+                                                        <ErrorMessage name='selectedwing' component="div" className="text-start errorText" />
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div className='pt-3 text-center'>
-                                                <button type="btn" className='px-4 cancelBtn me-2' onClick={(e) => setYesnoRadio(0)}>Cancel</button>
-                                                <button type="submit" className='otpBtn'>Save</button>
-                                            </div>
-                                        </Form>
-                                    )}
-                                </Formik>
-                            )}
+                                                <div className='pt-3 text-center'>
+                                                    <button type="btn" className='px-4 cancelBtn me-2' onClick={(e) => setYesnoRadio(0)}>Cancel</button>
+                                                    <button type="submit" className='otpBtn'>Save</button>
+                                                </div>
+                                            </Form>
+                                        )}
+                                    </Formik>
+                                )}
 
-                            {yesnoRadio == 2 &&
-                                AddFloorsDiv
-                            }
-                        </>
+                                {yesnoRadio == 2 &&
+                                    AddFloorsDiv
+                                }
+                            </> :
+                            null
 
                     }
 
@@ -303,6 +326,9 @@ export default function AddFloorsUnits({ activeWingId, UnitDetailsCount, setShow
                     {AddFloorsDiv}
                 </div>
             }
+
+            {PlanPopup && <UpgradePlanPopup show={PlanPopup} onHide={() => setPlanPopup(false)}
+                data={planResponse} />}
         </>
     )
 }

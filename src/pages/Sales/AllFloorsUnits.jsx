@@ -10,13 +10,15 @@ import CustomModal from '../../utils/CustomModal';
 import BookingPopup from './BookingPopup';
 import InterstedLeadsPopup from './InterstedLeadsPopup';
 import ViewBookingPopup from './ViewBookingPopup';
-import LoadingBar from 'react-top-loading-bar';
 import ScanChequePopup from './ScanCheque/ScanChequePopup';
 import UnitNamePopup from './UnitNamePopup';
 import useProperty from '../../hooks/useProperty';
+import Cookies from 'js-cookie';
+import UpgradePlanPopup from '../../components/UpgradePlan/UpgradePlanPopup';
 
 export default function AllFloorsUnits({ FloorUnitDetails, activeWingId, setFloorUnitDetails, setShowAddFloordiv, nextWingId, setActiveWingId, getFloorsUnits }) {
     const [bulkEditFlag, setbulkEditFlag] = useState(0);
+    const userid = Cookies.get('userId');
     const { refreshPropertyDetails, schemeId } = useProperty();
     const { postAPIAuthKey } = useApiService();
     const [scanChequeModal, setScanChequeModal] = useState(false);
@@ -38,6 +40,12 @@ export default function AllFloorsUnits({ FloorUnitDetails, activeWingId, setFloo
     const [BookingDetails, setBookingDetails] = useState({
         bookingtype: '',
         userid: ''
+    })
+    const [PlanPopup, setPlanPopup] = useState(false);
+    const [planResponse, setPlanResponse] = useState({
+        moduleid: "",
+        planname: "",
+        previousPath: location.pathname
     })
     const itemsPerPage = 4;
     const maxLengthOfUnits = Math.max(...(FloorUnitDetails?.floor_details?.map(floor => floor.unit_details.length) || [0]));
@@ -244,7 +252,9 @@ export default function AllFloorsUnits({ FloorUnitDetails, activeWingId, setFloo
     const handleAddUnit = async (floorid) => {
         setloading(true);
         var raw = JSON.stringify({
-            floorId: floorid
+            floorId: floorid,
+            userId: userid,
+            userCapabilities: "schemes_units_config"
         })
         try {
             const result = await postAPIAuthKey('/add-new-unit', raw);
@@ -260,6 +270,11 @@ export default function AllFloorsUnits({ FloorUnitDetails, activeWingId, setFloo
                         setShowAlerts(false);
                         refreshPropertyDetails();
                     }, 2500);
+                } else if (responseRs.status == "upgradeplan") {
+                    setloading(false);
+                    setPlanResponse({ ...planResponse, moduleid: responseRs.moduleid, planname: responseRs.activeplanname });
+                    setPlanPopup(true);
+
                 }
                 else {
                     setShowAlerts(<AlertComp show={true} variant="danger" message={responseRs?.message} />);
@@ -663,6 +678,9 @@ export default function AllFloorsUnits({ FloorUnitDetails, activeWingId, setFloo
                     <div className='col-md-3 buildingbase mb-5'></div>
                 </div >
             </div >
+
+            {PlanPopup && <UpgradePlanPopup show={PlanPopup} onHide={() => setPlanPopup(false)}
+                data={planResponse} />}
 
             <CustomModal isShow={BookingModel} size={"lg"} title="Add Booking Details" closePopup={(e) => setBookingModel(false)}
                 bodyContent={<BookingPopup setBookingModel={setBookingModel} unitid={unitId} />} />

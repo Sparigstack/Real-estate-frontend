@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import WebForm from './WebForm';
 import useAuth from '../../hooks/useAuth';
 import Images from '../../utils/Images';
+import Excel from './Excel';
 
 export default function LeadSettingIndex() {
     const { userDetails } = useAuth();
@@ -66,21 +67,11 @@ export default function LeadSettingIndex() {
                 <div className='col-md-6 ps-0' >
                     <div className='square-boxes' style={{ height: "100%" }}>
                         <div className='col-12 fw-semibold square-boxes-header'>
-                            Upload CSV/Excel
-                        </div>
-                        <div className='square-boxes-body'>
-                            <Csv />
-                        </div>
-                    </div>
-                </div>
-                <div className='col-12 my-3' >
-                    <div className='square-boxes' style={{ height: "100%" }}>
-                        <div className='col-12 fw-semibold square-boxes-header'>
                             Rest API
                         </div>
                         <div className='square-boxes-body'>
-                            <div className='row pe-3 ps-2 align-items-center'>
-                                <div className='col-md-6 pe-3 '>
+                            <div className='row p-3 align-items-center'>
+                                <div className='col-12 mt-2'>
                                     <div className='row square-boxes p-2'>
                                         <div className='col-md-3 pe-0 font-14'>
                                             <b>Client ID : </b>
@@ -95,7 +86,7 @@ export default function LeadSettingIndex() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className='col-md-6 px-3 '>
+                                <div className='col-12 mt-3'>
                                     <div className='row square-boxes p-2'>
                                         <div className='col-md-3 pe-0 font-14'>
                                             <b>Client Secret : </b>
@@ -134,6 +125,9 @@ export default function LeadSettingIndex() {
                         </div>
                     </div>
                 </div>
+                <Csv />
+                <Excel />
+
             </div>
         </div>
     )

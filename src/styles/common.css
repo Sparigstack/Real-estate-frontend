@@ -128,11 +128,7 @@
   border: 1px solid white;
 }
 
-.WhiteBtn:hover {
-  background-color: #03053d;
-  color: white;
 
-}
 
 .borderBtn {
   font-size: 13px;

@@ -99,8 +99,9 @@
 .tags_label:hover {
     background: #AAB8FF;
     color: black;
-    border: 1px solid #FFFFFF1A
+    border: 1px solid #FFFFFF1A;
 }
+
 
 .suggestion-box {
     background: white;
@@ -120,4 +121,17 @@
 
 .colorAAB8FF {
     color: #AAB8FF;
+}
+
+.status_boxes {
+    background: #FFFFFF;
+    border: 1px solid #C2C2C2;
+    padding: 5px;
+    color: #4A4A4A;
+    border-radius: 5px;
+}
+
+.active_status_boxes {
+    background: #030A43;
+    color: white;
 }

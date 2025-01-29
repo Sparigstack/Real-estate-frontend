@@ -44,15 +44,16 @@
     justify-content: space-between;
     border-radius: 7px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    width: 300px;
+    width: 130px;
     /* Adjust this width as per the design */
 }
 
 .img-container {
-    height: 200px;
-    /* Ensure the same height for all images */
+    width: 100%;
+    height: 100px;
     overflow: hidden;
     border-radius: 7px 7px 0 0;
+    padding: 5px 9px;
 }
 
 .img-container img {
@@ -127,4 +128,42 @@
 .back-prev-icon.disabled {
     opacity: 0.6;
     pointer-events: none;
+}
+
+.usersdiv {
+    border: 1px solid #585AB5;
+    border-radius: 5px;
+    background: #AAB8FF0A;
+}
+
+.userheader {
+    background: #303260;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 8px;
+    border-radius: 5px;
+}
+
+.usergrids {
+    border-bottom: 1px solid #FCFCFC4D;
+    background: #03053D;
+    font-size: 13px;
+    padding: 12px;
+}
+
+
+.profileIcon {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    background-color: #303260;
+    color: white;
+    border-radius: 50%;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer !important;
+    border: none;
 }

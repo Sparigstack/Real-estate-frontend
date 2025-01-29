@@ -45,6 +45,11 @@ export default function TopMenu() {
                     </label>
                 </label>
                 <div>
+                    <label className='colorAAB8FF cursor-pointer font-13 fw-semibold' onClick={(e) => navigate("/modules")}
+                        style={{ borderBottom: "1px solid #AAB8FF" }}>
+                        <img src={Images.upgrade_plan} className='iconsize pe-1 pb-1' />
+                        Pricing
+                    </label>
                     <label className='fontwhite fw-semibold font-12 px-3 cursor-pointer' onClick={handleSwitchProperty}>
                         <img src={Images.scheme} className='img-fluid iconsize pe-2' />My Schemes</label>
                     <button className="profileOpen" onClick={toggleProfile}>

@@ -8,6 +8,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faIndianRupeeSign } from '@fortawesome/free-solid-svg-icons';
 import LeadForm from '../../components/LeadForm';
 import Images from '../../utils/Images';
+import UpgradePlanAlerts from '../../components/UpgradePlan/UpgradePlanAlerts';
+import Cookies from 'js-cookie';
 
 export default function InterstedLeadsPopup({ setInterstedLeadPopup, unitId, setShowAlerts }) {
     const [allLeads, setAllLeads] = useState([]);
@@ -18,6 +20,8 @@ export default function InterstedLeadsPopup({ setInterstedLeadPopup, unitId, set
     const { schemeId, refreshPropertyDetails } = useProperty();
     const [showForm, setShowForm] = useState(false);
     const [showButtons, setShowButtons] = useState(false);
+    const [PlanAlerts, setPlanAlerts] = useState(false);
+    const userid = Cookies.get('userId');
     const [initialValues, setinitialValues] = useState({
         name: '',
         email: '',
@@ -157,7 +161,10 @@ export default function InterstedLeadsPopup({ setInterstedLeadPopup, unitId, set
     const handleAddLead = async (values) => {
         setLoading(true);
         try {
-            const raw = JSON.stringify({ ...values, propertyinterest: schemeId, leadid: 0, unitId: unitId, flag: 1 });
+            const raw = JSON.stringify({
+                ...values, propertyinterest: schemeId, leadid: 0,
+                unitId: unitId, flag: 1, userId: userid, userCapabilities: 'manual_entry_csv_import'
+            });
             const result = await postAPIAuthKey('/add-edit-leads', raw);
 
             if (!result) {
@@ -174,6 +181,9 @@ export default function InterstedLeadsPopup({ setInterstedLeadPopup, unitId, set
                     setShowAlerts(false);
                 }, 2000);
             }
+            else if (responseRs.status == "upgradeplan") {
+                setPlanAlerts(<UpgradePlanAlerts show={true} data={responseRs} previousPath={location.pathname} onhide={(e) => setPlanAlerts(false)} />);
+            }
             else {
                 setShowAlerts(<AlertComp show={true} variant="danger" message={responseRs.message} />);
             }
@@ -187,7 +197,7 @@ export default function InterstedLeadsPopup({ setInterstedLeadPopup, unitId, set
     return (
         <div>
             {Loading && <Loader runningcheck={Loading} />}
-
+            {PlanAlerts}
             {showForm ?
                 <LeadForm formData={initialValues} setFormData={setinitialValues} handleAddLead={handleAddLead} handleHide={(e) => setInterstedLeadPopup(false)} showBudget={true} />
                 :

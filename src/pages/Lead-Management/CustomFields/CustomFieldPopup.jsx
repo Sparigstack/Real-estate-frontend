@@ -133,7 +133,7 @@ export default function CustomFieldPopup({ setLoading, setshowAlerts, handleHide
                 onSubmit={handleSubmit}>
                 {({ handleReset, values, setFieldValue }) => (
                     <Form className='row '>
-                        <div className='col-md-6 mb-4 px-0 position-relative'>
+                        <div className='col-12 mb-4 px-0 position-relative'>
                             <label className='input-labels'>Field Name <span className='text-danger'>*</span></label>
                             <Field type="text" className="custom-inputs" name='fieldname' autoComplete='off' />
                             <ErrorMessage name='fieldname' component="div" className="text-start errorText" />
@@ -143,7 +143,7 @@ export default function CustomFieldPopup({ setLoading, setshowAlerts, handleHide
                             <div className='pt-4 custom-inputs'>
                                 <div className='row'>
                                     {FieldTypes?.map((item, index) => (
-                                        <div key={index} className="mb-2  col-md-4">
+                                        <div key={index} className="mb-2  col-md-6">
                                             <label className={`font-12 d-flex align-items-center pb-1`}>
                                                 <Field className="me-2" type="radio" name="fieldtype"
                                                     disabled={fieldid != 0}
@@ -155,17 +155,19 @@ export default function CustomFieldPopup({ setLoading, setshowAlerts, handleHide
                                         </div>
                                     ))}
                                 </div>
+                                {values.fieldtype == '5' && (
+                                    <SingleSelection singleSelectionOptions={singleSelectionOptions} setrequiredMsg={setrequiredMsg}
+                                        setSingleSelectionOptions={setSingleSelectionOptions} requiredMsg={requiredMsg} />
+                                )}
+                                {values.fieldtype == '6' && (
+                                    <MultiSelection multiSelectionOptions={multiSelectionOptions} setrequiredMsg={setrequiredMsg}
+                                        setMultiSelectionOptions={setMultiSelectionOptions} requiredMsg={requiredMsg} />
+                                )}
                             </div>
                             <ErrorMessage name='fieldtype' component="leads" className="text-start errorText" />
+
                         </div>
-                        {values.fieldtype == '5' && (
-                            <SingleSelection singleSelectionOptions={singleSelectionOptions} setrequiredMsg={setrequiredMsg}
-                                setSingleSelectionOptions={setSingleSelectionOptions} requiredMsg={requiredMsg} />
-                        )}
-                        {values.fieldtype == '6' && (
-                            <MultiSelection multiSelectionOptions={multiSelectionOptions} setrequiredMsg={setrequiredMsg}
-                                setMultiSelectionOptions={setMultiSelectionOptions} requiredMsg={requiredMsg} />
-                        )}
+
                         <div className='col-12 pt-3 text-center' >
                             <button type='button' className="CancelBtn me-2" onClick={handleHide}>
                                 Cancel

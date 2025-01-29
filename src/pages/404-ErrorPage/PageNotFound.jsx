@@ -18,7 +18,7 @@ export default function PageNotFound() {
           <h6>Sorry the page you are trying to visit does not exist.</h6>
         </div>
         <div className="text-center pt-3">
-          <label className="WhiteBtn cursor-pointer mx-2" onClick={() => navigate('/sales')}>
+          <label className="WhiteBtn cursor-pointer mx-2" onClick={() => navigate('/sales-dashboard')}>
             <FontAwesomeIcon icon={faHome} className="pe-2" /> Back to Home
           </label>
         </div>

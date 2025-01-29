@@ -7,7 +7,6 @@ import Login from '../pages/Signup-Login/Login';
 const PageNotFound = lazy(() => import('../pages/404-ErrorPage/PageNotFound'));
 const Layout = lazy(() => import('../components/layout/Layout'));
 const RestApi = lazy(() => import('../pages/LeadSetting/RestApi'));
-const WebFormContent = lazy(() => import('../pages/LeadSetting/WebFormContent'));
 const AllProperties = lazy(() => import('../pages/Properties/AllProperties'));
 const AddProperty = lazy(() => import('../pages/Properties/AddPropertyIndex'));
 const AllLeads = lazy(() => import('../pages/Lead-Management/AllLeads'));
@@ -17,7 +16,9 @@ const Sales = lazy(() => import('../pages/Sales/Sales'));
 const AddWings = lazy(() => import('../pages/Sales/AddWings'));
 const CustomFields = lazy(() => import('../pages/Lead-Management/CustomFields/CustomFields'));
 const AddUpdateLeadForm = lazy(() => import('../pages/Lead-Management/AddUpdateLeadForm'));
-
+const AllModulesPricing = lazy(() => import('../pages/PricingPlans/AllModulesPricing'));
+const Pricing = lazy(() => import('../pages/PricingPlans/Pricing'));
+const SalesDashboard = lazy(() => import('../pages/SalesDashboard/SalesDashboard'));
 
 export default function Approutes() {
   const { authToken } = useAuth();
@@ -27,16 +28,17 @@ export default function Approutes() {
       <Routes>
         <Route path="/" element={<NavigateToOrLogin />} />
         <Route path="login" element={<Login />} />
-        <Route path="webform/:schemeId" element={<WebFormContent />} />
 
         {authToken ? (
           <>
             <Route path="schemes" element={<AllProperties />} />
             <Route path="add-scheme" element={<AddProperty />} />
+            <Route path="plan-pricing" element={<Pricing />} />
 
             {schemeId && (
               <Route element={<LayoutWrapper />}>
-                <Route path="/" element={<Sales />} />
+                <Route path="/" element={<SalesDashboard />} />
+                <Route path="sales-dashboard" element={<SalesDashboard />} />
                 <Route path="sales" element={<Sales />} />
                 <Route path="add-wings" element={<AddWings />} />
 
@@ -47,6 +49,7 @@ export default function Approutes() {
                 <Route path="rest-api" element={<RestApi />} />
                 <Route path="custom-fields" element={<CustomFields />} />
                 <Route path="add-update-leads" element={<AddUpdateLeadForm />} />
+                <Route path="modules" element={<AllModulesPricing />} />
 
                 <Route path="*" element={<PageNotFound />} />
               </Route>

@@ -8,10 +8,13 @@ import { debounce } from 'lodash';
 import useApiService from '../../hooks/useApiService'
 import useProperty from '../../hooks/useProperty'
 import Loader from '../../components/loader/Loader'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import LeadInformationPopup from './LeadInformationPopup'
+import AdvanceSearch from './AdvanceSearch'
 
 export default function AllLeads() {
+    const location = useLocation();
+    const fromSalesdashboard = location.state?.fromSalesdashboard;
     const { getAPIAuthKey } = useApiService();
     const { schemeId } = useProperty();
     const navigate = useNavigate();
@@ -19,32 +22,41 @@ export default function AllLeads() {
     const [loading, setLoading] = useState(false);
     const [LeadData, setLeadData] = useState([]);
     const [InfoPopup, setInfoPopup] = useState(false);
+    const [AdvanceSearchModal, setAdvanceSearchModal] = useState(false);
     const [utils, setUtils] = useState({
-        search: null,
         sortbykey: 'desc',
         sortbyvalue: null,
-        statusid: null
+        statusid: null,
+        customfieldid: null,
+        tagid: null,
+        customfieldvalue: null
     })
     const [activeTab, setActiveTab] = useState(1)
     const [currentPage, setCurrentPage] = useState(1);
     const [LeadInfoData, setLeadInfoData] = useState('');
     const [totalItems, setTotalItems] = useState('');
+    const [searchTerm, setSearchTerm] = useState('');
     var itemsPerPage = 8;
 
     const debouncedSearch = useCallback(debounce((searchValue) => {
-        getAllLeads(searchValue, utils.sortbyvalue, utils.statusid, utils.sortbykey, currentPage);
-    }, 500), []);
+        setSearchTerm(searchValue);  // Ensure searchTerm is updated
+        getAllLeads(searchValue, utils.sortbyvalue, utils.statusid, utils.sortbykey, utils.customfieldid, utils.tagid, currentPage);
+    }, 300), [utils, currentPage]);
+
 
     useEffect(() => {
-        getAllLeads(null, null, null, null, 1);
-        setUtils({ ...utils, search: '', sortbykey: 'desc', sortbyvalue: null, statusid: null })
+        if (fromSalesdashboard) {
+            setActiveTab(2);
+        }
+        getAllLeads(searchTerm, utils.sortbyvalue, utils.statusid, utils.sortbykey, utils.customfieldid, utils.tagid, 1);
     }, [activeTab]);
 
-    const getAllLeads = async (search = '', sortbyvalue = null, statusid = null, sortDirection = 'asc', currentPage) => {
+    const getAllLeads = async (search = '', sortbyvalue = null, statusid = null,
+        sortDirection = 'asc', customfieldid = null, tagid = null, currentPage) => {
         try {
             var searchstring = search == '' ? null : search;
             setLoading(true);
-            const result = await getAPIAuthKey(`/get-leads/${schemeId}&${activeTab}&${searchstring}&${sortDirection}&${sortbyvalue}&${statusid}&${currentPage}&${itemsPerPage}`);
+            const result = await getAPIAuthKey(`/get-leads/${schemeId}&${activeTab}&${searchstring}&${sortDirection}&${sortbyvalue}&${statusid}&${customfieldid}&${utils.customfieldvalue}&${tagid}&${currentPage}&${itemsPerPage}`);
             if (!result) {
                 throw new Error('Something went wrong');
             }
@@ -58,6 +70,10 @@ export default function AllLeads() {
             console.error(error);
         }
     }
+
+    const applyFilters = () => {
+        getAllLeads(searchTerm, utils.sortbyvalue, utils.statusid, utils.sortbykey, utils.customfieldid, utils.tagid, currentPage);
+    };
 
     const getLeadInfoById = async (leadid) => {
         if (!leadid) return;
@@ -80,14 +96,29 @@ export default function AllLeads() {
 
     const handlePageChange = (page) => {
         setCurrentPage(page);
-        getAllLeads(utils.search, utils.sortbyvalue, utils.statusid, utils.sortbykey, page);  // Preserve sorting state
+        getAllLeads(searchTerm, utils.sortbyvalue, utils.statusid, utils.sortbykey, utils.customfieldid, utils.tagid, page);  // Preserve sorting state
     };
 
     const handleSorting = (sortField) => {
         const newSortDirection = utils.sortbykey == 'asc' ? 'desc' : 'asc';
         setUtils((prev) => ({ ...prev, sortbyvalue: sortField, sortbykey: newSortDirection }));
-        getAllLeads(utils.search, sortField, utils.statusid, newSortDirection, currentPage); // Pass updated sort direction and value
+        getAllLeads(searchTerm, sortField, utils.statusid, newSortDirection, utils.customfieldid, utils.tagid, currentPage); // Pass updated sort direction and value
     };
+
+    const handleTabChange = (tab) => {
+        setActiveTab(tab);
+        setUtils({
+            sortbykey: 'desc', sortbyvalue: null, statusid: null,
+            customfieldid: null, tagid: null
+        });
+        setSearchTerm('')
+    };
+
+    const handleInputChange = (e) => {
+        setSearchTerm(e.target.value)
+        debouncedSearch(e.target.value);
+    };
+
     return (
         <div>
             {loading && <Loader runningcheck={loading} />}
@@ -108,84 +139,38 @@ export default function AllLeads() {
                     </div>
                 </div>
             </div>
-            <div className='row py-2 align-items-center'>
+            <div className='row py-3 align-items-center'>
                 <div className='col-md-4'>
-                    <div className='tab_bg'>
-                        <div className='row align-items-center px-2'>
-                            <div className={`col-5 ${activeTab == 2 && "active_tab"}  cursor-pointer`}
-                                onClick={(e) => { setActiveTab(2) }}>Members</div>
-                            <div className={`col-5 ${activeTab == 3 && "active_tab"}  cursor-pointer`}
-                                onClick={(e) => { setActiveTab(3); }}>Non-Members</div>
-                            <div className='col-2 ps-0'>
-                                {activeTab != 1 && (
-                                    <img src={Images.white_cancel} className='cursor-pointer'
-                                        onClick={(e) => { setActiveTab(1); setUtils({ ...utils, search: '', sortbykey: 'desc', sortbyvalue: null, statusid: null }) }} />
-                                )}
-                            </div>
-                        </div>
+                    <div className='tab_bg d-flex justify-content-between align-items-center px-0'>
+                        <div className={`${activeTab == 1 && "active_tab"}  cursor-pointer`}
+                            onClick={(e) => { handleTabChange(1) }}>All Leads</div>
+                        <div className={`${activeTab == 2 && "active_tab"}  cursor-pointer`}
+                            onClick={(e) => { handleTabChange(2) }}>Members</div>
+                        <div className={`${activeTab == 3 && "active_tab"}  cursor-pointer`}
+                            onClick={(e) => { handleTabChange(3); }}>Non-Members</div>
                     </div>
                 </div>
-                <div className='col-md-4 offset-md-4'>
-                    <div className="position-relative">
+                <div className='col-md-6 offset-md-2 d-flex align-items-center justify-content-end'>
+                    <div onClick={(e) => setAdvanceSearchModal(true)} title='Advance Search'>
+                        <img src={Images.advanced_filter} className='iconsize cursor-pointer me-1'
+                        />
+                        <label className='fontwhite cursor-pointer font-13 fw-semibold'>Advance Filter</label>
+                    </div>
+                    <div className="position-relative ms-3">
                         <img src={Images.searchIcon} alt="search-icon" className="search-icon" />
                         <input
                             type="text"
                             className="form-control searchInput"
-                            placeholder="Search"
+                            placeholder={`Search`}
                             value={utils.search}
-                            onChange={(e) => {
-                                debouncedSearch(e.target.value);
-                                setUtils({ ...utils, search: e.target.value })
-                            }}
+                            onChange={(e) => handleInputChange(e)}
                         />
                     </div>
+
+
                 </div>
             </div>
-            <div className='col-12 text-end py-1 d-flex justify-content-end align-items-center'>
-                {utils.statusid && (
-                    <div className='fontwhite pe-5'>
-                        <b className='cursor-pointer text-decoration-underline'
-                            onClick={(e) => { getAllLeads(utils.search, utils.sortbyvalue, null, utils.sortbykey, currentPage); setUtils((prevdata) => ({ ...prevdata, statusid: null })) }}>
-                            Clear</b>
-                    </div>
-                )}
-                <div className='blue_text'>
-                    <label className='blue_dot'></label>
-                    <label className='ps-1  cursor-pointer text-decoration-underline'
-                        onClick={(e) => { getAllLeads(utils.search, utils.sortbyvalue, 1, utils.sortbykey, currentPage); setUtils((prevdata) => ({ ...prevdata, statusid: 1 })) }}>
-                        New
-                    </label>
-                </div>
-                <div className='navyblue_text ps-3'>
-                    <label className='navyblue_dot'></label>
-                    <label className='ps-1  cursor-pointer text-decoration-underline'
-                        onClick={(e) => { getAllLeads(utils.search, utils.sortbyvalue, 2, utils.sortbykey, currentPage); setUtils((prevdata) => ({ ...prevdata, statusid: 2 })) }}>
-                        Lead to Customer
-                    </label>
-                </div>
-                <div className='green_text ps-3'>
-                    <label className='green_dot'></label>
-                    <label className='ps-1  cursor-pointer text-decoration-underline'
-                        onClick={(e) => { getAllLeads(utils.search, utils.sortbyvalue, 3, utils.sortbykey, currentPage); setUtils((prevdata) => ({ ...prevdata, statusid: 3 })) }}>
-                        Hot
-                    </label>
-                </div>
-                <div className='yellow_text ps-3'>
-                    <label className='yellow_dot'></label>
-                    <label className='ps-1  cursor-pointer text-decoration-underline'
-                        onClick={(e) => { getAllLeads(utils.search, utils.sortbyvalue, 4, utils.sortbykey, currentPage); setUtils((prevdata) => ({ ...prevdata, statusid: 4 })) }}>
-                        Cold
-                    </label>
-                </div>
-                <div className='red_text ps-3'>
-                    <label className='red_dot'></label>
-                    <label className='ps-1  cursor-pointer text-decoration-underline'
-                        onClick={(e) => { getAllLeads(utils.search, utils.sortbyvalue, 5, utils.sortbykey, currentPage); setUtils((prevdata) => ({ ...prevdata, statusid: 5 })) }}>
-                        Dead
-                    </label>
-                </div>
-            </div>
-            <div className='GridHeader'>
+            <div className='GridHeader '>
                 <div className='row'>
                     <div className='col-1'></div>
                     <div className='col-md-3 cursor-pointer' title='Sort by Name' onClick={() => handleSorting('name')}>
@@ -207,14 +192,16 @@ export default function AllLeads() {
                 <div className=''>
                     {LeadData.length ? LeadData.map((item, index) => {
                         var statuscolor = "";
-                        if (item.status_id == 1) statuscolor = "blue_dot";
-                        else if (item.status_id == 2) statuscolor = "navyblue_dot";
-                        else if (item.status_id == 3) statuscolor = "green_dot";
-                        else if (item.status_id == 4) statuscolor = "yellow_dot";
-                        else if (item.status_id == 5) statuscolor = "red_dot";
+                        if (item.status_id == 1) statuscolor = "blue_text";
+                        else if (item.status_id == 2) statuscolor = "navyblue_text";
+                        else if (item.status_id == 3) statuscolor = "green_text";
+                        else if (item.status_id == 4) statuscolor = "yellow_text";
+                        else if (item.status_id == 5) statuscolor = "red_text";
                         return <div className='row GridData' key={index}>
-                            <div className='col-md-1'>
-                                <label className={statuscolor}></label>
+                            <div className='col-md-1 font-10'>
+                                <label className={statuscolor}>
+                                    {item?.lead_status?.name}
+                                </label>
                             </div>
                             <div className='col-md-3'>
                                 <div className='col-12 d-flex align-items-center'>
@@ -258,6 +245,15 @@ export default function AllLeads() {
 
             <CustomModal isShow={InfoPopup} size={"lg"} title={"Lead Information"}
                 bodyContent={<LeadInformationPopup LeadInfoData={LeadInfoData} />} closePopup={(e) => setInfoPopup(false)} showBudget={false} />
+
+            <CustomModal isShow={AdvanceSearchModal} size={"mg"} title={"Advanced Filter By:"}
+                bodyContent={<AdvanceSearch utils={utils} setUtils={setUtils}
+                    applyFilters={applyFilters}
+                    closepopup={(e) => {
+                        setAdvanceSearchModal(false);
+                    }} />} closePopup={(e) => {
+                        setAdvanceSearchModal(false);
+                    }} showBudget={false} />
         </div >
     )
 }
