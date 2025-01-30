@@ -32,9 +32,9 @@ export default function SalesDashboard() {
                             Your The First Scheme Sales Dashboard Analytics & Reports.
                         </small>
                     </div>
-                    <div className='col-md-4 text-end pe-0'>
+                    {/* <div className='col-md-4 text-end pe-0'>
                         <button className='subPropertyTypeActive px-3 py-2'>Export Data</button>
-                    </div>
+                    </div> */}
                 </div>
                 <BasicDetail />
                 <div className='row py-2'>

@@ -47,6 +47,7 @@ export default function AllLeads() {
     useEffect(() => {
         if (fromSalesdashboard) {
             setActiveTab(2);
+            location.state = null;
         }
         getAllLeads(searchTerm, utils.sortbyvalue, utils.statusid, utils.sortbykey, utils.customfieldid, utils.tagid, 1);
     }, [activeTab]);

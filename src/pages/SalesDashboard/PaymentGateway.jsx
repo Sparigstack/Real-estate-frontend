@@ -1,8 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Chart from "react-apexcharts";
 import ReactApexChart from "react-apexcharts";
+import useApiService from "../../hooks/useApiService";
+import useProperty from "../../hooks/useProperty";
+import Cookies from 'js-cookie';
 
 export default function PaymentGateway() {
+    const { getAPIAuthKey } = useApiService();
+    const userid = Cookies.get('userId');
+    const { schemeId } = useProperty();
+    const [paymentStatues, setPaymentStatues] = useState([]);
+    useEffect(() => {
+        getPaymentStatues();
+    }, []);
+    const getPaymentStatues = async () => {
+        try {
+            const result = await getAPIAuthKey(`/get-payment-type-summary/${userid}/${schemeId}`);
+            if (!result) {
+                throw new Error('Something went wrong');
+            }
+            const responseRs = JSON.parse(result);
+            console.log(responseRs)
+            setPaymentStatues(responseRs);
+        }
+        catch (error) {
+            console.error(error);
+        }
+    }
     const chartOptions = {
         chart: {
             type: "donut",
@@ -26,13 +50,13 @@ export default function PaymentGateway() {
         fill: {
             colors: ["#d36dfd", "#a4ff3a", "#377bff", "#64d9f9", "#adb8ff"],
         },
-        labels: ["Cheque", "Cash", "RTGS/NEFT", "Online Transfer", "Others"],
+        labels: paymentStatues?.labels,
         legend: {
             show: false,
         },
     };
 
-    const chartSeries = [40, 20, 15, 15, 10]; // Adjust the values based on your data
+    const chartSeries = paymentStatues?.series?.length ? paymentStatues.series : [1]; // Prevents error in ApexCharts
     return (
         <div className="PageHeader text-center" style={{ height: "100%" }}>
             <label className="fontwhite  mb-3">Payment Gateway Status</label>

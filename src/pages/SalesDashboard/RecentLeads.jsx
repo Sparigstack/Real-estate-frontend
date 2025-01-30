@@ -43,22 +43,28 @@ export default function RecentLeads() {
                     </div>
                 </div>
             </div>
-            <div className='smallgriddata'>
-                <div className='row'>
-                    <div className='col-md-3 font-13'>
-                        Testing
+            {recentInterstedLeads.length > 0 ?
+                recentInterstedLeads.map((lead, index) => {
+                    return <div className='smallgriddata' key={index}>
+                        <div className='row'>
+                            <div className='col-md-3 font-13'>
+                                {lead.lead_customer_name}
+                            </div>
+                            <div className='col-md-3 font-13'>
+                                {lead.source_name}
+                            </div>
+                            <div className='col-md-3 font-13'>
+                                {lead.contact_number}
+                            </div>
+                            <div className='col-md-3 font-13'>
+                                {lead.wing_name} - {lead.unit_name}
+                            </div>
+                        </div>
                     </div>
-                    <div className='col-md-3 font-13'>
-                        Call
-                    </div>
-                    <div className='col-md-3 font-13'>
-                        1234567890
-                    </div>
-                    <div className='col-md-3 font-13'>
-                        A/202
-                    </div>
-                </div>
-            </div>
+                })
+                :
+                <div className='text-center'>No Data Found</div>
+            }
         </div>
     )
 }

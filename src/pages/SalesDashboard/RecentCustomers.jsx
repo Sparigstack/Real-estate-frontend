@@ -51,49 +51,49 @@ export default function RecentCustomers() {
                     <div className='col-md-2'>
                         Source
                     </div>
-                    <div className='col-md-2 text-center'>
-                        Payment Status
+                    <div className='col-md-2'>
+                        Paid Amount
                     </div>
                     <div className='col-md-2'>
                         Total Amount
                     </div>
                 </div>
             </div>
-            {recentCustomers.length > 0 && recentCustomers.map((customer, index) => {
-                var paymentPercentage = 0;
-                if (customer.amount_received > 0) {
-                    paymentPercentage = Math.round((6000 / customer.total_amount) * 100);
-                }
-                return <div key={index} className='smallgriddata'>
-                    <div className='row'>
-                        <div className='col-md-2 font-13'>
-                            {customer.name}
-                            <br />
-                            {customer.email}
-                        </div>
-                        <div className='col-md-2 font-13'>
-                            {customer.contact_no}
-                        </div>
-                        <div className='col-md-2 font-13 text-center'>
-                            {customer.wing_name} - {customer.unit_name}
-                        </div>
-                        <div className='col-md-2 font-13'>
-                            {customer.source_name}
-                        </div>
-                        <div className='col-md-2 font-13'>
-                            <div className="progress" style={{ height: "5px" }}>
-                                <div className="progress-bar" role="progressbar" style={{ width: `${paymentPercentage}%`, backgroundColor: "#AAB8FF" }} aria-valuemin="0" aria-valuemax="100"></div>
+            {recentCustomers.length > 0 ?
+                recentCustomers.map((customer, index) => {
+                    var paymentPercentage = 0;
+                    if (customer.amount_received > 0) {
+                        paymentPercentage = Math.round((6000 / customer.total_amount) * 100);
+                    }
+                    return <div key={index} className='smallgriddata'>
+                        <div className='row'>
+                            <div className='col-md-2 font-13'>
+                                {customer.name}
+                                <br />
+                                {customer.email}
                             </div>
-                            <div style={{ fontSize: "9px" }} className='text-center pt-1'>
-                                {paymentPercentage.toFixed(0)}% </div>
-                        </div>
-                        <div className='col-md-2 font-13'>
-                            <FontAwesomeIcon icon={faIndianRupeeSign} className='pe-1 font-12' />
-                            {customer.total_amount}
+                            <div className='col-md-2 font-13'>
+                                {customer.contact_no}
+                            </div>
+                            <div className='col-md-2 font-13 text-center'>
+                                {customer.wing_name} - {customer.unit_name}
+                            </div>
+                            <div className='col-md-2 font-13'>
+                                {customer.source_name}
+                            </div>
+                            <div className='col-md-2 font-13'>
+                                <FontAwesomeIcon icon={faIndianRupeeSign} className='pe-1 font-12' />
+                                {customer.amount_received || 0}
+                            </div>
+                            <div className='col-md-2 font-13'>
+                                <FontAwesomeIcon icon={faIndianRupeeSign} className='pe-1 font-12' />
+                                {customer.total_amount || 0}
+                            </div>
                         </div>
                     </div>
-                </div>
-            })}
+                })
+                : <div className='text-center pt-3'>No recent customers found</div>
+            }
         </div>
     )
 }

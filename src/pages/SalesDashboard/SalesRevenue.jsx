@@ -71,7 +71,7 @@ export default function SalesRevenue() {
     }, []);
     const getSalesRevenue = async () => {
         // try {
-        //     const result = await getAPIAuthKey(`/get-sales-analytics/${userid}/${schemeId}/1`);
+        //     const result = await getAPIAuthKey(`/get-sales-analytics/${userid}/${schemeId}/${activeTab}`);
         //     if (!result) {
         //         throw new Error('Something went wrong');
         //     }
