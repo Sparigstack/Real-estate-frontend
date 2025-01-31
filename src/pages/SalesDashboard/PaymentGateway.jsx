@@ -20,7 +20,6 @@ export default function PaymentGateway() {
                 throw new Error('Something went wrong');
             }
             const responseRs = JSON.parse(result);
-            console.log(responseRs)
             setPaymentStatues(responseRs);
         }
         catch (error) {

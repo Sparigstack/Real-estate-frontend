@@ -65,35 +65,35 @@ export default function SalesRevenue() {
         },
     });
 
-    const [chartSeries, setChartSeries] = useState([]); // Initially empty
+    const [chartSeries, setChartSeries] = useState([{ name: "Sales Revenue", data: [] }]);
     useEffect(() => {
         getSalesRevenue();
-    }, []);
+    }, [activeTab]);
     const getSalesRevenue = async () => {
-        // try {
-        //     const result = await getAPIAuthKey(`/get-sales-analytics/${userid}/${schemeId}/${activeTab}`);
-        //     if (!result) {
-        //         throw new Error('Something went wrong');
-        //     }
-        //     const responseRs = JSON.parse(result);
-        //     setChartOptions((prevOptions) => ({
-        //         ...prevOptions,
-        //         xaxis: {
-        //             ...prevOptions.xaxis,
-        //             categories: data.categories,
-        //         },
-        //     }));
-        // }
-        // catch (error) {
-        //     console.error(error);
-        // }
+        try {
+            const result = await getAPIAuthKey(`/get-sales-analytics/${userid}/${schemeId}/${activeTab}`);
+            if (!result) {
+                throw new Error('Something went wrong');
+            }
+            const responseRs = JSON.parse(result);
+            setChartSeries([{ name: "Sales Revenue", data: responseRs?.series }]);
+            setChartOptions((prevOptions) => ({
+                ...prevOptions,
+                xaxis: {
+                    ...prevOptions.xaxis,
+                    categories: responseRs?.categories,
+                },
+            }));
+        }
+        catch (error) {
+            console.error(error);
+        }
     }
     return (
         <div className="PageHeader">
             <div className="row">
                 <div className="col-md-10">
                     <label className="fontwhite">Total Sales Revenue</label><br />
-                    <small className="colorAAB8FF mb-2">Jan - Aug 2024</small>
                 </div>
                 <div style={{ border: "none" }} className='col-md-2 tab_bg d-flex align-items-center px-0'>
                     <div className={`${activeTab == 1 && "popular_badge"} cursor-pointer py-2 font-12`}
