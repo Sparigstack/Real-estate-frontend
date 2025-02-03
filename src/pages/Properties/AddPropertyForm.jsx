@@ -44,7 +44,8 @@ export default function AddPropertyForm({ schemeType, setFormView }) {
     const [planResponse, setPlanResponse] = useState({
         moduleid: "",
         planname: "",
-        previousPath: location.pathname
+        previousPath: location.pathname,
+        buttontext: ""
     })
     useEffect(() => {
 
@@ -104,7 +105,10 @@ export default function AddPropertyForm({ schemeType, setFormView }) {
                         navigate("/sales-dashboard");
                     }, 2500);
                 } else if (responseRs.status == "upgradeplan") {
-                    setPlanResponse({ ...planResponse, moduleid: responseRs.moduleid, planname: responseRs.activeplanname });
+                    setPlanResponse({
+                        ...planResponse, moduleid: responseRs.moduleid, planname: responseRs.activeplanname,
+                        buttontext: responseRs.buttontext
+                    });
                     setPlanPopup(true);
                 }
                 else {

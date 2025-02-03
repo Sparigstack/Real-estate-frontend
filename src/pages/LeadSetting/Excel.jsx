@@ -26,7 +26,8 @@ export default function Excel() {
     const [planResponse, setPlanResponse] = useState({
         moduleid: "",
         planname: "",
-        previousPath: location.pathname
+        previousPath: location.pathname,
+        buttontext: ""
     })
     const navigate = useNavigate();
     const handleFileChange = async (event) => {
@@ -59,7 +60,10 @@ export default function Excel() {
                 }, 1500);
             }
             else if (responseRs.status == "upgradeplan") {
-                setPlanResponse({ ...planResponse, moduleid: responseRs.moduleid, planname: responseRs.activeplanname });
+                setPlanResponse({
+                    ...planResponse, moduleid: responseRs.moduleid, planname: responseRs.activeplanname,
+                    buttontext: responseRs.buttontext
+                });
                 setPlanPopup(true);
             }
             else {
@@ -89,7 +93,10 @@ export default function Excel() {
                 setdivVisibleForExport(true)
             }
             else if (responseRs.status == "upgradeplan") {
-                setPlanResponse({ ...planResponse, moduleid: responseRs.moduleid, planname: responseRs.activeplanname });
+                setPlanResponse({
+                    ...planResponse, moduleid: responseRs.moduleid, planname: responseRs.activeplanname,
+                    buttontext: responseRs.buttontext
+                });
                 setPlanPopup(true);
             }
 

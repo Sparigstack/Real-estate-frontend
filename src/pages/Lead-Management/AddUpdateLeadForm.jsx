@@ -35,7 +35,8 @@ export default function AddUpdateLeadForm() {
     const [planResponse, setPlanResponse] = useState({
         moduleid: "",
         planname: "",
-        previousPath: location.pathname
+        previousPath: location.pathname,
+        buttontext: ""
     })
     const [formData, setFormData] = useState({
         name: '',
@@ -205,7 +206,10 @@ export default function AddUpdateLeadForm() {
                 }, 2000);
             }
             else if (responseRs.status == "upgradeplan") {
-                setPlanResponse({ ...planResponse, moduleid: responseRs.moduleid, planname: responseRs.activeplanname });
+                setPlanResponse({
+                    ...planResponse, moduleid: responseRs.moduleid, planname: responseRs.activeplanname,
+                    buttontext: responseRs.buttontext
+                });
                 setPlanPopup(true);
             }
             else {
