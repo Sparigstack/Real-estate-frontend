@@ -32,11 +32,13 @@ export default function UpgradePlanPopup(props) {
                         Upgrade Plan
                     </button>
                 </div>
-                <button type='button' className='upgradeplan_btn mb-4'
-                    onClick={(e) => { props.getfunction && props.getfunction(); props.onHide() }}>
-                    <img src={Images.upgrade_plan} className=' pe-2' />
-                    Skip & Add up to {props.data.buttontext}
-                </button>
+                {props.data.buttontext &&
+                    <button type='button' className='upgradeplan_btn mb-4'
+                        onClick={(e) => { props.getfunction && props.getfunction(); props.onHide() }}>
+                        <img src={Images.upgrade_plan} className=' pe-2' />
+                        Skip & Add up to {props.data.buttontext}
+                    </button>
+                }
             </Modal.Footer>
         </Modal>
     )

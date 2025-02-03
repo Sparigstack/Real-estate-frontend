@@ -95,7 +95,7 @@ export default function Excel() {
             else if (responseRs.status == "upgradeplan") {
                 setPlanResponse({
                     ...planResponse, moduleid: responseRs.moduleid, planname: responseRs.activeplanname,
-                    buttontext: responseRs.buttontext
+                    buttontext: null
                 });
                 setPlanPopup(true);
             }
