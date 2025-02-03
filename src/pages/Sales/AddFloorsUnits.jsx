@@ -328,7 +328,7 @@ export default function AddFloorsUnits({ activeWingId, UnitDetailsCount, setShow
             }
 
             {PlanPopup && <UpgradePlanPopup show={PlanPopup} onHide={() => setPlanPopup(false)}
-                data={planResponse} />}
+                data={planResponse} getfunction={(e) => refreshPropertyDetails()} />}
         </>
     )
 }

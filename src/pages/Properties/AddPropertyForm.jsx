@@ -47,29 +47,30 @@ export default function AddPropertyForm({ schemeType, setFormView }) {
         previousPath: location.pathname
     })
     useEffect(() => {
-        const getPropertyTypes = async () => {
-            try {
-                const result = await getAPIAuthKey(`/get-property-types/${schemeType}`);
-                if (!result || result == "") {
-                    alert('Something went wrong');
-                }
-                else {
-                    const responseRs = JSON.parse(result);
-                    setpropertyTypeArray(responseRs?.sub_properties)
-                }
 
-                var states = await getAllStates();
-                if (states) {
-                    setStateArray(states);  // Set the fetched states in state
-                }
-            }
-            catch (error) {
-                console.error(error);
-            }
-        }
         getPropertyTypes();
 
     }, []);
+    const getPropertyTypes = async () => {
+        try {
+            const result = await getAPIAuthKey(`/get-property-types/${schemeType}`);
+            if (!result || result == "") {
+                alert('Something went wrong');
+            }
+            else {
+                const responseRs = JSON.parse(result);
+                setpropertyTypeArray(responseRs?.sub_properties)
+            }
+
+            var states = await getAllStates();
+            if (states) {
+                setStateArray(states);  // Set the fetched states in state
+            }
+        }
+        catch (error) {
+            console.error(error);
+        }
+    }
     const submitCommercialDetails = async (values) => {
         setLoading(true);
         var raw = JSON.stringify({
@@ -254,7 +255,7 @@ export default function AddPropertyForm({ schemeType, setFormView }) {
                 </Formik>
             </div>
             {PlanPopup && <UpgradePlanPopup show={PlanPopup} onHide={() => setPlanPopup(false)}
-                data={planResponse} />}
+                data={planResponse} getfunction={(e) => getPropertyTypes()} />}
         </div>
     )
 }

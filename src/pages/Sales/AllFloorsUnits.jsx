@@ -45,7 +45,8 @@ export default function AllFloorsUnits({ FloorUnitDetails, activeWingId, setFloo
     const [planResponse, setPlanResponse] = useState({
         moduleid: "",
         planname: "",
-        previousPath: location.pathname
+        previousPath: location.pathname,
+        buttontext: ""
     })
     const itemsPerPage = 4;
     const maxLengthOfUnits = Math.max(...(FloorUnitDetails?.floor_details?.map(floor => floor.unit_details.length) || [0]));
@@ -272,7 +273,10 @@ export default function AllFloorsUnits({ FloorUnitDetails, activeWingId, setFloo
                     }, 2500);
                 } else if (responseRs.status == "upgradeplan") {
                     setloading(false);
-                    setPlanResponse({ ...planResponse, moduleid: responseRs.moduleid, planname: responseRs.activeplanname });
+                    setPlanResponse({
+                        ...planResponse, moduleid: responseRs.moduleid, planname: responseRs.activeplanname,
+                        buttontext: responseRs.buttontext
+                    });
                     setPlanPopup(true);
 
                 }
@@ -680,7 +684,7 @@ export default function AllFloorsUnits({ FloorUnitDetails, activeWingId, setFloo
             </div >
 
             {PlanPopup && <UpgradePlanPopup show={PlanPopup} onHide={() => setPlanPopup(false)}
-                data={planResponse} />}
+                data={planResponse} getfunction={(e) => refreshPropertyDetails()} />}
 
             <CustomModal isShow={BookingModel} size={"lg"} title="Add Booking Details" closePopup={(e) => setBookingModel(false)}
                 bodyContent={<BookingPopup setBookingModel={setBookingModel} unitid={unitId} />} />

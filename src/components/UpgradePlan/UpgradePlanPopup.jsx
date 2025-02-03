@@ -25,10 +25,17 @@ export default function UpgradePlanPopup(props) {
                 </div>
             </Modal.Body>
             <Modal.Footer>
+                <div className='col-12 text-center'>
+                    <button type='button' className='upgradeplan_btn mb-2'
+                        onClick={(e) => navigate('/plan-pricing', { state: { moduleid: props.data.moduleid, previousPath: props.data.previousPath } })}>
+                        <img src={Images.upgrade_plan} className=' pe-2' />
+                        Upgrade Plan
+                    </button>
+                </div>
                 <button type='button' className='upgradeplan_btn mb-4'
-                    onClick={(e) => navigate('/plan-pricing', { state: { moduleid: props.data.moduleid, previousPath: props.data.previousPath } })}>
+                    onClick={(e) => { props.getfunction && props.getfunction(); props.onHide() }}>
                     <img src={Images.upgrade_plan} className=' pe-2' />
-                    Upgrade Plan
+                    Skip & Add {props.data.buttontext}
                 </button>
             </Modal.Footer>
         </Modal>

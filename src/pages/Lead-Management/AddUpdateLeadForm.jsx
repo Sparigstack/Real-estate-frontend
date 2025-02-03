@@ -278,7 +278,7 @@ export default function AddUpdateLeadForm() {
             </Formik>
 
             {PlanPopup && <UpgradePlanPopup show={PlanPopup} onHide={() => setPlanPopup(false)}
-                data={planResponse} />}
+                data={planResponse} getfunction={null} />}
         </div>
     )
 }

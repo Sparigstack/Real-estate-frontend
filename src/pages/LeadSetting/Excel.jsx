@@ -217,7 +217,7 @@ export default function Excel() {
             </div>
 
             {PlanPopup && <UpgradePlanPopup show={PlanPopup} onHide={() => setPlanPopup(false)}
-                data={planResponse} />}
+                data={planResponse} getfunction={null} />}
         </>
     )
 }
