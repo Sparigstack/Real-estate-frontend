@@ -22,7 +22,8 @@ export default function AddFloorsUnits({ activeWingId, UnitDetailsCount, setShow
     const [planResponse, setPlanResponse] = useState({
         moduleid: "",
         planname: "",
-        previousPath: location.pathname
+        previousPath: location.pathname,
+        buttontext: ""
     })
     const [allData, setallData] = useState({
         totalFloors: '',
@@ -59,7 +60,10 @@ export default function AddFloorsUnits({ activeWingId, UnitDetailsCount, setShow
                     }, 2500);
                 } else if (responseRs.status == "upgradeplan") {
                     setLoading(false);
-                    setPlanResponse({ ...planResponse, moduleid: responseRs.moduleid, planname: responseRs.activeplanname });
+                    setPlanResponse({
+                        ...planResponse, moduleid: responseRs.moduleid, planname: responseRs.activeplanname,
+                        buttontext: responseRs.buttontext
+                    });
                     setPlanPopup(true);
                 }
                 else {
@@ -121,7 +125,10 @@ export default function AddFloorsUnits({ activeWingId, UnitDetailsCount, setShow
                         refreshPropertyDetails()
                     }, 2500);
                 } else if (responseRs.status == "upgradeplan") {
-                    setPlanResponse({ ...planResponse, moduleid: responseRs.moduleid, planname: responseRs.activeplanname });
+                    setPlanResponse({
+                        ...planResponse, moduleid: responseRs.moduleid, planname: responseRs.activeplanname,
+                        buttontext: responseRs.buttontext
+                    });
                     setPlanPopup(true);
                 }
                 else {
